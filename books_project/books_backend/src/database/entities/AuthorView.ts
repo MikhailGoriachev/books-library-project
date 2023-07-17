@@ -15,8 +15,8 @@ export class AuthorView {
 
     @ManyToOne(type => User, user => user.authorViews, { cascade: true })
     user: Relation<User>;
-
-    @ManyToOne(type => Author, author => author.authorViews, { cascade: true })
+    
+    @ManyToOne(type => Author, author => author.authorViewStatistics, { cascade: true })
     author: Relation<Author>;
 
     @Column({ type: 'datetime' })

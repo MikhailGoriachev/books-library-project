@@ -13,11 +13,17 @@ export class CategoriesService {
     ) {}
 
     async findAll(filter?: CategoryFilterDto): Promise<Category[]> {
-        return this.categoryRepository.find({ where: this.getFilter(filter) });
+        return this.categoryRepository.find({
+            where: this.getFilter(filter),
+            relations: ['books'],
+        });
     }
 
     async findOne(filter?: CategoryFilterDto): Promise<Category> {
-        return this.categoryRepository.findOne({ where: this.getFilter(filter) });
+        return this.categoryRepository.findOne({
+            where: this.getFilter(filter),
+            relations: ['books'],
+        });
     }
 
     // получить фильтр по полям

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Author } from '../../entities/Author';
 import { In, Repository } from 'typeorm';
-import { getLike } from '../../../infrastructure/utils';
+import { getInById, getLike } from '../../../infrastructure/utils';
 import { AuthorFilterDto } from '../../../dto/filters/author-filter.dto';
 import { Book } from '../../entities/Book';
 
@@ -16,11 +16,17 @@ export class AuthorsService {
     ) {}
 
     async findAll(filter?: AuthorFilterDto): Promise<Author[]> {
-        return this.authorRepository.find({ where: this.getFilter(filter) });
+        return this.authorRepository.find({
+            where: this.getFilter(filter),
+            relations: ['books'],
+        });
     }
 
     async findOne(filter?: AuthorFilterDto): Promise<Author> {
-        return this.authorRepository.findOne({ where: this.getFilter(filter) });
+        return this.authorRepository.findOne({
+            where: this.getFilter(filter),
+            relations: ['books'],
+        });
     }
 
     // получить фильтр по полям
@@ -33,8 +39,8 @@ export class AuthorsService {
         fields['detailsLink'] = getLike(filter.detailsLink);
         fields['image'] = getLike(filter.image);
         fields['books'] = filter.booksId !== undefined
-            ? In(filter.booksId.map(c => this.bookRepository.findOneBy({ id: c })))
-            : undefined;
+            ? { id: In(filter.booksId) } : undefined;
+        fields['books'] = getInById(filter.booksId);
 
         return fields;
     }

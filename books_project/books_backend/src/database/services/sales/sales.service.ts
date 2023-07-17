@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { getBetween, getDateBetween, getLike } from '../../../infrastructure/utils';
+import { getBetween, getById, getDateBetween, getLike } from '../../../infrastructure/utils';
 import { Sale } from '../../entities/Sale';
 import { SaleFilterDto } from '../../../dto/filters/sale-filter.dto';
 import { User } from '../../entities/User';
@@ -19,11 +19,17 @@ export class SalesService {
     ) {}
 
     async findAll(filter?: SaleFilterDto): Promise<Sale[]> {
-        return this.saleRepository.find({ where: this.getFilter(filter) });
+        return this.saleRepository.find({
+            where: this.getFilter(filter),
+            relations: ['user', 'book'],
+        });
     }
 
     async findOne(filter?: SaleFilterDto): Promise<Sale> {
-        return this.saleRepository.findOne({ where: this.getFilter(filter) });
+        return this.saleRepository.findOne({
+            where: this.getFilter(filter),
+            relations: ['user', 'book'],
+        });
     }
 
     // получить фильтр по полям
@@ -31,8 +37,8 @@ export class SalesService {
         const fields = {};
 
         fields['id'] = filter.id;
-        fields['user'] = this.userRepository.findOneBy({ id: filter.userId });
-        fields['book'] = this.bookRepository.findOneBy({ id: filter.bookId });
+        fields['user'] = getById(filter.userId);
+        fields['book'] = getById(filter.bookId);
         fields['price'] = filter.price ?? getBetween(filter.minPrice, filter.maxPrice);
         fields['saleAt'] = filter.saleAt ?? getDateBetween(filter.minSaleAt, filter.maxSaleAt);
 

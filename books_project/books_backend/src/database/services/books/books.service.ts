@@ -19,11 +19,17 @@ export class BooksService {
     ) {}
 
     async findAll(filter?: BookFilterDto): Promise<Book[]> {
-        return this.bookRepository.find({ where: await this.getFilter(filter) });
+        return this.bookRepository.find({
+            where: await this.getFilter(filter),
+            relations: ['categories', 'authors', 'bookFiles', 'bookRatings'],
+        });
     }
 
     async findOne(filter?: BookFilterDto): Promise<Book> {
-        return this.bookRepository.findOne({ where: await this.getFilter(filter) });
+        return this.bookRepository.findOne({
+            where: await this.getFilter(filter),
+            relations: ['categories', 'authors', 'bookFiles', 'bookRatings'],
+        });
     }
 
     // получить фильтр по полям
@@ -40,24 +46,16 @@ export class BooksService {
         fields['isbn'] = getLike(filter.isbn);
 
         fields['categories'] = filter.categoriesId !== undefined
-            ? In(filter.categoriesId.map(c => this.categoryRepository.findOneBy({ id: c })))
-            : undefined;
+            ? { id: In(filter.categoriesId) } : undefined;
 
-        const categories = await this.categoryRepository.findBy({ name: Like(filter.categoryName) });
-
-        fields['categories'] = fields['categories'] ?? (filter.categoryName !== undefined
-            ? In(categories)
-            : undefined);
+        fields['categories'] = fields['categories'] ?? (filter.categoryName
+            ? { name: Like(filter.categoryName) } : undefined);
 
         fields['authors'] = filter.authorsId !== undefined
-            ? In(filter.authorsId.map(a => this.authorRepository.findOneBy({ id: a })))
-            : undefined;
+            ? { id: In(filter.authorsId) } : undefined;
 
-        const authors = await this.authorRepository.findBy({ name: Like(filter.authorName) });
-
-        fields['authors'] = fields['authors'] ?? (filter.authorName !== undefined
-            ? In(authors)
-            : undefined);
+        fields['authors'] = fields['authors'] ?? (filter.authorName
+            ? { name: Like(filter.authorName) } : undefined);
 
         return fields;
     }

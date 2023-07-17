@@ -18,11 +18,17 @@ export class UserCartItemsService {
     ) {}
 
     async findAll(filter?: UserCartItemFilterDto): Promise<UserCartItem[]> {
-        return this.cartItemRepository.find({ where: this.getFilter(filter) });
+        return this.cartItemRepository.find({
+            where: this.getFilter(filter),
+            relations: ['user', 'book'],
+        });
     }
 
     async findOne(filter?: UserCartItemFilterDto): Promise<UserCartItem> {
-        return this.cartItemRepository.findOne({ where: this.getFilter(filter) });
+        return this.cartItemRepository.findOne({
+            where: this.getFilter(filter),
+            relations: ['user', 'book'],
+        });
     }
 
     // получить фильтр по полям
@@ -30,13 +36,24 @@ export class UserCartItemsService {
         const fields = {};
 
         fields['id'] = filter.id;
-        fields['user'] = this.userRepository.findOneBy({ id: filter.userId });
-        fields['book'] = this.bookRepository.findOneBy({ id: filter.bookId });
+        fields['user'] = filter.userId !== undefined 
+            ? { id: filter.userId } : undefined;
+        
+        fields['book'] = filter.bookId !== undefined 
+            ? { id: filter.bookId } : undefined;
 
         return fields;
     }
 
     async save(item: UserCartItem): Promise<UserCartItem> {
         return this.cartItemRepository.save(item);
+    }
+
+    async remove(id: number): Promise<any> {
+        await this.cartItemRepository.remove(await this.cartItemRepository.findOneBy({ id }));
+    }
+    
+    async removeAll(cartItems: UserCartItem[]): Promise<any> {
+        await this.cartItemRepository.remove(cartItems);
     }
 }

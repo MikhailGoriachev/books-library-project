@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { getDateBetween } from '../../../infrastructure/utils';
+import { getById, getDateBetween } from '../../../infrastructure/utils';
 import { AuthorView } from '../../entities/AuthorView';
 import { AuthorViewFilterDto } from '../../../dto/filters/author-view-filter.dto';
 import { Author } from '../../entities/Author';
@@ -19,11 +19,17 @@ export class AuthorViewsService {
     ) {}
 
     async findAll(filter?: AuthorViewFilterDto): Promise<AuthorView[]> {
-        return this.authorViewRepository.find({ where: this.getFilter(filter) });
+        return this.authorViewRepository.find({
+            where: this.getFilter(filter),
+            relations: ['author', 'user'],
+        });
     }
 
     async findOne(filter?: AuthorViewFilterDto): Promise<AuthorView> {
-        return this.authorViewRepository.findOne({ where: this.getFilter(filter) });
+        return this.authorViewRepository.findOne({
+            where: this.getFilter(filter),
+            relations: ['authors', 'users'],
+        });
     }
 
     // получить фильтр по полям
@@ -31,8 +37,8 @@ export class AuthorViewsService {
         const fields = {};
 
         fields['id'] = filter.id;
-        fields['user'] = this.userRepository.findOneBy({ id: filter.userId });
-        fields['author'] = this.authorRepository.findOneBy({ id: filter.authorId });
+        fields['user'] = getById(filter.userId);
+        fields['author'] = getById(filter.authorId);
         fields['viewedAt'] = filter.viewedAt ?? getDateBetween(filter.minViewedAt, filter.maxViewedAt);
 
         return fields;

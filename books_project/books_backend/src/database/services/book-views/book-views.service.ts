@@ -19,11 +19,17 @@ export class BookViewsService {
     ) {}
 
     async findAll(filter?: BookViewFilterDto): Promise<BookView[]> {
-        return this.bookViewRepository.find({ where: this.getFilter(filter) });
+        return this.bookViewRepository.find({
+            where: this.getFilter(filter),
+            relations: ['user', 'book'],
+        });
     }
 
     async findOne(filter?: BookViewFilterDto): Promise<BookView> {
-        return this.bookViewRepository.findOne({ where: this.getFilter(filter) });
+        return this.bookViewRepository.findOne({
+            where: this.getFilter(filter),
+            relations: ['user', 'book'],
+        });
     }
 
     // получить фильтр по полям

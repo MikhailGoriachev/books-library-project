@@ -16,6 +16,11 @@ import { CategoryView } from './entities/CategoryView';
 import { BlockedUser } from './entities/BlockedUser';
 import { UserPassword } from './entities/UserPassword';
 import { SeederOptions } from 'typeorm-extension';
+import { ExpiredToken } from './entities/ExpiredToken';
+import { BookRatingStatistic } from './entities/BookRatingStatistic';
+import { BookViewStatistic } from './entities/BookViewStatistic';
+import { CategoryViewStatistic } from './entities/CategoryViewStatistic';
+import { AuthorViewStatistic } from './entities/AuthorViewStatistic';
 
 // раскомментировать для заполнения
 // export const options: DataSourceOptions & SeederOptions = {
@@ -28,7 +33,28 @@ export const appDataSourceOptions: DataSourceOptions & SeederOptions = {
     username: 'root',
     password: 'aA123456',
     database: 'books_db_goriachev',
-    entities: [User, Author, Category, FileExtension, Role, Book, BookFile, Sale, BookRating, UserCartItem, BookView, AuthorView, CategoryView, BlockedUser, UserPassword],
+    entities: [
+        User,
+        Author,
+        Category,
+        FileExtension,
+        Role,
+        Book,
+        BookFile,
+        Sale,
+        BookRating,
+        BookRatingStatistic,
+        UserCartItem,
+        BookView,
+        BookViewStatistic,
+        AuthorView,
+        AuthorViewStatistic,
+        CategoryView,
+        CategoryViewStatistic,
+        BlockedUser,
+        UserPassword,
+        ExpiredToken
+    ],
     synchronize: true,
 
     seeds: ['src/database/seeds/**/*{.ts,.js}'],

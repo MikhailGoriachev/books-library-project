@@ -11,17 +11,22 @@ export class BlockedUsersService {
     constructor(
         @InjectRepository(BlockedUser)
         private blockedUserRepository: Repository<BlockedUser>,
-
         @InjectRepository(User)
         private userRepository: Repository<User>,
     ) {}
 
     async findAll(filter?: BlockedUserFilterDto): Promise<BlockedUser[]> {
-        return this.blockedUserRepository.find({ where: this.getFilter(filter) });
+        return this.blockedUserRepository.find({
+            where: this.getFilter(filter),
+            relations: ['user'],
+        });
     }
 
     async findOne(filter?: BlockedUserFilterDto): Promise<BlockedUser> {
-        return this.blockedUserRepository.findOne({ where: this.getFilter(filter) });
+        return this.blockedUserRepository.findOne({
+            where: this.getFilter(filter),
+            relations: ['user'],
+        });
     }
 
     // получить фильтр по полям
@@ -29,7 +34,8 @@ export class BlockedUsersService {
         const fields = {};
 
         fields['id'] = filter.id;
-        fields['user'] = this.userRepository.findOneBy({ id: filter.userId });
+        fields['user'] = filter.userId !== undefined
+            ? { id: filter.userId } : undefined;
         fields['blockedAt'] = filter.blockedAt ?? getDateBetween(filter.minBlockedAt, filter.maxBlockedAt);
         fields['unblockedAt'] = filter.unblockedAt ?? getDateBetween(filter.minUnblockedAt, filter.maxUnblockedAt);
 

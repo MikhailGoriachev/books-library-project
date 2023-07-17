@@ -17,7 +17,7 @@ export class User {
     @Column({ length: 255 })
     name: string;
 
-    @Column({ length: 255 })
+    @Column({ length: 255, unique: true })
     email: string;
 
     @OneToMany(type => Sale, sale => sale.user)
@@ -39,7 +39,7 @@ export class User {
     categoryViews: Relation<CategoryView[]>;
 
     @OneToMany(type => BlockedUser, blockedUser => blockedUser.user)
-    blockedUsers: Relation<BlockedUser>;
+    blockedUsers: Relation<BlockedUser[]>;
 
     @ManyToMany(type => Role, role => role.users)
     roles: Relation<Role[]>;
@@ -47,6 +47,12 @@ export class User {
     @OneToOne(type => UserPassword, userPassword => userPassword.user, { cascade: true })
     userPassword: Relation<UserPassword>;
 
+    get isBlocked(): boolean | null {
+        return this.blockedUsers 
+            ? this.blockedUsers.find(b => b.unblockedAt === null) !== undefined 
+            : null;
+    }
+    
 
     constructor(name?: string, email?: string) {
         this.name = name;

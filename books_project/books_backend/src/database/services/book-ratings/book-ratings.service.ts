@@ -19,11 +19,17 @@ export class BookRatingsService {
     ) {}
 
     async findAll(filter?: BookRatingFilterDto): Promise<BookRating[]> {
-        return this.bookRatingRepository.find({ where: this.getFilter(filter) });
+        return this.bookRatingRepository.find({
+            where: this.getFilter(filter),
+            relations: ['user', 'book'],
+        });
     }
 
     async findOne(filter?: BookRatingFilterDto): Promise<BookRating> {
-        return this.bookRatingRepository.findOne({ where: this.getFilter(filter) });
+        return this.bookRatingRepository.findOne({
+            where: this.getFilter(filter),
+            relations: ['user', 'book'],
+        });
     }
 
     // получить фильтр по полям
@@ -31,8 +37,8 @@ export class BookRatingsService {
         const fields = {};
 
         fields['id'] = filter.id;
-        fields['user'] = this.userRepository.findOneBy({ id: filter.userId });
-        fields['book'] = this.bookRepository.findOneBy({ id: filter.bookId });
+        fields['user'] = filter.userId !== undefined ? { id: filter.userId } : undefined;
+        fields['book'] = filter.bookId !== undefined ? { id: filter.bookId } : undefined;
         fields['value'] = filter.value ?? getBetween(filter.minValue, filter.maxValue);
 
         return fields;
@@ -40,5 +46,13 @@ export class BookRatingsService {
 
     async save(item: BookRating): Promise<BookRating> {
         return this.bookRatingRepository.save(item);
+    }
+    
+    async delete(item: BookRating): Promise<BookRating> {
+        return await this.bookRatingRepository.remove(item);
+    }
+    
+    async deleteById(id: number): Promise<BookRating> {
+        return await this.bookRatingRepository.remove(await this.bookRatingRepository.findOneBy({ id }));
     }
 }

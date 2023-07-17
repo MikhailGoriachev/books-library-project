@@ -6,6 +6,8 @@ import { Sale } from './Sale';
 import { BookRating } from './BookRating';
 import { UserCartItem } from './UserCartItem';
 import { BookView } from './BookView';
+import { BookRatingStatistic } from './BookRatingStatistic';
+import { BookViewStatistic } from './BookViewStatistic';
 
 @Entity()
 export class Book {
@@ -44,12 +46,18 @@ export class Book {
 
     @OneToMany(type => BookRating, bookRating => bookRating.book)
     bookRatings: Relation<BookRating[]>;
+    
+    @OneToMany(type => BookRatingStatistic, BookRatingStatistic => BookRatingStatistic.book)
+    bookRatingStatistics: Relation<BookRatingStatistic[]>;
 
     @OneToMany(type => UserCartItem, userCartItem => userCartItem.book)
     userCartItems: Relation<UserCartItem[]>;
 
     @OneToMany(type => BookView, bookView => bookView.book)
     bookViews: Relation<BookView[]>;
+    
+    @OneToMany(type => BookViewStatistic, bookViewStatistic => bookViewStatistic.book)
+    bookViewStatistics: Relation<BookViewStatistic[]>;
 
 
     constructor(title?: string, description?, image?: string, price?: number, publicationYear?: number, isbn?: string) {

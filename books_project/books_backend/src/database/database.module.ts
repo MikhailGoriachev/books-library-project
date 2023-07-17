@@ -30,6 +30,17 @@ import { UserCartItemsService } from './services/user-cart-items/user-cart-items
 import { UserPasswordsService } from './services/user-passwords/user-passwords.service';
 import { BookFilesService } from './services/book-files/book-files.service';
 import { CategoryViewsService } from './services/category-views/category-views.service';
+import { AuthorsService } from './services/authors/authors.service';
+import { ExpiredTokensService } from './services/expired-tokens/expired-tokens.service';
+import { ExpiredToken } from './entities/ExpiredToken';
+import { AuthorViewStatisticsService } from './services/author-view-statistics/author-view-statistics.service';
+import { BookRatingStatisticsService } from './services/book-rating-statistics/book-rating-statistics.service';
+import { BookViewStatisticsService } from './services/book-view-statistics/book-view-statistics.service';
+import { CategoryViewStatisticsService } from './services/category-view-statistics/category-view-statistics.service';
+import { BookRatingStatistic } from './entities/BookRatingStatistic';
+import { BookViewStatistic } from './entities/BookViewStatistic';
+import { AuthorViewStatistic } from './entities/AuthorViewStatistic';
+import { CategoryViewStatistic } from './entities/CategoryViewStatistic';
 
 @Module({
     imports: [
@@ -44,15 +55,60 @@ import { CategoryViewsService } from './services/category-views/category-views.s
             BookFile,
             Sale,
             BookRating,
+            BookRatingStatistic,
             UserCartItem,
             BookView,
+            BookViewStatistic,
             AuthorView,
+            AuthorViewStatistic,
             CategoryView,
+            CategoryViewStatistic,
             BlockedUser,
             UserPassword,
+            ExpiredToken
         ]),
     ],
-    exports: [UsersService],
-    providers: [UsersService, BooksService, SalesService, AuthorViewsService, BlockedUsersService, BookRatingsService, BookViewsService, CategoriesService, CategoryViewsService, FileExtensionsService, RolesService, UserCartItemsService, UserPasswordsService, BookFilesService],
+    exports: [
+        UsersService,
+        AuthorsService,
+        BooksService,
+        SalesService,
+        AuthorViewsService,
+        AuthorViewStatisticsService,
+        BlockedUsersService,
+        BookRatingsService,
+        BookRatingStatisticsService,
+        BookViewsService,
+        BookViewStatisticsService,
+        CategoriesService,
+        CategoryViewsService,
+        CategoryViewStatisticsService,
+        FileExtensionsService,
+        RolesService,
+        UserCartItemsService,
+        UserPasswordsService,
+        BookFilesService,
+        ExpiredTokensService],
+    providers: [
+        UsersService, 
+        AuthorsService,
+        BooksService,
+        SalesService,
+        AuthorViewsService,
+        AuthorViewStatisticsService,
+        BlockedUsersService,
+        BookRatingsService,
+        BookRatingStatisticsService,
+        BookViewsService,
+        BookViewStatisticsService,
+        CategoriesService,
+        CategoryViewsService,
+        CategoryViewStatisticsService,
+        FileExtensionsService,
+        RolesService,
+        UserCartItemsService,
+        UserPasswordsService,
+        BookFilesService,
+        ExpiredTokensService],
 })
 export class DatabaseModule {}

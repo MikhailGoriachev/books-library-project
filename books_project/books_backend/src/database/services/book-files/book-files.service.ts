@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BookFile } from '../../entities/BookFile';
 import { Repository } from 'typeorm';
-import { getLike } from '../../../infrastructure/utils';
+import { getById, getLike } from '../../../infrastructure/utils';
 import { BookFileFilterDto } from '../../../dto/filters/book-file-filter.dto';
 import { Book } from '../../entities/Book';
 import { FileExtension } from '../../entities/FileExtension';
@@ -19,11 +19,17 @@ export class BookFilesService {
     ) {}
 
     async findAll(filter?: BookFileFilterDto): Promise<BookFile[]> {
-        return this.bookFileRepository.find({ where: this.getFilter(filter) });
+        return this.bookFileRepository.find({
+            where: this.getFilter(filter),
+            relations: ['fileExtension', 'book'],
+        });
     }
 
     async findOne(filter?: BookFileFilterDto): Promise<BookFile> {
-        return this.bookFileRepository.findOne({ where: this.getFilter(filter) });
+        return this.bookFileRepository.findOne({
+            where: this.getFilter(filter),
+            relations: ['fileExtension', 'book'],
+        });
     }
 
     // получить фильтр по полям
@@ -32,9 +38,9 @@ export class BookFilesService {
 
         fields['id'] = filter.id;
         fields['path'] = getLike(filter.path);
-        fields['fileExtension'] = this.fileExtensionRepository.findOneBy({ id: filter.fileExtensionId });
-        fields['book'] = this.bookRepository.findOneBy({ id: filter.bookId });
-        
+        fields['fileExtension'] = getById(filter.fileExtensionId);
+        fields['book'] = getById(filter.bookId);
+
         return fields;
     }
 

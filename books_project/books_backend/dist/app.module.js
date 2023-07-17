@@ -10,25 +10,36 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const typeorm_1 = require("@nestjs/typeorm");
+const database_module_1 = require("./database/database.module");
+const controllers_module_1 = require("./controllers/controllers.module");
+const auth_module_1 = require("./auth/auth.module");
+const config_1 = require("@nestjs/config");
+const roles_guard_1 = require("./guards/roles/roles.guard");
+const services_module_1 = require("./services/services.module");
+const serve_static_1 = require("@nestjs/serve-static");
+const path_1 = require("path");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forRoot({
-                type: 'mysql',
-                host: 'localhost',
-                port: 3306,
-                username: 'root',
-                password: 'aA123456',
-                database: 'users_db',
-                entities: [],
-                synchronize: true,
+            serve_static_1.ServeStaticModule.forRoot({
+                rootPath: (0, path_1.join)(__dirname, '..', 'public'),
+                serveRoot: '/public/',
+                serveStaticOptions: {
+                    index: false,
+                },
             }),
+            database_module_1.DatabaseModule,
+            auth_module_1.AuthModule,
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+            }),
+            services_module_1.ServicesModule,
+            controllers_module_1.ControllersModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [app_service_1.AppService, roles_guard_1.RolesGuard],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

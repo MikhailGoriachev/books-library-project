@@ -13,11 +13,17 @@ export class UsersService {
     ) {}
 
     async findAll(filter?: UserFilterDto): Promise<User[]> {
-        return this.usersRepository.find({ where: this.getFilter(filter) });
+        return this.usersRepository.find({
+            where: this.getFilter(filter),
+            relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
+        });
     }
 
     async findOne(filter?: UserFilterDto): Promise<User> {
-        return this.usersRepository.findOne({ where: this.getFilter(filter) });
+        return this.usersRepository.findOne({
+            where: this.getFilter(filter),
+            relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
+        });
     }
 
     // получить фильтр по полям
@@ -33,5 +39,12 @@ export class UsersService {
 
     async save(item: User): Promise<User> {
         return this.usersRepository.save(item);
+    }
+    
+    async getUserWithPassword(filter?: UserFilterDto) {
+        return await this.usersRepository.findOne({
+            where: this.getFilter(filter),
+            relations: ['sales', 'userCartItems', 'blockedUsers', 'roles', 'userPassword'],
+        });
     }
 }

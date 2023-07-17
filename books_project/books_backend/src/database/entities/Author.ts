@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Book } from './Book';
 import { AuthorView } from './AuthorView';
+import { AuthorViewStatistic } from './AuthorViewStatistic';
 
 @Entity()
 export class Author {
@@ -33,6 +34,9 @@ export class Author {
 
     @OneToMany(type => AuthorView, authorView => authorView.author)
     authorViews: Relation<AuthorView[]>;
+    
+    @OneToMany(type => AuthorViewStatistic, authorViewStatistic => authorViewStatistic.author)
+    authorViewStatistics: Relation<AuthorViewStatistic[]>;
 
     constructor(name?: string, description?: string, detailsLink?: string, image?: string) {
         this.name = name;

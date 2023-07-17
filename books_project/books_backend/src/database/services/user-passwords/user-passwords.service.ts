@@ -16,11 +16,17 @@ export class UserPasswordsService {
     ) {}
 
     async findAll(filter?: UserPasswordFilterDto): Promise<UserPassword[]> {
-        return this.userPasswordRepository.find({ where: this.getFilter(filter) });
+        return this.userPasswordRepository.find({
+            where: this.getFilter(filter),
+            relations: ['user'],
+        });
     }
 
     async findOne(filter?: UserPasswordFilterDto): Promise<UserPassword> {
-        return this.userPasswordRepository.findOne({ where: this.getFilter(filter) });
+        return this.userPasswordRepository.findOne({
+            where: this.getFilter(filter),
+            relations: ['user'],
+        });
     }
 
     // получить фильтр по полям

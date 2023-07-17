@@ -19,11 +19,17 @@ export class CategoryViewsService {
     ) {}
 
     async findAll(filter?: CategoryViewFilterDto): Promise<CategoryView[]> {
-        return this.categoryViewRepository.find({ where: this.getFilter(filter) });
+        return this.categoryViewRepository.find({
+            where: this.getFilter(filter),
+            relations: ['user', 'category'],
+        });
     }
 
     async findOne(filter?: CategoryViewFilterDto): Promise<CategoryView> {
-        return this.categoryViewRepository.findOne({ where: this.getFilter(filter) });
+        return this.categoryViewRepository.findOne({
+            where: this.getFilter(filter),
+            relations: ['user', 'category'],
+        });
     }
 
     // получить фильтр по полям

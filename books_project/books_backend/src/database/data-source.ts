@@ -28,8 +28,9 @@ import { AuthorViewStatistic } from './entities/AuthorViewStatistic';
 // раскомментировать для работы
 export const appDataSourceOptions: DataSourceOptions & SeederOptions = {
     type: 'mysql',
+    host: 'db',
     // host: 'localhost',
-    host: 'host.docker.internal',
+    // host: 'host.docker.internal',
     port: 3306,
     username: 'root',
     password: 'aA123456',
@@ -65,4 +66,4 @@ export const appDataSourceOptions: DataSourceOptions & SeederOptions = {
 };
 
 // раскомментировать для заполнения
-// export const AppDataSource = new DataSource(options);
+export const AppDataSource = new DataSource(appDataSourceOptions);

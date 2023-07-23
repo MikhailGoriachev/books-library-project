@@ -1,0 +1,26 @@
+﻿version: '3.3'
+services:
+  node:
+    build: .
+    container_name: node-backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  db:
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'books_db_goriachev'
+#      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'aA123456'
+      MYSQL_ROOT_PASSWORD: 'aA123456'
+    ports:
+      - '3307:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+volumes:
+  my-db:

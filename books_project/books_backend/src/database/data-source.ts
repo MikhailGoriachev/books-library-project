@@ -28,7 +28,8 @@ import { AuthorViewStatistic } from './entities/AuthorViewStatistic';
 // раскомментировать для работы
 export const appDataSourceOptions: DataSourceOptions & SeederOptions = {
     type: 'mysql',
-    host: 'localhost',
+    // host: 'localhost',
+    host: 'host.docker.internal',
     port: 3306,
     username: 'root',
     password: 'aA123456',
@@ -55,6 +56,8 @@ export const appDataSourceOptions: DataSourceOptions & SeederOptions = {
         UserPassword,
         ExpiredToken
     ],
+    
+    // TODO: убрать при проде
     synchronize: true,
 
     seeds: ['src/database/seeds/**/*{.ts,.js}'],

@@ -4,6 +4,8 @@ import { User } from '../entities/User';
 import { randomInt } from 'crypto';
 import { Category } from '../entities/Category';
 import { CategoryView } from '../entities/CategoryView';
+import { AuthorViewStatistic } from '../entities/AuthorViewStatistic';
+import { CategoryViewStatistic } from '../entities/CategoryViewStatistic';
 
 export default class CategoryViewSeeder implements Seeder {
     async run(
@@ -12,6 +14,7 @@ export default class CategoryViewSeeder implements Seeder {
     ): Promise<any> {
         const userRepository = dataSource.getRepository(User);
         const categoryRepository = dataSource.getRepository(Category);
+        const categoryViewStatisticRepository = dataSource.getRepository(CategoryViewStatistic);
 
         const users = await userRepository.find();
         const categories = await categoryRepository.find();
@@ -32,6 +35,20 @@ export default class CategoryViewSeeder implements Seeder {
 
                 return new CategoryView(user, category, date);
             });
+
+        const authorViewStatistics = await categoryViewStatisticRepository.find({ relations: ['category'] });
+
+        for (const v of categoryViews) {
+            let statistic = authorViewStatistics.find(s => s.category.id === v.category.id);
+
+            if (!statistic) {
+                statistic = new CategoryViewStatistic(v.category, 0);
+                authorViewStatistics.push(statistic);
+            }
+            statistic.amount++;
+        }
+
+        await categoryViewStatisticRepository.save(authorViewStatistics);
 
         return dataSource.getRepository(CategoryView).save(categoryViews);
     }

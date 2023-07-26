@@ -251,8 +251,8 @@ export class UserPanelService {
         // if (!sale)
         //     throw new HttpException('Sale is not exists', 404);
 
-        const file = fs.createReadStream(join(this._apiConfigService.storageBookFilesPath, 'kali.png'));
-        // const file = fs.createReadStream(join(this._apiConfigService.storageBookFilesPath, bookFile.path));
+        // const file = fs.createReadStream(join(this._apiConfigService.storageBookFilesPath, 'kali.png'));
+        const file = fs.createReadStream(join(this._apiConfigService.storageBookFilesPath, bookFile.path));
 
         return new StreamableFile(file, { disposition: `filename="${bookFile.path + '.' + bookFile.fileExtension.name}"` });
         // return new StreamableFile(file);

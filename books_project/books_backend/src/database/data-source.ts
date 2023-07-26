@@ -21,43 +21,46 @@ import { BookRatingStatistic } from './entities/BookRatingStatistic';
 import { BookViewStatistic } from './entities/BookViewStatistic';
 import { CategoryViewStatistic } from './entities/CategoryViewStatistic';
 import { AuthorViewStatistic } from './entities/AuthorViewStatistic';
+import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type';
 
 // раскомментировать для заполнения
 // export const options: DataSourceOptions & SeederOptions = {
 
+export const entities: EntityClassOrSchema[] = [
+    User,
+    Author,
+    Category,
+    FileExtension,
+    Role,
+    Book,
+    BookFile,
+    Sale,
+    BookRating,
+    BookRatingStatistic,
+    UserCartItem,
+    BookView,
+    BookViewStatistic,
+    AuthorView,
+    AuthorViewStatistic,
+    CategoryView,
+    CategoryViewStatistic,
+    BlockedUser,
+    UserPassword,
+    ExpiredToken,
+];
+
 // раскомментировать для работы
 export const appDataSourceOptions: DataSourceOptions & SeederOptions = {
     type: 'mysql',
-    host: 'db',
-    // host: 'localhost',
+    // host: 'db',
+    host: 'localhost',
     // host: 'host.docker.internal',
     port: 3306,
     username: 'root',
     password: 'aA123456',
     database: 'books_db_goriachev',
-    entities: [
-        User,
-        Author,
-        Category,
-        FileExtension,
-        Role,
-        Book,
-        BookFile,
-        Sale,
-        BookRating,
-        BookRatingStatistic,
-        UserCartItem,
-        BookView,
-        BookViewStatistic,
-        AuthorView,
-        AuthorViewStatistic,
-        CategoryView,
-        CategoryViewStatistic,
-        BlockedUser,
-        UserPassword,
-        ExpiredToken
-    ],
-    
+    entities: entities,
+
     // TODO: убрать при проде
     synchronize: true,
 

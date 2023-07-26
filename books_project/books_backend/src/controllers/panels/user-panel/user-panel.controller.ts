@@ -82,8 +82,8 @@ export class UserPanelController {
     // скачать купленную книгу
     @Roles(RolesEnum.user)
     @Get('book/download')
-    // async downloadBook(@Request() req, @Body('bookFileId', ParseIntPipe) bookFileId: number) {
-    async downloadBook(@Request() req) {
+    async downloadBook(@Request() req, @Body('bookFileId', ParseIntPipe) bookFileId: number) {
+    // async downloadBook(@Request() req) {
         return await this._userPanelService.downloadBook(req.user, 5);
     }
 }

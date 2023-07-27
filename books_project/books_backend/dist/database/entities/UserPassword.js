@@ -33,7 +33,7 @@ __decorate([
     __metadata("design:type", String)
 ], UserPassword.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)
 ], UserPassword.prototype, "isServiceAuth", void 0);
 exports.UserPassword = UserPassword = __decorate([

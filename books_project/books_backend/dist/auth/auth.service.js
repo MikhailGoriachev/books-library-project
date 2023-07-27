@@ -75,8 +75,6 @@ let AuthService = exports.AuthService = class AuthService {
     }
     async login(email, password) {
         const user = await this._usersService.getUserWithPassword({ email });
-        const res = !user || user.userPassword.isServiceAuth ||
-            !(await bcrypt.compare(password, user.userPassword.password)) || user.isBlocked;
         if (!user || user.userPassword.isServiceAuth ||
             !(await bcrypt.compare(password, user.userPassword.password)) || user.isBlocked)
             throw new common_1.UnauthorizedException();

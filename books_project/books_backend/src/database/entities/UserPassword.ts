@@ -14,7 +14,7 @@ export class UserPassword {
     password: string;
 
     // признак аутентификации с помощью внешних сервисов
-    @Column()
+    @Column({ default: false })
     isServiceAuth: boolean;
 
 

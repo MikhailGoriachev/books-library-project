@@ -22,6 +22,10 @@ import { BookViewStatistic } from './entities/BookViewStatistic';
 import { CategoryViewStatistic } from './entities/CategoryViewStatistic';
 import { AuthorViewStatistic } from './entities/AuthorViewStatistic';
 import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type';
+import * as dotenv from "dotenv";
+import * as process from 'process';
+
+dotenv.config();
 
 // раскомментировать для заполнения
 // export const options: DataSourceOptions & SeederOptions = {
@@ -53,11 +57,16 @@ export const entities: EntityClassOrSchema[] = [
 export const appDataSourceOptions: DataSourceOptions & SeederOptions = {
     type: 'mysql',
     // host: 'db',
-    host: 'localhost',
+    // host: 'localhost',
     // host: 'host.docker.internal',
-    port: 3306,
-    username: 'root',
-    password: 'aA123456',
+    // port: 3306,
+    // port: 3306,
+    // username: 'root',
+    // password: 'aA123456',
+    host: process.env.DB_HOST,
+    port: +process.env.DB_PORT,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
     database: 'books_db_goriachev',
     entities: entities,
 

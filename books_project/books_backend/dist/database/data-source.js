@@ -23,6 +23,9 @@ const BookRatingStatistic_1 = require("./entities/BookRatingStatistic");
 const BookViewStatistic_1 = require("./entities/BookViewStatistic");
 const CategoryViewStatistic_1 = require("./entities/CategoryViewStatistic");
 const AuthorViewStatistic_1 = require("./entities/AuthorViewStatistic");
+const dotenv = require("dotenv");
+const process = require("process");
+dotenv.config();
 exports.entities = [
     User_1.User,
     Author_1.Author,
@@ -47,10 +50,10 @@ exports.entities = [
 ];
 exports.appDataSourceOptions = {
     type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: 'aA123456',
+    host: process.env.DB_HOST,
+    port: +process.env.DB_PORT,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
     database: 'books_db_goriachev',
     entities: exports.entities,
     synchronize: true,

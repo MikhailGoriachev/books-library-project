@@ -7,10 +7,6 @@ export class BookRatingStatisticDto {
 
     @IsInt()
     @Min(1)
-    userId: number;
-
-    @IsInt()
-    @Min(1)
     bookId: number;
 
     @IsInt()

@@ -17,10 +17,10 @@ export class BlockedUser {
     user: Relation<User>;
 
     @Column({ type: 'datetime' })
-    blockedAt: Date;
+    blockedAt?: Date;
 
     @Column({ type: 'datetime', nullable: true })
-    unblockedAt: Date;
+    unblockedAt?: Date;
 
 
     constructor(user?: User, blockedAt?: Date, unblockedAt?: Date) {

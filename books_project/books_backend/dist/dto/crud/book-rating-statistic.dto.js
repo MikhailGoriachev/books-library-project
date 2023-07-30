@@ -23,11 +23,6 @@ __decorate([
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.Min)(1),
     __metadata("design:type", Number)
-], BookRatingStatisticDto.prototype, "userId", void 0);
-__decorate([
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.Min)(1),
-    __metadata("design:type", Number)
 ], BookRatingStatisticDto.prototype, "bookId", void 0);
 __decorate([
     (0, class_validator_1.IsInt)(),

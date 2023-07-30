@@ -9,6 +9,7 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.useGlobalPipes(new common_1.ValidationPipe());
     app.useGlobalFilters(new all_exception_filter_1.AllExceptionFilter());
+    app.enableCors();
     const configService = app.get(config_1.ConfigService);
     await app.listen(configService.get('PORT'));
 }

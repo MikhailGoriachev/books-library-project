@@ -40,6 +40,7 @@ export class AuthorFilterDto {
 
     @IsOptional()
     @Transform(transformStringToArrayNumber)
+    @Type(() => Array<Number>)
     @IsArray()
     booksId?: number[];
 }

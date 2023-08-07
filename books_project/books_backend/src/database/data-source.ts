@@ -22,7 +22,7 @@ import { BookViewStatistic } from './entities/BookViewStatistic';
 import { CategoryViewStatistic } from './entities/CategoryViewStatistic';
 import { AuthorViewStatistic } from './entities/AuthorViewStatistic';
 import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type';
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 import * as process from 'process';
 
 dotenv.config();
@@ -67,8 +67,9 @@ export const appDataSourceOptions: DataSourceOptions & SeederOptions = {
     port: +process.env.DB_PORT,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
-    database: 'books_db_goriachev',
+    database: process.env.DB_TABLE_NAME,
     entities: entities,
+    relationLoadStrategy: 'query',
 
     // TODO: убрать при проде
     synchronize: true,

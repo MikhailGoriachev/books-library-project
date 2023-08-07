@@ -75,7 +75,7 @@ __decorate([
 ], UserPanelController.prototype, "removeBookFromCart", null);
 __decorate([
     (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.user),
-    (0, common_1.Post)('cart/clear'),
+    (0, common_1.Get)('cart/clear'),
     __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

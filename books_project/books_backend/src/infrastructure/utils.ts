@@ -30,6 +30,9 @@ export function parseBoolean(value?: string): boolean | undefined {
 }
 
 export function transformStringToArrayNumber({ value }) {
+    if (value.length > 1)
+        return value.map(v => +v);
+    
     return typeof(value[0]) === "string"
         ? value[0].split(',').map((v) => +v)
         : value;

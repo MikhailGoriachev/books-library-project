@@ -48,12 +48,10 @@ let BooksService = exports.BooksService = class BooksService {
         fields['publicationYear'] = (_b = filter.publicationYear) !== null && _b !== void 0 ? _b : (0, utils_1.getBetween)(filter.minPublicationYear, filter.maxPublicationYear);
         fields['image'] = (0, utils_1.getLike)(filter.image);
         fields['isbn'] = (0, utils_1.getLike)(filter.isbn);
-        fields['categories'] = filter.categoriesId !== undefined
-            ? { id: (0, typeorm_2.In)(filter.categoriesId) } : undefined;
+        fields['categories'] = (0, utils_1.getInById)(filter.categoriesId);
         fields['categories'] = (_c = fields['categories']) !== null && _c !== void 0 ? _c : (filter.categoryName
             ? { name: (0, typeorm_2.Like)(filter.categoryName) } : undefined);
-        fields['authors'] = filter.authorsId !== undefined
-            ? { id: (0, typeorm_2.In)(filter.authorsId) } : undefined;
+        fields['authors'] = (0, utils_1.getInById)(filter.authorsId);
         fields['authors'] = (_d = fields['authors']) !== null && _d !== void 0 ? _d : (filter.authorName
             ? { name: (0, typeorm_2.Like)(filter.authorName) } : undefined);
         return fields;

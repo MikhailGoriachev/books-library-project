@@ -56,7 +56,7 @@ export class AuthService {
     async validateUser(email: string): Promise<any> {
         const user = await this._usersService.getUserWithPassword({ email });
 
-        if (user && !user.blockedUsers.find(b => !b.unblockedAt) || !user.isBlocked) {
+        if (user && (!user.blockedUsers.find(b => !b.unblockedAt) || !user.isBlocked)) {
             const { userPassword, ...result } = user;
             return result;
         }

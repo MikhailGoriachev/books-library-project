@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Like, Repository } from 'typeorm';
-import { getBetween, getLike } from '../../../infrastructure/utils';
+import { getBetween, getInById, getLike } from '../../../infrastructure/utils';
 import { Book } from '../../entities/Book';
 import { BookFilterDto } from '../../../dto/filters/book-filter.dto';
 import { Category } from '../../entities/Category';
@@ -45,14 +45,12 @@ export class BooksService {
         fields['image'] = getLike(filter.image);
         fields['isbn'] = getLike(filter.isbn);
 
-        fields['categories'] = filter.categoriesId !== undefined
-            ? { id: In(filter.categoriesId) } : undefined;
+        fields['categories'] = getInById(filter.categoriesId);
 
         fields['categories'] = fields['categories'] ?? (filter.categoryName
             ? { name: Like(filter.categoryName) } : undefined);
 
-        fields['authors'] = filter.authorsId !== undefined
-            ? { id: In(filter.authorsId) } : undefined;
+        fields['authors'] = getInById(filter.authorsId);
 
         fields['authors'] = fields['authors'] ?? (filter.authorName
             ? { name: Like(filter.authorName) } : undefined);

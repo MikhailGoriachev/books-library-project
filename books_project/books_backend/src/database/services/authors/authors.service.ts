@@ -38,8 +38,6 @@ export class AuthorsService {
         fields['description'] = getLike(filter.description);
         fields['detailsLink'] = getLike(filter.detailsLink);
         fields['image'] = getLike(filter.image);
-        fields['books'] = filter.booksId !== undefined
-            ? { id: In(filter.booksId) } : undefined;
         fields['books'] = getInById(filter.booksId);
 
         return fields;

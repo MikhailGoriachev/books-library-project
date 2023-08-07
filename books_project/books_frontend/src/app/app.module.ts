@@ -11,6 +11,7 @@ import { MatListModule } from '@angular/material/list';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from "@angular/common/http";
+import { MatBadgeModule } from "@angular/material/badge";
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import { HttpClientModule } from "@angular/common/http";
         MatIconModule,
         MatListModule,
         BrowserAnimationsModule,
+        MatBadgeModule,
     ],
     providers: [],
     bootstrap: [AppComponent]

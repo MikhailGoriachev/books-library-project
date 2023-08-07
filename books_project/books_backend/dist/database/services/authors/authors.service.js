@@ -43,8 +43,6 @@ let AuthorsService = exports.AuthorsService = class AuthorsService {
         fields['description'] = (0, utils_1.getLike)(filter.description);
         fields['detailsLink'] = (0, utils_1.getLike)(filter.detailsLink);
         fields['image'] = (0, utils_1.getLike)(filter.image);
-        fields['books'] = filter.booksId !== undefined
-            ? { id: (0, typeorm_2.In)(filter.booksId) } : undefined;
         fields['books'] = (0, utils_1.getInById)(filter.booksId);
         return fields;
     }

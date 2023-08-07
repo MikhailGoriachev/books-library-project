@@ -32,7 +32,7 @@ export class UserPanelController {
 
     // очистить корзину
     @Roles(RolesEnum.user)
-    @Post('cart/clear')
+    @Get('cart/clear')
     async clearCart(@Request() req) {
         await this._userPanelService.clearCart(req.user);
     }

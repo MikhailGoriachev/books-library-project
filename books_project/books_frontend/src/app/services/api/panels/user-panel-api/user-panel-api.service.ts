@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { SetBookRatingDto } from "../../../../dto/auth/set-book-rating.dto";
 import { ApiService } from "../../api.service";
+import { map, Observable } from "rxjs";
+import { UserCartItem } from "../../../../entities/UserCartItem";
 
 @Injectable({
     providedIn: 'root'
@@ -28,7 +30,8 @@ export class UserPanelApiService {
 
     // получить список книг в корзине
     getBooksFromCart() {
-        return this._apiService.get(UserPanelApiService.basePath + 'cart');
+        return this._apiService.get(UserPanelApiService.basePath + 'cart')
+            .pipe(map((d: any) => d.map(c => UserCartItem.assign(new UserCartItem(), c)))) as Observable<UserCartItem[]>;
     }
 
     // установить оценку книги

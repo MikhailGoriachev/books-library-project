@@ -5,6 +5,7 @@ import { AuthDto } from "../../dto/auth/auth.dto";
 import { TokenDto } from "../../dto/auth/token.dto";
 import { LocalStorageService } from "../local-storage/local-storage.service";
 import { lastValueFrom } from "rxjs";
+import { User } from "../../entities/User";
 
 @Injectable({
     providedIn: 'root'
@@ -12,6 +13,20 @@ import { lastValueFrom } from "rxjs";
 export class AuthService {
     constructor(private readonly _authApiService: AuthApiService,
                 private readonly _localStorageService: LocalStorageService) {}
+
+    public isFlag = true;
+
+    public get isAuthData(): boolean {
+        return !(!this._localStorageService.accessToken && !this._localStorageService.refreshToken);
+    }
+
+    public get accessToken(): string {
+        return this._localStorageService.accessToken;
+    }
+
+    public get refreshToken(): string {
+        return this._localStorageService.refreshToken;
+    }
 
     async registration(registration: RegistrationDto) {
         const result = await lastValueFrom(this._authApiService.registration(registration));
@@ -33,30 +48,25 @@ export class AuthService {
         return result;
     }
 
-
-    /*
-    expired tokens:
-    {
-    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjc0LCJlbWFpbCI6Im1pc2hhZ29yMjI4QGdtYWlsLmNvbSIsImlhdCI6MTY4OTIwMjM3MiwiZXhwIjoxNjg5MjAzMjcyfQ.KfPP0YZIf2IUJ52qYe5uuvi4TrQtbTYVoa6W-9FYLos",
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjc0LCJlbWFpbCI6Im1pc2hhZ29yMjI4QGdtYWlsLmNvbSIsImlhdCI6MTY4OTIwMjM3MiwiZXhwIjoxNjg5ODA3MTcyfQ.oWqBMZM6AXLsgHXV3EMdd6-YwLqNtUZVH5tHFBvN0u0"
-    }
-     */
-
     async logout() {
-        return lastValueFrom(this._authApiService.logout(
+        const result = lastValueFrom(this._authApiService.logout(
             new TokenDto(this._localStorageService.accessToken, this._localStorageService.refreshToken)
         ));
+
+        this._localStorageService.accessToken = this._localStorageService.refreshToken = '';
+
+        return result;
     }
 
     async getAccessToken() {
         const result = await lastValueFrom(this._authApiService.getAccessToken());
 
-        this._localStorageService.accessToken = result.accessToken;
+        this._localStorageService.accessToken = result['access_token'];
 
         return result;
     }
 
-    async getProfile() {
+    async getProfile(): Promise<User> {
         return await lastValueFrom(this._authApiService.getProfile());
     }
 }

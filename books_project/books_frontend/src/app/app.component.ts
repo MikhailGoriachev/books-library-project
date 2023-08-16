@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthorsApiService } from "./services/api/crud/authors-api/authors-api.service";
 import { BooksApiService } from "./services/api/crud/books-api/books-api.service";
-import { lastValueFrom } from "rxjs";
 import { AuthService } from "./services/auth/auth.service";
-import { AuthDto } from "./dto/auth/auth.dto";
 import { LocalStorageService } from "./services/local-storage/local-storage.service";
+import { lastValueFrom } from "rxjs";
+import { MatIconRegistry } from "@angular/material/icon";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
     selector: 'app-root',
@@ -17,13 +18,31 @@ export class AppComponent implements OnInit {
     constructor(private readonly _authorsApiService: AuthorsApiService,
                 private readonly _booksApiService: BooksApiService,
                 private readonly _authService: AuthService,
-                private readonly _localStorageService: LocalStorageService) {
+                private readonly _localStorageService: LocalStorageService,
+                private matIconRegistry: MatIconRegistry,
+                private domSanitizer: DomSanitizer) {
+
+        this.matIconRegistry.addSvgIcon(
+            'github',
+            this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/github.svg')
+        );
+
+        this.matIconRegistry.addSvgIcon(
+            'gmail',
+            this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/gmail.svg')
+        );
+
+        this.matIconRegistry.addSvgIcon(
+            'logo',
+            this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/logo.svg')
+        );
     }
 
+
     async ngOnInit(): Promise<void> {
-        // lastValueFrom(this._authorsApiService.findAll({booksId: [5, 1]}))
+        // lastValueFrom(this._authorsApiService.findAll({ booksId: [5, 1] }))
         //     .then(res => console.log(res));
-        // //
+        //
         // lastValueFrom(this._booksApiService.findAll())
         //     .then(res => console.log(res));
         //

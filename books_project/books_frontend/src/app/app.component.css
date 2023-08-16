@@ -1,0 +1,16 @@
+/*.app-component-container {*/
+/*    display: grid;*/
+/*}*/
+
+/*.app-component-container.app-navigation {*/
+/*    grid-row: 1;*/
+/*}*/
+
+/*.app-component-container.router-outlet {*/
+/*    grid-row: 2;*/
+/*    grid-row-;*/
+/*}*/
+
+/*.app-component-container.app-footer {*/
+/*    grid-row: 3;*/
+/*}*/

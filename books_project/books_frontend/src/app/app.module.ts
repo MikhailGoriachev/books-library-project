@@ -8,15 +8,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { NavigationComponent } from './components/navigation/navigation.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { MatBadgeModule } from "@angular/material/badge";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatSelectModule } from "@angular/material/select";
+import { MatTabsModule } from "@angular/material/tabs";
+import { MatLineModule } from "@angular/material/core";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { UserComponent } from './components/user/user.component';
+import { UserModule } from "./components/user/user.module";
+import { CommonModule } from "@angular/common";
+import { UnauthorizedInterceptor } from "./interceptors/unauthorized/unauthorized.interceptor";
+
 
 @NgModule({
     declarations: [
         AppComponent,
-        NavigationComponent,
+        UserComponent,
     ],
     imports: [
         BrowserModule,
@@ -29,8 +38,21 @@ import { MatBadgeModule } from "@angular/material/badge";
         MatListModule,
         BrowserAnimationsModule,
         MatBadgeModule,
+        MatMenuModule,
+        MatSelectModule,
+        MatTabsModule,
+        MatLineModule,
+        MatButtonToggleModule,
+        UserModule,
+        CommonModule
     ],
-    providers: [],
-    bootstrap: [AppComponent]
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: UnauthorizedInterceptor,
+            multi: true
+        }
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

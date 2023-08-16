@@ -1,4 +1,3 @@
-import { HttpException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from '../dto/auth/auth.dto';
 import { RegistrationDto } from '../dto/auth/registration.dto';
@@ -6,7 +5,7 @@ import { TokenDto } from '../dto/auth/token.dto';
 export declare class AuthController {
     private _authService;
     constructor(_authService: AuthService);
-    registration(registration: RegistrationDto): Promise<HttpException | {
+    registration(registration: RegistrationDto): Promise<{
         access_token: any;
         refresh_token: any;
     }>;

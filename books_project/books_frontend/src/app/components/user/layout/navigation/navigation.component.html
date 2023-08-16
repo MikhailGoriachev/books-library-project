@@ -1,0 +1,42 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <!--    <span>Your Logo</span>-->
+        <div>
+<!--            <button mat-button routerLink="/">-->
+<!--                <mat-icon svgIcon="logo" class="h-full"></mat-icon>-->
+<!--                BookShop-->
+<!--            </button>-->
+            <button mat-button routerLink="/" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-link">Главная</button>
+            <button mat-button routerLink="/books" routerLinkActive="active-link">Книги</button>
+            <button mat-button routerLink="/authors" routerLinkActive="active-link">Авторы</button>
+        </div>
+        <div class="w-full"></div>
+        <div class="flex">
+            <ng-container *ngIf="user">
+                <button mat-button matBadge="4" matBadgeColor="accent" class="mx-5">
+<!--                <button mat-button matBadge="{{cartItems.length}}" matBadgeColor="accent" class="mx-5">-->
+                    <mat-icon>local_mall</mat-icon>
+                    Корзина
+                </button>
+
+                <button mat-raised-button [matMenuTriggerFor]="authMenu" routerLink="/user">
+                    <mat-icon>account_circle</mat-icon>
+                    {{user.name}}
+                </button>
+
+                <mat-menu #authMenu='matMenu'>
+                    <button mat-menu-item>Управление профилем</button>
+                    <mat-divider></mat-divider>
+                    <button mat-menu-item (click)="logout()">Выйти</button>
+                </mat-menu>
+            </ng-container>
+
+            <ng-container *ngIf="!isAuth">
+                <button mat-raised-button color="accent" (click)="login()">Войти</button>
+            </ng-container>
+            <!--            <ng-container *ngIf="isAuth">-->
+            <!--                <button mat-raised-button color="warn" (click)="logout()">Выйти</button>-->
+            <!--            </ng-container>-->
+        </div>
+    </mat-toolbar-row>
+</mat-toolbar>

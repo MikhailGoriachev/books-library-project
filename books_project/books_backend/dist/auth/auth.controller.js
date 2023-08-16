@@ -41,7 +41,7 @@ let AuthController = exports.AuthController = class AuthController {
     async registration(registration) {
         const error = await this._authService.registration(registration);
         if (error) {
-            return new common_1.HttpException(error.message, 401);
+            throw new common_1.HttpException(error.message, 401);
         }
         return this._authService.login(registration.email, registration.password);
     }
@@ -63,7 +63,6 @@ let AuthController = exports.AuthController = class AuthController {
     }
 };
 __decorate([
-    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     (0, common_1.Post)('registration'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -71,7 +70,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "registration", null);
 __decorate([
-    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     (0, common_1.Post)('login'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -79,7 +77,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
-    (0, common_1.HttpCode)(200),
     (0, common_1.UseGuards)(jwt_access_auth_guard_1.JwtAccessAuthGuard),
     (0, common_1.Post)('logout'),
     __param(0, (0, common_1.Body)()),

@@ -10,7 +10,7 @@ export class LocalStorageService {
     constructor(@Inject(LOCAL_STORAGE) private readonly _localStorageService: StorageService) { }
 
 
-    public get accessToken() {
+    public get accessToken(): string {
         return this._localStorageService.get('access_token');
     }
 
@@ -18,7 +18,7 @@ export class LocalStorageService {
         this._localStorageService.set('access_token', token);
     }
 
-    public get refreshToken() {
+    public get refreshToken(): string {
         return this._localStorageService.get('refresh_token');
     }
 

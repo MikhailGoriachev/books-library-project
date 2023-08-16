@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { StorageService } from 'ngx-webstorage-service';
 import { LocalStorageService } from "../local-storage/local-storage.service";
-import { AuthApiService } from "./auth/auth-api.service";
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +19,9 @@ export class ApiService {
         if (typeof params === 'object' && params)
             params = new HttpParams({ fromObject: params });
 
-        console.log(headers);
+        // this._httpClient.
+
+        // console.log(headers);
 
         return this._httpClient.get(this.url + route, { params, headers });
     }

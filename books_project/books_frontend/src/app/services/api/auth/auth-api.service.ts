@@ -5,6 +5,7 @@ import { TokenDto } from "../../../dto/auth/token.dto";
 import { ApiService } from "../api.service";
 import { LocalStorageService } from "../../local-storage/local-storage.service";
 import { map, Observable } from "rxjs";
+import { User } from "../../../entities/User";
 
 @Injectable({
     providedIn: 'root'
@@ -43,10 +44,13 @@ export class AuthApiService {
             AuthApiService.basePath + 'token',
             undefined,
             { Authorization: 'Bearer ' + this._localStorageService.refreshToken }
-        ) as Observable<Partial<TokenDto>>;
+        ).pipe() as Observable<Partial<any>>;
     }
 
-    getProfile() {
-        return this._apiService.get(AuthApiService.basePath + 'profile');
+    getProfile(): Observable<User> {
+        return this._apiService.get(AuthApiService.basePath + 'profile')
+            .pipe(
+                map(u => User.assign(new User(), u))
+            );
     }
 }

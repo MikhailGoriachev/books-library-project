@@ -23,13 +23,12 @@ import { TokenDto } from '../dto/auth/token.dto';
 export class AuthController {
     constructor(private _authService: AuthService) {}
 
-    @HttpCode(HttpStatus.OK)
     @Post('registration')
     async registration(@Body() registration: RegistrationDto) {
         const error = await this._authService.registration(registration);
 
         if (error) {
-            return new HttpException(error.message, 401);
+            throw new HttpException(error.message, 401);
         }
 
         return this._authService.login(registration.email, registration.password);
@@ -41,7 +40,6 @@ export class AuthController {
     //     "email": "mishagor228@gmail.com",
     //     "password": "!bAne2qdEwfhV50H0qvWEJCnWGRCMu6i6zhJBqiJgvfZ2VYk8"
     // }
-    @HttpCode(HttpStatus.OK)
     @Post('login')
     async login(@Body() signInDto: AuthDto) {
         return this._authService.login(signInDto.email, signInDto.password);
@@ -55,7 +53,6 @@ export class AuthController {
     "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjc0LCJlbWFpbCI6Im1pc2hhZ29yMjI4QGdtYWlsLmNvbSIsImlhdCI6MTY4OTIwMjM3MiwiZXhwIjoxNjg5ODA3MTcyfQ.oWqBMZM6AXLsgHXV3EMdd6-YwLqNtUZVH5tHFBvN0u0"
     }
      */
-    @HttpCode(200)
     @UseGuards(JwtAccessAuthGuard)
     @Post('logout')
     async logout(@Body() token: TokenDto) {

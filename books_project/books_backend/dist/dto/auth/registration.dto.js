@@ -26,7 +26,7 @@ __decorate([
     __metadata("design:type", String)
 ], RegistrationDto.prototype, "email", void 0);
 __decorate([
-    (0, class_validator_1.IsStrongPassword)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], RegistrationDto.prototype, "password", void 0);
 //# sourceMappingURL=registration.dto.js.map

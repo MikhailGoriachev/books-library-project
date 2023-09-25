@@ -1,10 +1,14 @@
 <form [formGroup]="authForm">
-    <h1 mat-dialog-title>Вход в аккаунт</h1>
+    <h1 mat-dialog-title>{{ this.isRegistration ? 'Регистрация' : "Вход в аккаунт"}}</h1>
 
     <div mat-dialog-content>
         <mat-button-toggle-group (change)="onToggleChangeMode($event)" class="w-full mb-5" value="login">
-            <mat-button-toggle class="w-full" value="login">Вход</mat-button-toggle>
-            <mat-button-toggle class="w-full" value="registration">Регистрация</mat-button-toggle>
+            <mat-button-toggle class="w-full" value="login">
+                <mat-icon>account_circle</mat-icon>&nbsp;Вход
+            </mat-button-toggle>
+            <mat-button-toggle class="w-full" value="registration">
+                <mat-icon>app_registration</mat-icon>&nbsp;Регистрация
+            </mat-button-toggle>
         </mat-button-toggle-group>
 
         <mat-form-field class="block" *ngIf="isRegistration">
@@ -24,15 +28,19 @@
 <!--            </button>-->
         </mat-form-field>
 
-        <p *ngIf="!isRegistration">Если вы ещё не создали аккаунта, то можете зарегистрироваться</p>
-        <p *ngIf="isRegistration">Если у вас уже есть аккаунт, то можете в него войти</p>
+        <mat-checkbox formControlName="isCart" class="mb-3 -mx-2">Перенести корзину в аккаунт (<b>если она не пустая</b>)</mat-checkbox>
+
+        <p *ngIf="!isRegistration">Если Вы ещё не создали аккаунт, то можете зарегистрироваться</p>
+        <p *ngIf="isRegistration">Если у Вас уже есть аккаунт, то можете в него войти</p>
         <p class="text-red-500">{{error}}</p>
     </div>
 
     <div mat-dialog-actions>
-        <button mat-button (click)="onSubmit()" [disabled]="!isValid" cdkFocusInitial>
+        <button mat-raised-button (click)="onSubmit()" class="w-44" [disabled]="!isValid" color="success" cdkFocusInitial>
             {{isRegistration ? 'Зарегистрироваться' : 'Войти'}}
         </button>
-        <button mat-button (click)="onClose()">Отмена</button>
+        <button mat-raised-button (click)="onClose()" color="accent">
+            <mat-icon>arrow_back_ios</mat-icon>Отмена
+        </button>
     </div>
 </form>

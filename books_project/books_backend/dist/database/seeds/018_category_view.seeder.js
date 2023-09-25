@@ -13,10 +13,11 @@ class CategoryViewSeeder {
         const users = await userRepository.find();
         const categories = await categoryRepository.find();
         const n = 300;
+        const guest = users.find(u => u.name === 'guest');
         const categoryViews = Array(n)
             .fill(0)
             .map((_) => {
-            const user = (0, crypto_1.randomInt)(0, 10) < 3 ? null : users[(0, crypto_1.randomInt)(0, users.length)];
+            const user = (0, crypto_1.randomInt)(0, 10) < 3 ? guest : users[(0, crypto_1.randomInt)(0, users.length)];
             const category = categories[(0, crypto_1.randomInt)(0, categories.length)];
             const date = new Date();
             date.setDate(-(0, crypto_1.randomInt)(10, 30));

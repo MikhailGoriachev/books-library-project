@@ -7,9 +7,10 @@ import {
 } from 'typeorm';
 import { Book } from './Book';
 import { User } from './User';
+import { BaseEntity } from './BaseEntity';
 
 @Entity()
-export class BookView {
+export class BookView extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -24,6 +25,7 @@ export class BookView {
 
 
     constructor(user?: User, book?: Book, viewedAt?: Date) {
+        super();
         this.user = user;
         this.book = book;
         this.viewedAt = viewedAt;

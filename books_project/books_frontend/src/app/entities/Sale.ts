@@ -1,9 +1,9 @@
 import { Book } from './Book';
 import { User } from './User';
-import { Category } from "./Category";
+import { BaseEntity } from "./BaseEntity";
 
 
-export class Sale {
+export class Sale extends BaseEntity {
     id: number;
 
     user?: User;
@@ -16,6 +16,7 @@ export class Sale {
 
 
     constructor(id?: number, user?: User, book?: Book, price?: number, saleAt?: Date) {
+        super();
         this.id = id;
         this.user = user;
         this.book = book;
@@ -26,6 +27,9 @@ export class Sale {
 
     static assign(a: Sale, b: Partial<Sale>) {
         a.id = b.id
+        a.createdAt = b.createdAt;
+        a.updatedAt = b.updatedAt;
+        a.deletedAt = b.deletedAt;
 
         a.user = b.user !== undefined
             ? User.assign(new User(), b.user)

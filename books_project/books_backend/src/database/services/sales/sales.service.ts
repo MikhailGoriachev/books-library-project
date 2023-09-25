@@ -21,14 +21,32 @@ export class SalesService {
     async findAll(filter?: SaleFilterDto): Promise<Sale[]> {
         return this.saleRepository.find({
             where: this.getFilter(filter),
-            relations: ['user', 'book'],
+            relations: [
+                'user',
+                'book',
+                'book.authors',
+                'book.bookFiles',
+                'book.bookFiles.fileExtension',
+                'book.bookRatingStatistic',
+                'book.bookViewStatistic',
+            ],
+            withDeleted: true
         });
     }
 
     async findOne(filter?: SaleFilterDto): Promise<Sale> {
         return this.saleRepository.findOne({
             where: this.getFilter(filter),
-            relations: ['user', 'book'],
+            relations: [
+                'user',
+                'book',
+                'book.authors',
+                'book.bookFiles',
+                'book.bookFiles.fileExtension',
+                'book.bookRatingStatistic',
+                'book.bookViewStatistic',
+            ],
+            withDeleted: true
         });
     }
 
@@ -46,6 +64,10 @@ export class SalesService {
     }
 
     async save(item: Sale): Promise<Sale> {
+        return this.saleRepository.save(item);
+    }
+
+    async saveAll(item: Sale[]): Promise<Sale[]> {
         return this.saleRepository.save(item);
     }
 }

@@ -13,8 +13,10 @@ exports.CategoryView = void 0;
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
 const Category_1 = require("./Category");
-let CategoryView = exports.CategoryView = class CategoryView {
+const BaseEntity_1 = require("./BaseEntity");
+let CategoryView = exports.CategoryView = class CategoryView extends BaseEntity_1.BaseEntity {
     constructor(user, category, viewedAt) {
+        super();
         this.user = user;
         this.category = category;
         this.viewedAt = viewedAt;

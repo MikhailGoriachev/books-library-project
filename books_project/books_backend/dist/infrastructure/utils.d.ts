@@ -12,7 +12,7 @@ export declare function getInById(id?: number[]): {
 export declare function parseBoolean(value?: string): boolean | undefined;
 export declare function transformStringToArrayNumber({ value }: {
     value: any;
-}): any;
+}): any[];
 export declare function transformStringToArrayString({ value }: {
     value: any;
 }): any;

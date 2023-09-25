@@ -1,5 +1,6 @@
-﻿import { IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, Min } from 'class-validator';
-import { Type } from 'class-transformer';
+﻿import { IsArray, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, Min } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { transformStringToArrayNumber } from '../../infrastructure/utils';
 
 export class CategoryFilterDto {
     @IsOptional()
@@ -7,6 +8,12 @@ export class CategoryFilterDto {
     @IsInt()
     @Min(0)
     id?: number;
+
+    @IsOptional()
+    @Transform(transformStringToArrayNumber)
+    @Type(() => Array<Number>)
+    @IsArray()
+    ids?: number[];
 
     @IsOptional()
     @IsString()

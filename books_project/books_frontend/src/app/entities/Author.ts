@@ -1,8 +1,9 @@
 import { Book } from './Book';
 import { AuthorView } from './AuthorView';
 import { AuthorViewStatistic } from './AuthorViewStatistic';
+import { BaseEntity } from "./BaseEntity";
 
-export class Author {
+export class Author extends BaseEntity {
     id: number;
 
     name: string;
@@ -17,10 +18,11 @@ export class Author {
 
     authorViews?: AuthorView[];
 
-    authorViewStatistics?: AuthorViewStatistic[];
+    authorViewStatistic?: AuthorViewStatistic;
 
 
     constructor(id?: number, name?: string, description?: string, detailsLink?: string, image?: string) {
+        super();
         this.id = id;
         this.name = name;
         this.description = description;
@@ -35,6 +37,9 @@ export class Author {
         a.description = b.description;
         a.detailsLink = b.detailsLink;
         a.image = b.image;
+        a.createdAt = b.createdAt;
+        a.updatedAt = b.updatedAt;
+        a.deletedAt = b.deletedAt;
 
         a.books = b.books !== undefined
             ? b.books.map(b => Book.assign(new Book(), b))
@@ -44,8 +49,8 @@ export class Author {
             ? b.authorViews.map(b => AuthorView.assign(new AuthorView(), b))
             : undefined;
 
-        a.authorViewStatistics = b.authorViewStatistics !== undefined
-            ? b.authorViewStatistics.map(b => AuthorViewStatistic.assign(new AuthorViewStatistic(), b))
+        a.authorViewStatistic = b.authorViewStatistic !== undefined
+            ? AuthorViewStatistic.assign(new AuthorViewStatistic(), b.authorViewStatistic)
             : undefined;
 
         return a;

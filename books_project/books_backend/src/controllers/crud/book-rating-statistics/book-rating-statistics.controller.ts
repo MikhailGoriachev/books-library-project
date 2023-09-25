@@ -1,9 +1,4 @@
-import { BookViewStatistic } from '../../../database/entities/BookViewStatistic';
-import { BookViewStatisticDto } from '../../../dto/crud/book-view-statistic.dto';
-import { BookViewStatisticFilterDto } from '../../../dto/filters/book-view-statistic-filter.dto';
-import {
-    BookViewStatisticsService,
-} from '../../../database/services/book-view-statistics/book-view-statistics.service';
+
 import {
     Body,
     Controller,
@@ -20,18 +15,24 @@ import { RolesGuard } from '../../../guards/roles/roles.guard';
 import { Roles } from '../../../decorators/roles/roles.decorator';
 import { RolesEnum } from '../../../infrastructure/RolesEnum';
 import { JwtAccessAuthGuard } from '../../../auth/guards/jwt-access-auth.guard';
+import { BookRatingStatisticFilterDto } from '../../../dto/filters/book-rating-statistic-filter.dto';
+import {
+    BookRatingStatisticsService
+} from '../../../database/services/book-rating-statistics/book-rating-statistics.service';
+import { BookRatingStatisticDto } from '../../../dto/crud/book-rating-statistic.dto';
+import { BookRatingStatistic } from '../../../database/entities/BookRatingStatistic';
 
 @Controller('book-rating-statistics')
 export class BookRatingStatisticsController {
-    constructor(private _bookRatingStatisticsService: BookViewStatisticsService) {}
+    constructor(private _bookRatingStatisticsService: BookRatingStatisticsService) {}
 
     @Get()
-    findAll(@Query(new ValidationPipe({ transform: true })) filter: BookViewStatisticFilterDto) {
+    findAll(@Query(new ValidationPipe({ transform: true })) filter: BookRatingStatisticFilterDto) {
         return this._bookRatingStatisticsService.findAll(filter);
     }
 
     @Get('first')
-    findOne(@Query(new ValidationPipe({ transform: true })) filter: BookViewStatisticFilterDto) {
+    findOne(@Query(new ValidationPipe({ transform: true })) filter: BookRatingStatisticFilterDto) {
         return this._bookRatingStatisticsService.findOne(filter);
     }
 
@@ -44,16 +45,16 @@ export class BookRatingStatisticsController {
     @Roles(RolesEnum.admin)
     @UseGuards(JwtAccessAuthGuard)
     @Post()
-    create(@Body() item: BookViewStatisticDto) {
+    create(@Body() item: BookRatingStatisticDto) {
         item.id = null;
-        return this._bookRatingStatisticsService.save(Object.assign(new BookViewStatistic(), item));
+        return this._bookRatingStatisticsService.save(Object.assign(new BookRatingStatistic(), item));
     }
 
     @UseGuards(RolesGuard)
     @Roles(RolesEnum.admin)
     @UseGuards(JwtAccessAuthGuard)
     @Put()
-    update(@Body() item: BookViewStatisticDto) {
-        return this._bookRatingStatisticsService.save(Object.assign(new BookViewStatistic(), item));
+    update(@Body() item: BookRatingStatisticDto) {
+        return this._bookRatingStatisticsService.save(Object.assign(new BookRatingStatistic(), item));
     }
 }

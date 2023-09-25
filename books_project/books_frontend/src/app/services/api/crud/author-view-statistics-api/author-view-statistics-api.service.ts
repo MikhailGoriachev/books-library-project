@@ -9,7 +9,7 @@ import { AuthorViewStatisticDto } from "../../../../dto/crud/author-view-statist
     providedIn: 'root'
 })
 export class AuthorViewStatisticsApiService {
-    private static readonly basePath = 'author-view-statistics/';
+    private static readonly basePath = 'author-view-statistics';
 
     constructor(private readonly _apiService: ApiService) { }
 

@@ -7,9 +7,10 @@ import {
 } from 'typeorm';
 import { User } from './User';
 import { JoinColumn } from 'typeorm';
+import { BaseEntity } from './BaseEntity';
 
 @Entity()
-export class BlockedUser {
+export class BlockedUser extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -24,6 +25,7 @@ export class BlockedUser {
 
 
     constructor(user?: User, blockedAt?: Date, unblockedAt?: Date) {
+        super();
         this.user = user;
         this.blockedAt = blockedAt;
         this.unblockedAt = unblockedAt;

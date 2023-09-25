@@ -1,1 +1,97 @@
-<p>authors works!</p>
+<div>
+    <mat-drawer-container class="w-full min-h-screen">
+        <mat-drawer #drawerFilter mode="side" class="max-w-xs z-20">
+            <form [formGroup]="filterForm">
+                <mat-accordion class="mb-5" multi>
+
+                    <mat-expansion-panel expanded>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Фильтр</mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <!-- Имя -->
+                        <mat-form-field class="block w-full">
+                            <mat-label>Имя</mat-label>
+                            <input matInput formControlName="name">
+                        </mat-form-field>
+                    </mat-expansion-panel>
+
+                    <div class="m-5">
+                        <button mat-button (click)="onFilterSubmit()" class="w-full mb-2" [disabled]="!isValid"
+                                color="success" cdkFocusInitial>
+                            Применить
+                        </button>
+                        <button mat-button (click)="onFilterClear()" class="w-full">Сбросить</button>
+                    </div>
+                </mat-accordion>
+            </form>
+        </mat-drawer>
+
+        <mat-drawer-content class="content">
+            <button mat-fab (click)="drawerFilter.toggle()" matTooltip="Фильтр" class="filter-button m-2 z-40">
+                <mat-icon>filter_alt</mat-icon>
+            </button>
+
+            <div class="min-h-screen m-5">
+                <h1 *ngIf="authorsPage?.data?.length <= 0">Авторов нет</h1>
+                <div class="grid-cards">
+                    <div *ngFor="let a of authorsPage?.data" class="mt-3">
+                        <mat-card class="min-h-full w-full card cursor-pointer"
+                                  (click)="toCardDetails(a.id)"
+                                  matRipple>
+                            <img mat-card-image class="transition duration-300 hover:scale-105"
+                                 src="{{baseUrl}}public/images/authors/{{a.image}}?v={{imagesVersion}}" alt="">
+                            <mat-card-header class="my-5">
+                                <mat-card-title class="truncate-text">
+                                    {{a.name}}
+                                </mat-card-title>
+                                <mat-card-subtitle>Количество книг: {{a.books?.length}}</mat-card-subtitle>
+                                <!--                                <mat-card-subtitle class="flex-baseline">-->
+                                <!--                                    <mat-icon *ngIf="a.bookRatingStatistic?.value < 3"-->
+                                <!--                                              class="text-red-500">-->
+                                <!--                                        star_border-->
+                                <!--                                    </mat-icon>-->
+                                <!--                                    <mat-icon-->
+                                <!--                                            *ngIf="a.bookRatingStatistic?.value >= 3 && a.bookRatingStatistic?.value < 4.7"-->
+                                <!--                                            class="text-green-500">-->
+                                <!--                                        star_half-->
+                                <!--                                    </mat-icon>-->
+                                <!--                                    <mat-icon *ngIf="a.bookRatingStatistic?.value >= 4.7"-->
+                                <!--                                              class="text-green-500">-->
+                                <!--                                        star-->
+                                <!--                                    </mat-icon>-->
+                                <!--                                    &nbsp;-->
+                                <!--                                    <span-->
+                                <!--                                            class="{{a.bookRatingStatistic?.value < 3 ? 'text-red-500' : 'text-green-500'}}">-->
+                                <!--                                        {{a?.bookRatingStatistic?.value | number: '0.2-2'}}-->
+                                <!--                                        ({{a?.bookRatingStatistic?.amount}})-->
+                                <!--                                    </span>-->
+                                <!--                                </mat-card-subtitle>-->
+                            </mat-card-header>
+                            <!--                            <mat-card-actions>-->
+                            <!--                                <button *ngIf="!isExistsCart(a.id)" mat-raised-button color="success" class="w-full m-5"-->
+                            <!--                                        (click)="addToCart($event, a)">-->
+                            <!--                                    <mat-icon>local_mall</mat-icon>&nbsp;В&nbsp;корзину&nbsp;|&nbsp;<b>{{a.price}}&nbsp;&#8381;</b>-->
+                            <!--                                </button>-->
+                            <!--                                <button *ngIf="isExistsCart(a.id)" mat-raised-button color="warn" class="w-full m-5"-->
+                            <!--                                        (click)="removeFromCart($event, a)">-->
+                            <!--                                    <mat-icon>local_mall</mat-icon>&nbsp;Удалить&nbsp;из&nbsp;корзины-->
+                            <!--                                </button>-->
+                            <!--                            </mat-card-actions>-->
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+
+            <mat-paginator
+                class="mat-paginator"
+                [length]="authorsPage?.meta?.itemCount"
+                [pageSize]="10"
+                [pageIndex]="authorsPage?.meta?.page - 1"
+                [hidePageSize]="true"
+                [showFirstLastButtons]="true" (page)="changePage($event)">
+            </mat-paginator>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>
+<router-outlet></router-outlet>

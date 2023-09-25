@@ -7,7 +7,7 @@ import { BlockedUser } from '../entities/BlockedUser';
 export default class BlockedUserSeeder implements Seeder {
     async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<any> {
         const userRepository = dataSource.getRepository(User);
-        const users = await userRepository.find();
+        const users = (await userRepository.find()).slice(2);
 
         const blockedUsers = await Promise.all(
             users.filter(u => randomInt(0, 10) < 3)

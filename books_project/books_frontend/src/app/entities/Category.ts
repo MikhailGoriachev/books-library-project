@@ -1,9 +1,10 @@
 import { Book } from './Book';
 import { CategoryView } from './CategoryView';
 import { CategoryViewStatistic } from './CategoryViewStatistic';
+import { BaseEntity } from "./BaseEntity";
 
 
-export class Category {
+export class Category extends BaseEntity {
     id: number;
 
     name: string;
@@ -12,9 +13,10 @@ export class Category {
 
     categoryViews?: CategoryView[];
 
-    categoryViewStatistics?: CategoryViewStatistic[];
+    categoryViewStatistic?: CategoryViewStatistic;
 
     constructor(id?: number, name?: string) {
+        super();
         this.id = id;
         this.name = name;
     }
@@ -23,6 +25,18 @@ export class Category {
     static assign(a: Category, b: Partial<Category>) {
         a.id = b.id
         a.name = b.name;
+        a.createdAt = b.createdAt;
+        a.updatedAt = b.updatedAt;
+        a.deletedAt = b.deletedAt;
+
+        a.categoryViews = b.categoryViews !== undefined
+            ? b.categoryViews.map(b => CategoryView.assign(new CategoryView(), b))
+            : undefined;
+
+
+        a.categoryViewStatistic = b.categoryViewStatistic !== undefined
+            ? CategoryViewStatistic.assign(new CategoryViewStatistic(), b)
+            : undefined;
 
         return a;
     }

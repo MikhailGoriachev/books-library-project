@@ -1,8 +1,9 @@
 import { Book } from './Book';
 import { User } from './User';
+import { BaseEntity } from "./BaseEntity";
 
 
-export class BookRating {
+export class BookRating extends BaseEntity {
 
     id: number;
 
@@ -14,6 +15,7 @@ export class BookRating {
 
 
     constructor(id?: number, user?: User, book?: Book, value?: number) {
+        super();
         this.id = id;
         this.user = user;
         this.book = book;
@@ -23,6 +25,9 @@ export class BookRating {
 
     static assign(a: BookRating, b: Partial<BookRating>) {
         a.id = b.id
+        a.createdAt = b.createdAt;
+        a.updatedAt = b.updatedAt;
+        a.deletedAt = b.deletedAt;
 
         a.user = b.user !== undefined
             ? User.assign(new User(), b.user)

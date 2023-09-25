@@ -8,7 +8,7 @@ class SaleSeeder {
     async run(dataSource, factoryManager) {
         const userRepository = dataSource.getRepository(User_1.User);
         const bookRepository = dataSource.getRepository(Book_1.Book);
-        const users = await userRepository.find();
+        const users = (await userRepository.find()).slice(2);
         const books = await bookRepository.find();
         const n = 80;
         let sales = Array(n)

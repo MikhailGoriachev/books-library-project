@@ -12,8 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileExtension = void 0;
 const typeorm_1 = require("typeorm");
 const BookFile_1 = require("./BookFile");
-let FileExtension = exports.FileExtension = class FileExtension {
+let FileExtension = exports.FileExtension = class FileExtension extends typeorm_1.BaseEntity {
     constructor(name) {
+        super();
         this.name = name;
     }
 };

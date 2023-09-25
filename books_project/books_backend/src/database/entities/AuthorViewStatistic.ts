@@ -3,16 +3,18 @@ import {
     PrimaryGeneratedColumn,
     Column,
     Relation,
-    ManyToOne,
+    ManyToOne, OneToOne, JoinColumn,
 } from 'typeorm';
 import { Author } from './Author';
+import { BaseEntity } from './BaseEntity';
 
 @Entity()
-export class AuthorViewStatistic {
+export class AuthorViewStatistic extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
     
-    @ManyToOne(type => Author, author => author.authorViewStatistics, { cascade: true })
+    @OneToOne(type => Author, author => author.authorViewStatistic)
+    @JoinColumn()
     author: Relation<Author>;
 
     @Column({ type: 'int' })
@@ -20,6 +22,7 @@ export class AuthorViewStatistic {
 
 
     constructor(author?: Author, amount?: number) {
+        super();
         this.author = author;
         this.amount = amount;
     }

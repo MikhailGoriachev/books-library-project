@@ -1,0 +1,73 @@
+/*.dialog-title {*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*    align-items: baseline;*/
+/*    margin-top: 1rem;*/
+/*}*/
+
+/*.dialog-title::before {*/
+/*    display: none;*/
+/*}*/
+
+/*.dialog-content {*/
+/*    !*flex-grow: 1;*!*/
+/*    max-height: 75vh;*/
+/*    height: 75vh;*/
+/*}*/
+
+/*.dialog-image-container {*/
+/*    display: block;*/
+/*    height: 70vh;*/
+/*    !*width: 20vw;*!*/
+/*}*/
+
+/*!*.book-image {*!*/
+/*!*    height: auto;*!*/
+/*!*    !*max-width: 100%;*!*!*/
+/*!*    width: 100%;*!*/
+/*!*    display: block;*!*/
+/*!*}*!*/
+
+/*.content-container {*/
+/*    display: grid;*/
+/*    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));*/
+/*    gap: 1rem; !* Расстояние между карточками *!*/
+/*}*/
+
+/*.content-fields {*/
+
+/*}*/
+
+/*!* ---------------------------------------------------------------- *!*/
+
+
+/*.modal-content {*/
+/*    display: flex; !* Используем flex-контейнер *!*/
+/*    flex-wrap: wrap; !* Разрешаем перенос элементов на новую строку *!*/
+/*    align-items: flex-start; !* Выравниваем элементы вверху *!*/
+/*    justify-content: stretch;*/
+/*}*/
+
+/*.image-container {*/
+/*    flex: 1; !* Занимает доступное пространство слева *!*/
+/*    !*!*max-width: 50%; !* Максимальная ширина изображения *!*!*!*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*}*/
+
+/*.image-container img {*/
+/*    !*flex: 1;*!*/
+/*    width: auto; !* Занимает 100% ширины контейнера *!*/
+/*    height: 100%; !* Автоматическая высота для поддержки пропорций *!;*/
+/*    max-height: 70vh;*/
+/*    display: block; !* Убирает нежелательные промежутки снизу *!*/
+/*    justify-self: center;*/
+/*}*/
+
+/*.details {*/
+/*    flex: 4; !* Занимает доступное пространство справа *!*/
+/*    !*max-width: 50%; !* Максимальная ширина детальной информации *!*!*/
+/*    min-width: 15rem;*/
+/*}*/
+
+/*!* ---------------------------------------------------------------- *!*/

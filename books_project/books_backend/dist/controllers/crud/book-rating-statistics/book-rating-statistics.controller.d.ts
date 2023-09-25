@@ -1,13 +1,13 @@
-import { BookViewStatistic } from '../../../database/entities/BookViewStatistic';
-import { BookViewStatisticDto } from '../../../dto/crud/book-view-statistic.dto';
-import { BookViewStatisticFilterDto } from '../../../dto/filters/book-view-statistic-filter.dto';
-import { BookViewStatisticsService } from '../../../database/services/book-view-statistics/book-view-statistics.service';
+import { BookRatingStatisticFilterDto } from '../../../dto/filters/book-rating-statistic-filter.dto';
+import { BookRatingStatisticsService } from '../../../database/services/book-rating-statistics/book-rating-statistics.service';
+import { BookRatingStatisticDto } from '../../../dto/crud/book-rating-statistic.dto';
+import { BookRatingStatistic } from '../../../database/entities/BookRatingStatistic';
 export declare class BookRatingStatisticsController {
     private _bookRatingStatisticsService;
-    constructor(_bookRatingStatisticsService: BookViewStatisticsService);
-    findAll(filter: BookViewStatisticFilterDto): Promise<BookViewStatistic[]>;
-    findOne(filter: BookViewStatisticFilterDto): Promise<BookViewStatistic>;
-    findOneById(id: number): Promise<BookViewStatistic>;
-    create(item: BookViewStatisticDto): Promise<BookViewStatistic>;
-    update(item: BookViewStatisticDto): Promise<BookViewStatistic>;
+    constructor(_bookRatingStatisticsService: BookRatingStatisticsService);
+    findAll(filter: BookRatingStatisticFilterDto): Promise<BookRatingStatistic[]>;
+    findOne(filter: BookRatingStatisticFilterDto): Promise<BookRatingStatistic>;
+    findOneById(id: number): Promise<BookRatingStatistic>;
+    create(item: BookRatingStatisticDto): Promise<BookRatingStatistic>;
+    update(item: BookRatingStatisticDto): Promise<BookRatingStatistic>;
 }

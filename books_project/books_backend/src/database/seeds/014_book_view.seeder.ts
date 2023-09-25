@@ -20,11 +20,13 @@ export default class BookViewSeeder implements Seeder {
         const books = await bookRepository.find();
 
         const n = 150;
+        
+        const guest = users.find(u => u.name === 'guest');
 
         const bookViews = Array(n)
             .fill(0)
             .map((_) => {
-                const user = randomInt(0, 10) < 3 ? null : users[randomInt(0, users.length)];
+                const user = randomInt(0, 10) < 3 ? guest : users[randomInt(0, users.length)];
                 const book = books[randomInt(0, books.length)];
 
                 const date = new Date();

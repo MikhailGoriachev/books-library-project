@@ -3,17 +3,19 @@ import {
     PrimaryGeneratedColumn,
     Column,
     Relation,
-    ManyToOne,
+    ManyToOne, OneToOne, JoinColumn,
 } from 'typeorm';
 import { User } from './User';
 import { Category } from './Category';
+import { BaseEntity } from './BaseEntity';
 
 @Entity()
-export class CategoryViewStatistic {
+export class CategoryViewStatistic extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(type => Category, category => category.categoryViewStatistics, { cascade: true })
+    @OneToOne(type => Category, category => category.categoryViewStatistic)
+    @JoinColumn()
     category: Relation<Category>;
     
     @Column({ type: 'int' })
@@ -21,6 +23,7 @@ export class CategoryViewStatistic {
 
 
     constructor(category?: Category, amount?: number) {
+        super();
         this.category = category;
         this.amount = amount;
     }

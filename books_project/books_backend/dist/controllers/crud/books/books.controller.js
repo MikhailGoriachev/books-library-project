@@ -22,6 +22,7 @@ const roles_guard_1 = require("../../../guards/roles/roles.guard");
 const roles_decorator_1 = require("../../../decorators/roles/roles.decorator");
 const RolesEnum_1 = require("../../../infrastructure/RolesEnum");
 const jwt_access_auth_guard_1 = require("../../../auth/guards/jwt-access-auth.guard");
+const book_pagination_filter_dto_1 = require("../../../dto/filters/book-pagination-filter.dto");
 let BooksController = exports.BooksController = class BooksController {
     constructor(_booksService) {
         this._booksService = _booksService;
@@ -29,11 +30,38 @@ let BooksController = exports.BooksController = class BooksController {
     findAll(filter) {
         return this._booksService.findAll(filter);
     }
+    findAllPagination(pageOptionsDto) {
+        return this._booksService.findAllByPagination(pageOptionsDto);
+    }
     findOne(filter) {
         return this._booksService.findOne(filter);
     }
-    findOneById(id) {
-        return this._booksService.findOne({ id });
+    priceRange() {
+        return this._booksService.getPriceRange();
+    }
+    publicationYearRange() {
+        return this._booksService.getPublicationYearRange();
+    }
+    topBooksByRating() {
+        return this._booksService.topBooksByRating();
+    }
+    topBooksByViewed() {
+        return this._booksService.topBooksByViewed();
+    }
+    topBooksByAddition() {
+        return this._booksService.topBooksByAddition();
+    }
+    findAllWithDeleted(filter) {
+        return this._booksService.findAll(filter, true);
+    }
+    findAllPaginationWithDeleted(pageOptionsDto) {
+        return this._booksService.findAllByPagination(pageOptionsDto, true);
+    }
+    findOneByIdWithDeleted(id) {
+        return this._booksService.findOne({ id }, true);
+    }
+    findOneWithDeleted(filter) {
+        return this._booksService.findOne(filter, true);
     }
     create(item) {
         item.id = null;
@@ -41,6 +69,9 @@ let BooksController = exports.BooksController = class BooksController {
     }
     update(item) {
         return this._booksService.save(Object.assign(new Book_1.Book(), item));
+    }
+    findOneById(id) {
+        return this._booksService.findOne({ id });
     }
 };
 __decorate([
@@ -51,6 +82,13 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], BooksController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.Get)('pagination'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [book_pagination_filter_dto_1.BookPaginationFilterDto]),
+    __metadata("design:returntype", void 0)
+], BooksController.prototype, "findAllPagination", null);
+__decorate([
     (0, common_1.Get)('first'),
     __param(0, (0, common_1.Query)(new common_1.ValidationPipe({ transform: true }))),
     __metadata("design:type", Function),
@@ -58,12 +96,75 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], BooksController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)('price-range'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], BooksController.prototype, "priceRange", null);
+__decorate([
+    (0, common_1.Get)('publication-year-range'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], BooksController.prototype, "publicationYearRange", null);
+__decorate([
+    (0, common_1.Get)('top-by-rating'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], BooksController.prototype, "topBooksByRating", null);
+__decorate([
+    (0, common_1.Get)('top-by-viewed'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], BooksController.prototype, "topBooksByViewed", null);
+__decorate([
+    (0, common_1.Get)('top-by-addition'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], BooksController.prototype, "topBooksByAddition", null);
+__decorate([
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.UseGuards)(jwt_access_auth_guard_1.JwtAccessAuthGuard),
+    (0, common_1.Get)('/with-deleted'),
+    __param(0, (0, common_1.Query)(new common_1.ValidationPipe({ transform: true }))),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [book_filter_dto_1.BookFilterDto]),
+    __metadata("design:returntype", void 0)
+], BooksController.prototype, "findAllWithDeleted", null);
+__decorate([
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.UseGuards)(jwt_access_auth_guard_1.JwtAccessAuthGuard),
+    (0, common_1.Get)('pagination/with-deleted'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [book_pagination_filter_dto_1.BookPaginationFilterDto]),
+    __metadata("design:returntype", void 0)
+], BooksController.prototype, "findAllPaginationWithDeleted", null);
+__decorate([
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.UseGuards)(jwt_access_auth_guard_1.JwtAccessAuthGuard),
+    (0, common_1.Get)(':id/with-deleted'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
-], BooksController.prototype, "findOneById", null);
+], BooksController.prototype, "findOneByIdWithDeleted", null);
+__decorate([
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.UseGuards)(jwt_access_auth_guard_1.JwtAccessAuthGuard),
+    (0, common_1.Get)('first/with-deleted'),
+    __param(0, (0, common_1.Query)(new common_1.ValidationPipe({ transform: true }))),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [book_filter_dto_1.BookFilterDto]),
+    __metadata("design:returntype", void 0)
+], BooksController.prototype, "findOneWithDeleted", null);
 __decorate([
     (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
@@ -84,6 +185,13 @@ __decorate([
     __metadata("design:paramtypes", [book_dto_1.BookDto]),
     __metadata("design:returntype", void 0)
 ], BooksController.prototype, "update", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], BooksController.prototype, "findOneById", null);
 exports.BooksController = BooksController = __decorate([
     (0, common_1.Controller)('books'),
     __metadata("design:paramtypes", [books_service_1.BooksService])

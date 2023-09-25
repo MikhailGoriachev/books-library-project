@@ -8,8 +8,9 @@ export declare class BookFilesService {
     private bookRepository;
     private fileExtensionRepository;
     constructor(bookFileRepository: Repository<BookFile>, bookRepository: Repository<Book>, fileExtensionRepository: Repository<FileExtension>);
-    findAll(filter?: BookFileFilterDto): Promise<BookFile[]>;
-    findOne(filter?: BookFileFilterDto): Promise<BookFile>;
+    findAll(filter?: BookFileFilterDto, withDeleted?: boolean): Promise<BookFile[]>;
+    findOne(filter?: BookFileFilterDto, withDeleted?: boolean): Promise<BookFile>;
     private getFilter;
     save(item: BookFile): Promise<BookFile>;
+    delete(item: BookFile): Promise<BookFile>;
 }

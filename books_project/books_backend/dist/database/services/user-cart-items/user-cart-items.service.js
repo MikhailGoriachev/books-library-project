@@ -28,13 +28,13 @@ let UserCartItemsService = exports.UserCartItemsService = class UserCartItemsSer
     async findAll(filter) {
         return this.cartItemRepository.find({
             where: this.getFilter(filter),
-            relations: ['user', 'book'],
+            relations: ['user', 'book', 'book.authors'],
         });
     }
     async findOne(filter) {
         return this.cartItemRepository.findOne({
             where: this.getFilter(filter),
-            relations: ['user', 'book'],
+            relations: ['user', 'book', 'book.authors'],
         });
     }
     getFilter(filter) {
@@ -49,10 +49,10 @@ let UserCartItemsService = exports.UserCartItemsService = class UserCartItemsSer
     async save(item) {
         return this.cartItemRepository.save(item);
     }
-    async remove(id) {
+    async delete(id) {
         await this.cartItemRepository.remove(await this.cartItemRepository.findOneBy({ id }));
     }
-    async removeAll(cartItems) {
+    async deleteAll(cartItems) {
         await this.cartItemRepository.remove(cartItems);
     }
 };

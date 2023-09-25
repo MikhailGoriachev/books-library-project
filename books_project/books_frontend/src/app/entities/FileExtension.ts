@@ -1,8 +1,8 @@
 import { BookFile } from './BookFile';
-import { Category } from "./Category";
+import { BaseEntity } from "./BaseEntity";
 
 
-export class FileExtension {
+export class FileExtension extends BaseEntity {
     id: number;
 
     name: string;
@@ -11,6 +11,7 @@ export class FileExtension {
 
 
     constructor(id?: number, name?: string) {
+        super();
         this.id = id;
         this.name = name;
     }
@@ -19,6 +20,9 @@ export class FileExtension {
     static assign(a: FileExtension, b: Partial<FileExtension>) {
         a.id = b.id
         a.name = b.name;
+        a.createdAt = b.createdAt;
+        a.updatedAt = b.updatedAt;
+        a.deletedAt = b.deletedAt;
 
         a.bookFiles = b.bookFiles !== undefined
             ? b.bookFiles.map(b => BookFile.assign(new BookFile(), b))

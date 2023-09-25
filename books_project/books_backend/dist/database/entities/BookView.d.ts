@@ -1,7 +1,8 @@
 import { Relation } from 'typeorm';
 import { Book } from './Book';
 import { User } from './User';
-export declare class BookView {
+import { BaseEntity } from './BaseEntity';
+export declare class BookView extends BaseEntity {
     id: number;
     user: Relation<User>;
     book: Relation<Book>;

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryFilterDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
+const utils_1 = require("../../infrastructure/utils");
 class CategoryFilterDto {
 }
 exports.CategoryFilterDto = CategoryFilterDto;
@@ -22,6 +23,13 @@ __decorate([
     (0, class_validator_1.Min)(0),
     __metadata("design:type", Number)
 ], CategoryFilterDto.prototype, "id", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_transformer_1.Transform)(utils_1.transformStringToArrayNumber),
+    (0, class_transformer_1.Type)(() => Array),
+    (0, class_validator_1.IsArray)(),
+    __metadata("design:type", Array)
+], CategoryFilterDto.prototype, "ids", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),

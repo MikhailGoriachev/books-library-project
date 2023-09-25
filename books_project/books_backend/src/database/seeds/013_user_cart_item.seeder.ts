@@ -16,7 +16,7 @@ export default class UserCartItemSeeder implements Seeder {
         const bookRepository = dataSource.getRepository(Book);
         const saleRepository = dataSource.getRepository(Sale);
 
-        const users = await userRepository.find();
+        const users = (await userRepository.find()).slice(2);
         const books = await bookRepository.find();
         const sales = await saleRepository.find();
 

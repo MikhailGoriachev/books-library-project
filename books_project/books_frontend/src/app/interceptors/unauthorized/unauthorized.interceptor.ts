@@ -9,7 +9,7 @@ import {
     BehaviorSubject,
     catchError,
     filter, finalize,
-    from,
+    from, map, mergeMap,
     Observable, of,
     retry,
     Subject,
@@ -18,78 +18,55 @@ import {
     throwError
 } from 'rxjs';
 import { AuthService } from "../../services/auth/auth.service";
+import { LocalStorageService } from "../../services/local-storage/local-storage.service";
+import { EventsService } from "../../services/events/events.service";
 
 @Injectable()
 export class UnauthorizedInterceptor implements HttpInterceptor {
-    private isRefreshingToken = false; // Флаг для отслеживания выполнения запроса на обновление токена
-    private tokenRefreshSubject: Subject<any> = new Subject<any>();
+    // private isRefreshingToken = false; // Флаг для отслеживания выполнения запроса на обновление токена
+    // private tokenRefreshSubject: Subject<any> = new Subject<any>();
 
-    constructor(private readonly _authService: AuthService) {}
+    constructor(
+        private readonly _authService: AuthService,
+        private readonly _localStorageService: LocalStorageService,
+        private readonly _eventsService: EventsService
+    ) {}
 
+    // intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
         return next.handle(request).pipe(
             catchError((error: HttpErrorResponse) => {
-                const status = 401;
-
                 console.log("INTERCEPTOR")
 
-                if (error.status === status) {
-                    // Проверяем, выполняется ли уже запрос на обновление токена
-                    if (!this.isRefreshingToken) {
-                        this.isRefreshingToken = true;
+                if (error.status === 498) {
+                    this._localStorageService.accessToken = ''; // Выход из системы в случае неудачи
+                    this._localStorageService.refreshToken = ''; // Выход из системы в случае неудачи
+                    this._eventsService.changeLogin.next({isAuth: false});
+                } else if (error.status === 401 && this._authService.isAuthData) {
+                    return from(this._authService.getAccessToken()).pipe(
+                        mergeMap(() => {
+                            console.log('SET NEW TOKEN');
 
-                        // Запрашиваем новый токен
-                        this.tokenRefreshSubject.next(null);
+                            // После получения нового токена, повторяем исходный запрос с обновленным токеном
+                            const newRequest = request.clone({
+                                setHeaders: {
+                                    Authorization: `Bearer ${this._authService.accessToken}`
+                                }
+                            });
 
-                        return from(this._authService.getAccessToken()).pipe(
-                            switchMap(() => {
-                                this.isRefreshingToken = false;
-                                this.tokenRefreshSubject.next(this._authService.accessToken);
+                            console.log(newRequest.url);
+                            return next.handle(newRequest);
+                        }),
+                        catchError(err => {
+                            this._localStorageService.accessToken = ''; // Выход из системы в случае неудачи
+                            this._localStorageService.refreshToken = ''; // Выход из системы в случае неудачи
 
-                                // После получения нового токена, повторяем исходный запрос с обновленным токеном
-                                const newRequest = request.clone({
-                                    setHeaders: {
-                                        Authorization: `Bearer ${this._authService.accessToken}`
-                                    }
-                                });
+                            this._eventsService.changeLogin.next({isAuth: false});
 
-                                console.log("this.isRefreshingToken = true | switchMap")
-
-
-                                return next.handle(newRequest);
-                            }),
-                            // catchError(err => {
-                            //     this.isRefreshingToken = false;
-                            //     this._authService.logout().then(); // Выход из системы в случае неудачи
-                            //
-                            //     return throwError(() => new Error(err.message));
-                            // })
-                        );
-                    } else {
-
-                        // Если запрос на обновление токена уже выполняется, подписываемся на получение нового токена
-                        this.tokenRefreshSubject.pipe(
-                            filter(token => token !== null),
-                            take(1),
-                            switchMap(() => {
-                                // После получения нового токена, повторяем исходный запрос с обновленным токеном
-                                const newRequest = request.clone({
-                                    setHeaders: {
-                                        Authorization: `Bearer ${this._authService.accessToken}`
-                                    }
-                                });
-
-                                console.log("this.isRefreshingToken = false | switchMap")
-
-                                return next.handle(newRequest);
-                            }),
-                            // catchError(err => {
-                            //                             //     this._authService.logout().then(); // Выход из системы в случае неудачи
-                            //                             //
-                            //                             //     return throwError(() => new Error(err.message));
-                            //                             // })
-                        );
-                    }
+                            return throwError(err);
+                        })
+                    ) as Observable<HttpEvent<any>>;
+                    // ).subscribe(d => console.log('IF RESPONSE'))
                 }
 
                 return throwError(error);

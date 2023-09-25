@@ -22,18 +22,10 @@ const roles_guard_1 = require("../../../guards/roles/roles.guard");
 const roles_decorator_1 = require("../../../decorators/roles/roles.decorator");
 const RolesEnum_1 = require("../../../infrastructure/RolesEnum");
 const jwt_access_auth_guard_1 = require("../../../auth/guards/jwt-access-auth.guard");
+const author_pagination_filter_dto_1 = require("../../../dto/filters/author-pagination-filter.dto");
 let AuthorsController = exports.AuthorsController = class AuthorsController {
     constructor(_authorService) {
         this._authorService = _authorService;
-    }
-    findAll(filter) {
-        return this._authorService.findAll(filter);
-    }
-    findOne(filter) {
-        return this._authorService.findOne(filter);
-    }
-    findOneById(id) {
-        return this._authorService.findOne({ id });
     }
     create(item) {
         item.id = null;
@@ -42,28 +34,31 @@ let AuthorsController = exports.AuthorsController = class AuthorsController {
     update(item) {
         return this._authorService.save(Object.assign(new Author_1.Author(), item));
     }
+    findAllWithDeleted(filter) {
+        return this._authorService.findAll(filter, true);
+    }
+    findAllPaginationWithDeleted(pageOptionsDto) {
+        return this._authorService.findAllByPagination(pageOptionsDto, true);
+    }
+    findOneWithDeleted(filter) {
+        return this._authorService.findOne(filter, true);
+    }
+    findOneByIdWithDeleted(id) {
+        return this._authorService.findOne({ id }, true);
+    }
+    findAll(filter) {
+        return this._authorService.findAll(filter);
+    }
+    findAllPagination(pageOptionsDto) {
+        return this._authorService.findAllByPagination(pageOptionsDto);
+    }
+    findOne(filter) {
+        return this._authorService.findOne(filter);
+    }
+    findOneById(id) {
+        return this._authorService.findOne({ id });
+    }
 };
-__decorate([
-    (0, common_1.Get)(),
-    __param(0, (0, common_1.Query)(new common_1.ValidationPipe({ transform: true }))),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [author_filter_dto_1.AuthorFilterDto]),
-    __metadata("design:returntype", void 0)
-], AuthorsController.prototype, "findAll", null);
-__decorate([
-    (0, common_1.Get)('first'),
-    __param(0, (0, common_1.Query)(new common_1.ValidationPipe({ transform: true }))),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [author_filter_dto_1.AuthorFilterDto]),
-    __metadata("design:returntype", void 0)
-], AuthorsController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", void 0)
-], AuthorsController.prototype, "findOneById", null);
 __decorate([
     (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
@@ -84,6 +79,74 @@ __decorate([
     __metadata("design:paramtypes", [author_dto_1.AuthorDto]),
     __metadata("design:returntype", void 0)
 ], AuthorsController.prototype, "update", null);
+__decorate([
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.UseGuards)(jwt_access_auth_guard_1.JwtAccessAuthGuard),
+    (0, common_1.Get)('/with-deleted'),
+    __param(0, (0, common_1.Query)(new common_1.ValidationPipe({ transform: true }))),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [author_filter_dto_1.AuthorFilterDto]),
+    __metadata("design:returntype", void 0)
+], AuthorsController.prototype, "findAllWithDeleted", null);
+__decorate([
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.UseGuards)(jwt_access_auth_guard_1.JwtAccessAuthGuard),
+    (0, common_1.Get)('pagination/with-deleted'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [author_pagination_filter_dto_1.AuthorPaginationFilterDto]),
+    __metadata("design:returntype", void 0)
+], AuthorsController.prototype, "findAllPaginationWithDeleted", null);
+__decorate([
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.UseGuards)(jwt_access_auth_guard_1.JwtAccessAuthGuard),
+    (0, common_1.Get)('first/with-deleted'),
+    __param(0, (0, common_1.Query)(new common_1.ValidationPipe({ transform: true }))),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [author_filter_dto_1.AuthorFilterDto]),
+    __metadata("design:returntype", void 0)
+], AuthorsController.prototype, "findOneWithDeleted", null);
+__decorate([
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.UseGuards)(jwt_access_auth_guard_1.JwtAccessAuthGuard),
+    (0, common_1.Get)(':id/with-deleted'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], AuthorsController.prototype, "findOneByIdWithDeleted", null);
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)(new common_1.ValidationPipe({ transform: true }))),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [author_filter_dto_1.AuthorFilterDto]),
+    __metadata("design:returntype", void 0)
+], AuthorsController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('pagination'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [author_pagination_filter_dto_1.AuthorPaginationFilterDto]),
+    __metadata("design:returntype", void 0)
+], AuthorsController.prototype, "findAllPagination", null);
+__decorate([
+    (0, common_1.Get)('first'),
+    __param(0, (0, common_1.Query)(new common_1.ValidationPipe({ transform: true }))),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [author_filter_dto_1.AuthorFilterDto]),
+    __metadata("design:returntype", void 0)
+], AuthorsController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], AuthorsController.prototype, "findOneById", null);
 exports.AuthorsController = AuthorsController = __decorate([
     (0, common_1.Controller)('authors'),
     __metadata("design:paramtypes", [authors_service_1.AuthorsService])

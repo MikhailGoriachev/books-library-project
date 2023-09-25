@@ -10,7 +10,7 @@ class UserCartItemSeeder {
         const userRepository = dataSource.getRepository(User_1.User);
         const bookRepository = dataSource.getRepository(Book_1.Book);
         const saleRepository = dataSource.getRepository(Sale_1.Sale);
-        const users = await userRepository.find();
+        const users = (await userRepository.find()).slice(2);
         const books = await bookRepository.find();
         const sales = await saleRepository.find();
         const n = 200;

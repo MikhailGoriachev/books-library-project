@@ -5,14 +5,15 @@ import {
     ManyToMany,
     JoinTable,
     Relation,
-    OneToMany,
+    OneToMany, OneToOne,
 } from 'typeorm';
 import { Book } from './Book';
 import { AuthorView } from './AuthorView';
 import { AuthorViewStatistic } from './AuthorViewStatistic';
+import { BaseEntity } from './BaseEntity';
 
 @Entity()
-export class Author {
+export class Author extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -34,11 +35,12 @@ export class Author {
 
     @OneToMany(type => AuthorView, authorView => authorView.author)
     authorViews: Relation<AuthorView[]>;
-    
-    @OneToMany(type => AuthorViewStatistic, authorViewStatistic => authorViewStatistic.author)
-    authorViewStatistics: Relation<AuthorViewStatistic[]>;
+
+    @OneToOne(type => AuthorViewStatistic, authorViewStatistic => authorViewStatistic.author)
+    authorViewStatistic: Relation<AuthorViewStatistic>;
 
     constructor(name?: string, description?: string, detailsLink?: string, image?: string) {
+        super();
         this.name = name;
         this.description = description;
         this.detailsLink = detailsLink;

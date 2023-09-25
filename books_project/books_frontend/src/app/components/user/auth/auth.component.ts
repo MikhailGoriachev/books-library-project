@@ -5,6 +5,8 @@ import { MatButtonToggleChange } from "@angular/material/button-toggle";
 import { RegistrationDto } from "../../../dto/auth/registration.dto";
 import { AuthDto } from "../../../dto/auth/auth.dto";
 import { AuthService } from "../../../services/auth/auth.service";
+import { DataManagerService } from "../../../services/data-manager/data-manager.service";
+import { EventsService } from "../../../services/events/events.service";
 
 @Component({
     selector: 'app-auth',
@@ -19,7 +21,8 @@ export class AuthComponent implements OnInit {
     public authForm = this._fb.group({
         name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
         email: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255), Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
+        password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(255)]],
+        isCart: [false, []]
     });
 
     public get isValid(): boolean {
@@ -28,12 +31,16 @@ export class AuthComponent implements OnInit {
 
     public hidePassword = true;
 
-    constructor(public dialogRef: MatDialogRef<AuthComponent>,
-                private readonly _fb: FormBuilder,
-                private readonly _authService: AuthService) {}
+    constructor(
+        public dialogRef: MatDialogRef<AuthComponent>,
+        private readonly _fb: FormBuilder,
+        private readonly _authService: AuthService,
+        private readonly _dataManagerService: DataManagerService,
+        private readonly _eventsService: EventsService
+    ) {}
 
     ngOnInit() {
-        this.authForm.patchValue({ name: 'no name' });
+        this.authForm.patchValue({name: 'no name'});
     }
 
     onClose(): void {
@@ -43,12 +50,34 @@ export class AuthComponent implements OnInit {
     onToggleChangeMode($event: MatButtonToggleChange) {
         const registrationValue = 'registration';
         this.isRegistration = $event.value === registrationValue;
-        this.authForm.patchValue({ name: this.isRegistration ? '' : 'no name' });
+        this.authForm.patchValue({name: this.isRegistration ? '' : 'no name'});
         this.error = '';
     }
 
     async onSubmit(): Promise<void> {
         const data = this.authForm.value;
+
+        const dataCart = [...this._dataManagerService.cartItems];
+
+        // const sub = this._eventsService.changeLogin.subscribe(
+        //     async ({isAuth}) => {
+        //         if (isAuth) {
+        //             if (data.isCart) {
+        //                 // await this._dataManagerService.clearCart();
+        //                 await this._dataManagerService.loadCartItems();
+        //                 await this._dataManagerService.loadSales();
+        //
+        //                 console.log('Перед заполнением: ' + this._dataManagerService.cartItems.length);
+        //                 console.log('Перед заполнением (тек): ' + dataCart.length);
+        //                 dataCart.filter(c =>
+        //                         !this._dataManagerService.cartItems.find(cur => cur.id === c.id)
+        //                     // && !this._dataManagerService.sales.find(cur => cur.book.id === c.id)
+        //                 )
+        //                         .forEach(c => this._dataManagerService.addToCart(c));
+        //             }
+        //         }
+        //     }
+        // )
 
         try {
             if (this.isRegistration)
@@ -57,6 +86,16 @@ export class AuthComponent implements OnInit {
                 );
             else
                 await this._authService.login(new AuthDto(data.email, data.password));
+
+            if (data.isCart) {
+                // await this._dataManagerService.clearCart();
+                // await this._dataManagerService.loadCartItems();
+                // await this._dataManagerService.loadSales();
+
+                console.log('Перед заполнением: ' + this._dataManagerService.cartItems.length);
+                console.log('Перед заполнением (тек): ' + dataCart.length);
+                dataCart.forEach(c => this._dataManagerService.addToCart(c));
+            }
 
             console.log(this.isRegistration ? 'Регистрация' : 'Вход')
 

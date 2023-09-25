@@ -20,9 +20,9 @@ __decorate([
     __metadata("design:type", String)
 ], UserPasswordDto.prototype, "id", void 0);
 __decorate([
-    (0, class_validator_1.IsDefined)(),
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsStrongPassword)(),
+    (0, class_validator_1.MaxLength)(255),
     __metadata("design:type", String)
 ], UserPasswordDto.prototype, "password", void 0);
 __decorate([

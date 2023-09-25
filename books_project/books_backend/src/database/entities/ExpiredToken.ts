@@ -1,7 +1,8 @@
 ﻿import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity } from './BaseEntity';
 
 @Entity()
-export class ExpiredToken {
+export class ExpiredToken extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
     
@@ -12,6 +13,7 @@ export class ExpiredToken {
     expiredAt: Date;
 
     constructor(token?: string, expiredAt?: Date) {
+        super();
         this.token = token;
         this.expiredAt = expiredAt;
     }

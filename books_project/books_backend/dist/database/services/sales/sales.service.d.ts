@@ -12,4 +12,5 @@ export declare class SalesService {
     findOne(filter?: SaleFilterDto): Promise<Sale>;
     private getFilter;
     save(item: Sale): Promise<Sale>;
+    saveAll(item: Sale[]): Promise<Sale[]>;
 }

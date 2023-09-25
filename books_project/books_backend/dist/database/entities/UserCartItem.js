@@ -13,8 +13,10 @@ exports.UserCartItem = void 0;
 const typeorm_1 = require("typeorm");
 const Book_1 = require("./Book");
 const User_1 = require("./User");
-let UserCartItem = exports.UserCartItem = class UserCartItem {
+const BaseEntity_1 = require("./BaseEntity");
+let UserCartItem = exports.UserCartItem = class UserCartItem extends BaseEntity_1.BaseEntity {
     constructor(user, book) {
+        super();
         this.user = user;
         this.book = book;
     }
@@ -24,11 +26,11 @@ __decorate([
     __metadata("design:type", Number)
 ], UserCartItem.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(type => User_1.User, user => user.userCartItems, { cascade: true }),
+    (0, typeorm_1.ManyToOne)(type => User_1.User, user => user.userCartItems),
     __metadata("design:type", Object)
 ], UserCartItem.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(type => Book_1.Book, book => book.userCartItems, { cascade: true }),
+    (0, typeorm_1.ManyToOne)(type => Book_1.Book, book => book.userCartItems),
     __metadata("design:type", Object)
 ], UserCartItem.prototype, "book", void 0);
 exports.UserCartItem = UserCartItem = __decorate([

@@ -25,4 +25,12 @@ export class LocalStorageService {
     public set refreshToken(token: string) {
         this._localStorageService.set('refresh_token', token);
     }
+
+    public get cartItems(): number[] {
+        return this._localStorageService.get('cart_items');
+    }
+
+    public set cartItems(cartItemIds: number[]) {
+        this._localStorageService.set('cart_items', cartItemIds);
+    }
 }

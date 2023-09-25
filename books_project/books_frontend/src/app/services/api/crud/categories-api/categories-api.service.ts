@@ -9,7 +9,7 @@ import { CategoryDto } from "../../../../dto/crud/category.dto";
     providedIn: 'root'
 })
 export class CategoriesApiService {
-    private static readonly basePath = 'categories/';
+    private static readonly basePath = 'categories';
 
     constructor(private readonly _apiService: ApiService) { }
 

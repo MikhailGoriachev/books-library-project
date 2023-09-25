@@ -1,8 +1,9 @@
 ﻿import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './User';
+import { BaseEntity } from './BaseEntity';
 
 @Entity()
-export class UserPassword {
+export class UserPassword extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -19,6 +20,7 @@ export class UserPassword {
 
 
     constructor(user?: User, password?: string, isServiceAuth?: boolean) {
+        super();
         this.user = user;
         this.password = password;
         this.isServiceAuth = isServiceAuth;

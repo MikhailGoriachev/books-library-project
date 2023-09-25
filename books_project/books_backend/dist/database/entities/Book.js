@@ -20,8 +20,10 @@ const UserCartItem_1 = require("./UserCartItem");
 const BookView_1 = require("./BookView");
 const BookRatingStatistic_1 = require("./BookRatingStatistic");
 const BookViewStatistic_1 = require("./BookViewStatistic");
-let Book = exports.Book = class Book {
+const BaseEntity_1 = require("./BaseEntity");
+let Book = exports.Book = class Book extends BaseEntity_1.BaseEntity {
     constructor(title, description, image, price, publicationYear, isbn) {
+        super();
         this.title = title;
         this.description = description;
         this.image = image;
@@ -43,7 +45,7 @@ __decorate([
     __metadata("design:type", String)
 ], Book.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 255 }),
+    (0, typeorm_1.Column)({ length: 255, default: '' }),
     __metadata("design:type", String)
 ], Book.prototype, "image", void 0);
 __decorate([
@@ -59,11 +61,11 @@ __decorate([
     __metadata("design:type", String)
 ], Book.prototype, "isbn", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(type => Category_1.Category, category => category.books, { cascade: true }),
+    (0, typeorm_1.ManyToMany)(type => Category_1.Category, category => category.books),
     __metadata("design:type", Object)
 ], Book.prototype, "categories", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(type => Author_1.Author, author => author.books, { cascade: true }),
+    (0, typeorm_1.ManyToMany)(type => Author_1.Author, author => author.books),
     __metadata("design:type", Object)
 ], Book.prototype, "authors", void 0);
 __decorate([
@@ -79,9 +81,9 @@ __decorate([
     __metadata("design:type", Object)
 ], Book.prototype, "bookRatings", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(type => BookRatingStatistic_1.BookRatingStatistic, BookRatingStatistic => BookRatingStatistic.book),
+    (0, typeorm_1.OneToOne)(type => BookRatingStatistic_1.BookRatingStatistic, BookRatingStatistic => BookRatingStatistic.book),
     __metadata("design:type", Object)
-], Book.prototype, "bookRatingStatistics", void 0);
+], Book.prototype, "bookRatingStatistic", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(type => UserCartItem_1.UserCartItem, userCartItem => userCartItem.book),
     __metadata("design:type", Object)
@@ -91,11 +93,11 @@ __decorate([
     __metadata("design:type", Object)
 ], Book.prototype, "bookViews", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(type => BookViewStatistic_1.BookViewStatistic, bookViewStatistic => bookViewStatistic.book),
+    (0, typeorm_1.OneToOne)(type => BookViewStatistic_1.BookViewStatistic, bookViewStatistic => bookViewStatistic.book),
     __metadata("design:type", Object)
-], Book.prototype, "bookViewStatistics", void 0);
+], Book.prototype, "bookViewStatistic", void 0);
 exports.Book = Book = __decorate([
     (0, typeorm_1.Entity)(),
-    __metadata("design:paramtypes", [String, Object, String, Number, Number, String])
+    __metadata("design:paramtypes", [String, String, String, Number, Number, String])
 ], Book);
 //# sourceMappingURL=Book.js.map

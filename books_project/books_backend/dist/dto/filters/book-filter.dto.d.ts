@@ -1,5 +1,6 @@
 export declare class BookFilterDto {
     id?: number;
+    ids?: number[];
     title?: string;
     description?: string;
     image?: string;

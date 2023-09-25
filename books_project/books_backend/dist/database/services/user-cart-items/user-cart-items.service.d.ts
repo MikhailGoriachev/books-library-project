@@ -12,6 +12,6 @@ export declare class UserCartItemsService {
     findOne(filter?: UserCartItemFilterDto): Promise<UserCartItem>;
     private getFilter;
     save(item: UserCartItem): Promise<UserCartItem>;
-    remove(id: number): Promise<any>;
-    removeAll(cartItems: UserCartItem[]): Promise<any>;
+    delete(id: number): Promise<any>;
+    deleteAll(cartItems: UserCartItem[]): Promise<any>;
 }

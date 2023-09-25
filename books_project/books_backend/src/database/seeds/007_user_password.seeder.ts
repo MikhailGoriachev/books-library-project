@@ -6,7 +6,7 @@ import { UserPassword } from '../entities/UserPassword';
 export default class UserPasswordSeeder implements Seeder {
     async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<any> {
         const userRepository = dataSource.getRepository(User);
-        const users = await userRepository.find();
+        const users = (await userRepository.find()).slice(2);
 
         const userPasswords = [];
 

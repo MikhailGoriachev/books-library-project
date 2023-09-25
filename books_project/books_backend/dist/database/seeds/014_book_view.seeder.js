@@ -13,10 +13,11 @@ class BookViewSeeder {
         const users = await userRepository.find();
         const books = await bookRepository.find();
         const n = 150;
+        const guest = users.find(u => u.name === 'guest');
         const bookViews = Array(n)
             .fill(0)
             .map((_) => {
-            const user = (0, crypto_1.randomInt)(0, 10) < 3 ? null : users[(0, crypto_1.randomInt)(0, users.length)];
+            const user = (0, crypto_1.randomInt)(0, 10) < 3 ? guest : users[(0, crypto_1.randomInt)(0, users.length)];
             const book = books[(0, crypto_1.randomInt)(0, books.length)];
             const date = new Date();
             date.setDate(-(0, crypto_1.randomInt)(10, 30));

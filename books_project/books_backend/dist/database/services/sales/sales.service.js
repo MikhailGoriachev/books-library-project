@@ -29,13 +29,31 @@ let SalesService = exports.SalesService = class SalesService {
     async findAll(filter) {
         return this.saleRepository.find({
             where: this.getFilter(filter),
-            relations: ['user', 'book'],
+            relations: [
+                'user',
+                'book',
+                'book.authors',
+                'book.bookFiles',
+                'book.bookFiles.fileExtension',
+                'book.bookRatingStatistic',
+                'book.bookViewStatistic',
+            ],
+            withDeleted: true
         });
     }
     async findOne(filter) {
         return this.saleRepository.findOne({
             where: this.getFilter(filter),
-            relations: ['user', 'book'],
+            relations: [
+                'user',
+                'book',
+                'book.authors',
+                'book.bookFiles',
+                'book.bookFiles.fileExtension',
+                'book.bookRatingStatistic',
+                'book.bookViewStatistic',
+            ],
+            withDeleted: true
         });
     }
     getFilter(filter) {
@@ -49,6 +67,9 @@ let SalesService = exports.SalesService = class SalesService {
         return fields;
     }
     async save(item) {
+        return this.saleRepository.save(item);
+    }
+    async saveAll(item) {
         return this.saleRepository.save(item);
     }
 };

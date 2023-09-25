@@ -1,6 +1,6 @@
-import { Relation } from 'typeorm';
+import { BaseEntity, Relation } from 'typeorm';
 import { BookFile } from './BookFile';
-export declare class FileExtension {
+export declare class FileExtension extends BaseEntity {
     id: number;
     name: string;
     bookFiles: Relation<BookFile[]>;

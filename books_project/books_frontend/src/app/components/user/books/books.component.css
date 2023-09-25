@@ -1,0 +1,81 @@
+/*.mat-paginator {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*}*/
+
+/*.text-container {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    justify-content: center;*/
+/*    height: 100%;*/
+/*    margin-left: 10px; !* Расстояние между текстом и кнопкой *!*/
+/*}*/
+
+/*.vertical-button {*/
+/*    transform: rotate(90deg);*/
+/*    margin: 0 !important;*/
+/*}*/
+
+/*.filter-button {*/
+/*    position: fixed;*/
+/*    bottom: 50%;*/
+/*    z-index: 1;*/
+/*}*/
+
+/*mat-slider {*/
+/*    width: 100%;*/
+/*}*/
+
+/*.content {*/
+/*    position: relative;*/
+/*}*/
+
+/*.h-full {*/
+/*    height: 100%;*/
+/*}*/
+
+/*mat-card img {*/
+/*    object-fit: cover; !*this makes the image in src fit to the size specified below*!*/
+/*    width: 100%; !* Here you can use wherever you want to specify the width and also the height of the <img>*!*/
+/*}*/
+
+/*.card-image {*/
+/*    height: 23rem;*/
+/*}*/
+
+/*.grid-cards {*/
+/*    display: grid;*/
+/*    grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr));*/
+/*    gap: 1rem; !* Расстояние между карточками *!*/
+/*}*/
+
+/*.card-content {*/
+/*    align-self: end;*/
+/*}*/
+
+/*.card {*/
+/*    justify-content: space-between*/
+/*}*/
+
+/*.truncate-text {*/
+/*    display: -webkit-box;*/
+/*    -webkit-line-clamp: 2; !* Укажите желаемое количество строк *!*/
+/*    -webkit-box-orient: vertical;*/
+/*    overflow: hidden;*/
+/*    text-overflow: ellipsis;*/
+/*}*/
+
+/*.mat-mdc-slider {*/
+/*    margin-left: 0;*/
+/*}*/
+
+/*!*.full-screen-modal .mat-dialog-container {*!*/
+/*!*  padding: 1em;*!*/
+/*!*  width: 100%;*!*/
+/*!*  height: 100%;*!*/
+/*!*}*!*/
+
+/*.flex-baseline {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*}*/

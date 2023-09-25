@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.transformStringToArrayString = exports.transformStringToArrayNumber = exports.parseBoolean = exports.getInById = exports.getById = exports.getDateBetween = exports.getBetween = exports.getLikeForStringWords = exports.getLike = void 0;
 const typeorm_1 = require("typeorm");
 function getLike(value) {
-    return value ? (0, typeorm_1.Like)(value + '%') : undefined;
+    return value ? (0, typeorm_1.Like)('%' + value + '%') : undefined;
 }
 exports.getLike = getLike;
 function getLikeForStringWords(line) {
@@ -30,6 +30,8 @@ function parseBoolean(value) {
 }
 exports.parseBoolean = parseBoolean;
 function transformStringToArrayNumber({ value }) {
+    if (!Array.isArray(value))
+        return [+value];
     if (value.length > 1)
         return value.map(v => +v);
     return typeof (value[0]) === "string"

@@ -6,10 +6,10 @@ import { BookView } from './BookView';
 import { CategoryView } from './CategoryView';
 import { BlockedUser } from './BlockedUser';
 import { Role } from './Role';
-import { Book } from "./Book";
+import { BaseEntity } from "./BaseEntity";
 
 
-export class User {
+export class User extends BaseEntity {
     id: number;
 
     name: string;
@@ -40,6 +40,7 @@ export class User {
 
 
     constructor(id?: number, name?: string, email?: string) {
+        super();
         this.id = id;
         this.name = name;
         this.email = email;
@@ -51,6 +52,10 @@ export class User {
 
         a.name = b.name;
         a.email = b.email;
+
+        a.createdAt = b.createdAt;
+        a.updatedAt = b.updatedAt;
+        a.deletedAt = b.deletedAt;
 
         a.sales = b.sales !== undefined
             ? b.sales.map(u => Sale.assign(new Sale(), u))

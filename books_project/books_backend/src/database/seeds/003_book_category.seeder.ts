@@ -18,18 +18,18 @@ export default class BookCategorySeeder implements Seeder {
         // }
 
         // 'Фантастика': ['Метро 2033']
-        categories[0].books = [books[15]];
+        categories[13].books = [books[15]];
 
         // 'Романы': ['Война и мир', 'Анна Каренина', 'Мастер и Маргарита', 'Герой нашего времени', 
         // 'Братья Карамазовы',  'Дубровский', 'Евгений Онегин', 'Отцы и дети', 'Дети капитана Гранта', 'Тихий Дон',  
         // 'Мёртвые души', 'Пиковая дама', 'Мастер', 'Похождения Чичикова, или Мёртвые души']
-        categories[2].books = [...books.slice(0, 11), books[13], books[14], books[17], books[18]];
+        categories[10].books = [...books.slice(0, 11), books[13], books[14], books[17], books[18]];
 
         // 'Приключения': ['12 стульев', 'Двенадцать']
-        categories[7].books = [books[11], books[12]];
+        categories[9].books = [books[11], books[12]];
 
         // 'Художественная проза': ['Преступление и наказание', 'Обломов', 'Мастер и Маргарита'
-        categories[7].books = [books[1], books[16], books[3]];
+        categories[15].books = [books[1], books[16], books[3]];
 
         return dataSource.getRepository(Category).save(categories);
     }

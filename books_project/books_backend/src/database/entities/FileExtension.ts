@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany, Relation
 import { BookFile } from './BookFile';
 
 @Entity()
-export class FileExtension {
+export class FileExtension extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -14,6 +14,7 @@ export class FileExtension {
 
 
     constructor(name?: string) {
+        super();
         this.name = name;
     }
 }

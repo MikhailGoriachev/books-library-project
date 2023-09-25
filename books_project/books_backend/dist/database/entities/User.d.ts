@@ -8,7 +8,8 @@ import { CategoryView } from './CategoryView';
 import { BlockedUser } from './BlockedUser';
 import { Role } from './Role';
 import { UserPassword } from './UserPassword';
-export declare class User {
+import { BaseEntity } from './BaseEntity';
+export declare class User extends BaseEntity {
     id: number;
     name: string;
     email: string;

@@ -8,7 +8,7 @@ import { AllExceptionFilter } from './filters/all-exception/all-exception.filter
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
-    app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalPipes(new ValidationPipe({transform: true}));
 
     app.useGlobalFilters(new AllExceptionFilter());
 

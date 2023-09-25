@@ -5,7 +5,7 @@ const UserPassword_1 = require("../entities/UserPassword");
 class UserPasswordSeeder {
     async run(dataSource, factoryManager) {
         const userRepository = dataSource.getRepository(User_1.User);
-        const users = await userRepository.find();
+        const users = (await userRepository.find()).slice(2);
         const userPasswords = [];
         for (const user of users)
             userPasswords.push(await factoryManager.get(UserPassword_1.UserPassword).make({ user }));

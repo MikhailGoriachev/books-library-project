@@ -12,8 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthorViewStatistic = void 0;
 const typeorm_1 = require("typeorm");
 const Author_1 = require("./Author");
-let AuthorViewStatistic = exports.AuthorViewStatistic = class AuthorViewStatistic {
+const BaseEntity_1 = require("./BaseEntity");
+let AuthorViewStatistic = exports.AuthorViewStatistic = class AuthorViewStatistic extends BaseEntity_1.BaseEntity {
     constructor(author, amount) {
+        super();
         this.author = author;
         this.amount = amount;
     }
@@ -23,7 +25,8 @@ __decorate([
     __metadata("design:type", Number)
 ], AuthorViewStatistic.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(type => Author_1.Author, author => author.authorViewStatistics, { cascade: true }),
+    (0, typeorm_1.OneToOne)(type => Author_1.Author, author => author.authorViewStatistic),
+    (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Object)
 ], AuthorViewStatistic.prototype, "author", void 0);
 __decorate([

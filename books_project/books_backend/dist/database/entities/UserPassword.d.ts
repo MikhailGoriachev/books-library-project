@@ -1,5 +1,6 @@
 import { User } from './User';
-export declare class UserPassword {
+import { BaseEntity } from './BaseEntity';
+export declare class UserPassword extends BaseEntity {
     id: number;
     user: User;
     password: string;

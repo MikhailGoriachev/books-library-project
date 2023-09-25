@@ -9,7 +9,7 @@ import { BlockedUserDto } from "../../../../dto/crud/blocked-user.dto";
     providedIn: 'root'
 })
 export class BlockedUsersApiService {
-    private static readonly basePath = 'blocked-users/';
+    private static readonly basePath = 'blocked-users';
 
     constructor(private readonly _apiService: ApiService) { }
 

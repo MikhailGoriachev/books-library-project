@@ -1,6 +1,7 @@
 import { Relation } from 'typeorm';
 import { Author } from './Author';
-export declare class AuthorViewStatistic {
+import { BaseEntity } from './BaseEntity';
+export declare class AuthorViewStatistic extends BaseEntity {
     id: number;
     author: Relation<Author>;
     amount: number;

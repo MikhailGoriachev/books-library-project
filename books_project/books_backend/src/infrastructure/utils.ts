@@ -1,7 +1,7 @@
 ﻿import { Between, FindOperator, In, Like } from 'typeorm';
 
 export function getLike(value?: string): FindOperator<string> | undefined {
-    return value ? Like(value + '%') : undefined;
+    return value ? Like('%' + value + '%') : undefined;
 }
 
 // TODO: получить like для сравнения со словами в строке
@@ -30,6 +30,10 @@ export function parseBoolean(value?: string): boolean | undefined {
 }
 
 export function transformStringToArrayNumber({ value }) {
+    // if (value)
+    if (!Array.isArray(value))
+        return [+value];
+        
     if (value.length > 1)
         return value.map(v => +v);
     

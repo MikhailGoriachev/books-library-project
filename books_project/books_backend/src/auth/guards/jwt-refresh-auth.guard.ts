@@ -1,4 +1,4 @@
-import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ExecutionContext, HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ExpiredTokensService } from '../../database/services/expired-tokens/expired-tokens.service';
 import { Request } from 'express';
@@ -9,20 +9,28 @@ export class JwtRefreshAuthGuard extends AuthGuard('jwt-refresh') {
     constructor(private _expiredTokensService: ExpiredTokensService) {
         super();
     }
-    
+
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        const res = await super.canActivate(context);
+        try {
+            const res = await super.canActivate(context);
+            
+            if (!res)
+                return new Promise(() => res);
 
-        if (!res)
-            return new Promise(() => res);
+            const request = context.switchToHttp().getRequest();
+            const token = this.extractTokenFromHeader(request);
 
-        const request = context.switchToHttp().getRequest();
-        const token = this.extractTokenFromHeader(request);
+            if (!token || (await this._expiredTokensService.findOne(token)))
+                throw new HttpException('Invalid refresh token', 498);
 
-        if (!token || (await this._expiredTokensService.findOne(token)))
-            throw new UnauthorizedException();
-
-        return true;
+            return true;
+        } catch (err) {
+            // Если возникла ошибка UnauthorizedException, заменяем ее на HttpException с кодом 498
+            if (err instanceof UnauthorizedException) {
+                throw new HttpException('Invalid refresh token', 498);
+            }
+            throw err;
+        }
     }
 
     // async canActivate(context: ExecutionContext): Promise<boolean> {

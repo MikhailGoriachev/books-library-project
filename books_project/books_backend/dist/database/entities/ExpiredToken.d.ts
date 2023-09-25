@@ -1,4 +1,5 @@
-export declare class ExpiredToken {
+import { BaseEntity } from './BaseEntity';
+export declare class ExpiredToken extends BaseEntity {
     id: number;
     token: string;
     expiredAt: Date;

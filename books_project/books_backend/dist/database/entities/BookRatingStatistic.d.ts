@@ -1,6 +1,7 @@
 import { Relation } from 'typeorm';
 import { Book } from './Book';
-export declare class BookRatingStatistic {
+import { BaseEntity } from './BaseEntity';
+export declare class BookRatingStatistic extends BaseEntity {
     id: number;
     book: Relation<Book>;
     value: number;

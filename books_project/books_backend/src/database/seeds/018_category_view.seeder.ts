@@ -20,11 +20,13 @@ export default class CategoryViewSeeder implements Seeder {
         const categories = await categoryRepository.find();
 
         const n = 300;
+        
+        const guest = users.find(u => u.name === 'guest');
 
         const categoryViews = Array(n)
             .fill(0)
             .map((_) => {
-                const user = randomInt(0, 10) < 3 ? null : users[randomInt(0, users.length)];
+                const user = randomInt(0, 10) < 3 ? guest : users[randomInt(0, users.length)];
                 const category = categories[randomInt(0, categories.length)];
 
                 const date = new Date();

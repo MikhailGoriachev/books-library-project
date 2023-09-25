@@ -13,8 +13,10 @@ exports.AuthorView = void 0;
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
 const Author_1 = require("./Author");
-let AuthorView = exports.AuthorView = class AuthorView {
+const BaseEntity_1 = require("./BaseEntity");
+let AuthorView = exports.AuthorView = class AuthorView extends BaseEntity_1.BaseEntity {
     constructor(user, author, viewedAt) {
+        super();
         this.user = user;
         this.author = author;
         this.viewedAt = viewedAt;
@@ -29,7 +31,7 @@ __decorate([
     __metadata("design:type", Object)
 ], AuthorView.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(type => Author_1.Author, author => author.authorViewStatistics, { cascade: true }),
+    (0, typeorm_1.ManyToOne)(type => Author_1.Author, author => author.authorViewStatistic, { cascade: true }),
     __metadata("design:type", Object)
 ], AuthorView.prototype, "author", void 0);
 __decorate([

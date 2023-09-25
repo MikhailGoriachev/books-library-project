@@ -13,15 +13,15 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookRatingStatisticsController = void 0;
-const BookViewStatistic_1 = require("../../../database/entities/BookViewStatistic");
-const book_view_statistic_dto_1 = require("../../../dto/crud/book-view-statistic.dto");
-const book_view_statistic_filter_dto_1 = require("../../../dto/filters/book-view-statistic-filter.dto");
-const book_view_statistics_service_1 = require("../../../database/services/book-view-statistics/book-view-statistics.service");
 const common_1 = require("@nestjs/common");
 const roles_guard_1 = require("../../../guards/roles/roles.guard");
 const roles_decorator_1 = require("../../../decorators/roles/roles.decorator");
 const RolesEnum_1 = require("../../../infrastructure/RolesEnum");
 const jwt_access_auth_guard_1 = require("../../../auth/guards/jwt-access-auth.guard");
+const book_rating_statistic_filter_dto_1 = require("../../../dto/filters/book-rating-statistic-filter.dto");
+const book_rating_statistics_service_1 = require("../../../database/services/book-rating-statistics/book-rating-statistics.service");
+const book_rating_statistic_dto_1 = require("../../../dto/crud/book-rating-statistic.dto");
+const BookRatingStatistic_1 = require("../../../database/entities/BookRatingStatistic");
 let BookRatingStatisticsController = exports.BookRatingStatisticsController = class BookRatingStatisticsController {
     constructor(_bookRatingStatisticsService) {
         this._bookRatingStatisticsService = _bookRatingStatisticsService;
@@ -37,24 +37,24 @@ let BookRatingStatisticsController = exports.BookRatingStatisticsController = cl
     }
     create(item) {
         item.id = null;
-        return this._bookRatingStatisticsService.save(Object.assign(new BookViewStatistic_1.BookViewStatistic(), item));
+        return this._bookRatingStatisticsService.save(Object.assign(new BookRatingStatistic_1.BookRatingStatistic(), item));
     }
     update(item) {
-        return this._bookRatingStatisticsService.save(Object.assign(new BookViewStatistic_1.BookViewStatistic(), item));
+        return this._bookRatingStatisticsService.save(Object.assign(new BookRatingStatistic_1.BookRatingStatistic(), item));
     }
 };
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)(new common_1.ValidationPipe({ transform: true }))),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [book_view_statistic_filter_dto_1.BookViewStatisticFilterDto]),
+    __metadata("design:paramtypes", [book_rating_statistic_filter_dto_1.BookRatingStatisticFilterDto]),
     __metadata("design:returntype", void 0)
 ], BookRatingStatisticsController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)('first'),
     __param(0, (0, common_1.Query)(new common_1.ValidationPipe({ transform: true }))),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [book_view_statistic_filter_dto_1.BookViewStatisticFilterDto]),
+    __metadata("design:paramtypes", [book_rating_statistic_filter_dto_1.BookRatingStatisticFilterDto]),
     __metadata("design:returntype", void 0)
 ], BookRatingStatisticsController.prototype, "findOne", null);
 __decorate([
@@ -71,7 +71,7 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [book_view_statistic_dto_1.BookViewStatisticDto]),
+    __metadata("design:paramtypes", [book_rating_statistic_dto_1.BookRatingStatisticDto]),
     __metadata("design:returntype", void 0)
 ], BookRatingStatisticsController.prototype, "create", null);
 __decorate([
@@ -81,11 +81,11 @@ __decorate([
     (0, common_1.Put)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [book_view_statistic_dto_1.BookViewStatisticDto]),
+    __metadata("design:paramtypes", [book_rating_statistic_dto_1.BookRatingStatisticDto]),
     __metadata("design:returntype", void 0)
 ], BookRatingStatisticsController.prototype, "update", null);
 exports.BookRatingStatisticsController = BookRatingStatisticsController = __decorate([
     (0, common_1.Controller)('book-rating-statistics'),
-    __metadata("design:paramtypes", [book_view_statistics_service_1.BookViewStatisticsService])
+    __metadata("design:paramtypes", [book_rating_statistics_service_1.BookRatingStatisticsService])
 ], BookRatingStatisticsController);
 //# sourceMappingURL=book-rating-statistics.controller.js.map

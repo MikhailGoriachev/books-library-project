@@ -12,17 +12,19 @@ export class UsersService {
         private usersRepository: Repository<User>,
     ) {}
 
-    async findAll(filter?: UserFilterDto): Promise<User[]> {
+    async findAll(filter?: UserFilterDto, withDeleted: boolean = false): Promise<User[]> {
         return this.usersRepository.find({
             where: this.getFilter(filter),
             relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
+            withDeleted
         });
     }
 
-    async findOne(filter?: UserFilterDto): Promise<User> {
+    async findOne(filter?: UserFilterDto, withDeleted: boolean = false): Promise<User> {
         return this.usersRepository.findOne({
             where: this.getFilter(filter),
             relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
+            withDeleted
         });
     }
 

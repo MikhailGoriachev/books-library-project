@@ -12,8 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlockedUser = void 0;
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
-let BlockedUser = exports.BlockedUser = class BlockedUser {
+const BaseEntity_1 = require("./BaseEntity");
+let BlockedUser = exports.BlockedUser = class BlockedUser extends BaseEntity_1.BaseEntity {
     constructor(user, blockedAt, unblockedAt) {
+        super();
         this.user = user;
         this.blockedAt = blockedAt;
         this.unblockedAt = unblockedAt;

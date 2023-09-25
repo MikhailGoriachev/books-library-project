@@ -22,21 +22,24 @@ let CategoriesService = exports.CategoriesService = class CategoriesService {
     constructor(categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
-    async findAll(filter) {
+    async findAll(filter, withDeleted = false) {
         return this.categoryRepository.find({
             where: this.getFilter(filter),
-            relations: ['books'],
+            relations: ['books', 'categoryViewStatistic'],
+            withDeleted
         });
     }
-    async findOne(filter) {
+    async findOne(filter, withDeleted = false) {
         return this.categoryRepository.findOne({
             where: this.getFilter(filter),
-            relations: ['books'],
+            relations: ['books', 'categoryViewStatistic'],
+            withDeleted
         });
     }
     getFilter(filter) {
+        var _a;
         const fields = {};
-        fields['id'] = filter.id;
+        fields['id'] = (_a = filter.id) !== null && _a !== void 0 ? _a : (filter.ids ? (0, typeorm_2.In)(filter.ids) : undefined);
         fields['name'] = (0, utils_1.getLike)(filter.name);
         return fields;
     }

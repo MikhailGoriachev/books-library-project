@@ -7,5 +7,6 @@ export declare class JwtRefreshStrategy extends JwtRefreshStrategy_base {
     private apiConfigService;
     constructor(authService: AuthService, apiConfigService: ApiConfigService);
     validate(payload: any): Promise<any>;
+    authenticate(req: any, options?: any): Promise<void>;
 }
 export {};

@@ -12,7 +12,7 @@ import { AuthorViewDto } from "../../../../dto/crud/author-view.dto";
     providedIn: 'root'
 })
 export class AuthorViewsApiService {
-    private static readonly basePath = 'author-views/';
+    private static readonly basePath = 'author-views';
 
     constructor(private readonly _apiService: ApiService) { }
 

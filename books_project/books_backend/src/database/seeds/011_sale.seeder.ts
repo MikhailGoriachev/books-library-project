@@ -13,7 +13,7 @@ export default class SaleSeeder implements Seeder {
         const userRepository = dataSource.getRepository(User);
         const bookRepository = dataSource.getRepository(Book);
 
-        const users = await userRepository.find();
+        const users = (await userRepository.find()).slice(2);
         const books = await bookRepository.find();
 
         const n = 80;

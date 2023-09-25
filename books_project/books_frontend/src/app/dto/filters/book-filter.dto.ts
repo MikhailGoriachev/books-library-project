@@ -1,5 +1,6 @@
 ﻿export class BookFilterDto {
     constructor(public id?: number,
+                public ids?: number[],
                 public title?: string,
                 public description?: string,
                 public image?: string,

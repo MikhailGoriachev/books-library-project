@@ -1,0 +1,242 @@
+﻿@use '@angular/material' as mat;
+
+//@use 'sass:map';
+//@use '@angular/material' as mat;
+//
+//$primary: mat.define-palette(mat.$indigo-palette);
+////$accent: mat.define-palette(mat.$pink-palette);
+//$accent: mat.define-palette(mat.$green-palette);
+//$warn: mat.define-palette(mat.$red-palette);
+////$success: mat.define-palette(mat.$green-palette);
+//
+//$theme: mat.define-light-theme((
+//    color: (primary: $primary, accent: $accent, warn: $warn),
+//));
+//
+//$color-config: mat.get-color-config($theme);
+//$primary-palette: map.get($color-config, 'primary');
+//$accent-palette: map.get($color-config, 'accent');
+//$warn-palette: map.get($color-config, 'warn');
+//$is-dark-theme: map.get($color-config, 'is-dark');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+.mat-yellow {
+  color: #000 !important;
+  background-color: #fdd835 !important;
+}
+.mat-yellow[disabled] {
+  background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+
+.mat-success {
+  color: #fff !important;
+  background-color: #4caf50 !important;
+}
+.mat-success[disabled] {
+  background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.mat-sub {
+  color: #fff !important;
+  background-color: #00bcd4 !important;
+}
+.mat-sub[disabled] {
+  background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.mat-error {
+  color: #fff !important;
+  background-color: #f44336 !important;
+}
+.mat-error[disabled] {
+  background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+/* ---------------------------------------------------- */
+
+.justify-content-center {
+    justify-content: center !important;
+}
+
+
+.mat-paginator {
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.text-container {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    height: 100% !important;
+    margin-left: 10px !important; /* Расстояние между текстом и кнопкой */
+}
+
+.vertical-button {
+    transform: rotate(90deg) !important;
+    margin: 0 !important;
+}
+
+.filter-button {
+    position: fixed !important;
+    bottom: 50% !important;
+    z-index: 1 !important;
+}
+
+mat-slider {
+    width: 100% !important;
+    margin-left: 0 !important;
+}
+
+.content {
+    position: relative !important;
+}
+
+.h-full {
+    height: 100% !important;
+}
+
+mat-card img {
+    object-fit: cover; /*this makes the image in src fit to the size specified below*/
+    width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
+}
+
+.card-image {
+    height: 23rem !important;
+}
+
+.grid-cards {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)) !important;
+    gap: 1rem !important; /* Расстояние между карточками */
+}
+
+.card-content {
+    align-self: end !important;
+}
+
+.card {
+    justify-content: space-between !important;
+}
+
+.truncate-text {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important; /* Укажите желаемое количество строк */
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.mat-mdc-slider {
+    margin-left: 0 !important;
+}
+
+/*.full-screen-modal .mat-dialog-container {*/
+/*  padding: 1em;*/
+/*  width: 100%;*/
+/*  height: 100%;*/
+/*}*/
+
+.flex-baseline {
+    display: flex !important;
+    align-items: center !important;
+}
+
+
+/* -------------------------------------------------------------- */
+
+.dialog-title {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: baseline !important;
+    margin-top: 1rem !important;
+}
+
+.dialog-title::before {
+    display: none !important;
+}
+
+.dialog-content {
+    /*flex-grow: 1 !important;*/
+    max-height: 75vh !important;
+    height: 75vh !important;
+}
+
+.dialog-image-container {
+    display: block !important;
+    height: 70vh !important;
+    /*width: 20vw !important;*/
+}
+
+/*.book-image {*/
+/*    height: auto !important;*/
+/*    !*max-width: 100% !important;*!*/
+/*    width: 100% !important;*/
+/*    display: block !important;*/
+/*}*/
+
+.content-container {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)) !important;
+    gap: 1rem !important; /* Расстояние между карточками */
+}
+
+.content-fields {
+
+}
+
+/* ---------------------------------------------------------------- */
+
+
+.modal-content {
+    display: flex !important; /* Используем flex-контейнер */
+    flex-wrap: wrap !important; /* Разрешаем перенос элементов на новую строку */
+    align-items: flex-start !important; /* Выравниваем элементы вверху */
+    justify-content: stretch !important;
+}
+
+.image-container {
+    flex: 1 !important; /* Занимает доступное пространство слева */
+    /*!*max-width: 50%; !* Максимальная ширина изображения *!*!*/
+    display: flex !important;
+    justify-content: center !important;
+    align-content: center !important;
+    flex-direction: column !important;
+    max-width: 100%;
+}
+
+.image-container img {
+    /*flex: 1;*/
+    width: auto !important;
+    height: 100% !important; /* Автоматическая высота для поддержки пропорций */;
+    max-height: 60vh !important;
+    display: block !important; /* Убирает нежелательные промежутки снизу */
+    justify-self: center !important;
+    object-fit: contain !important;
+}
+
+.details {
+    flex: 4 !important; /* Занимает доступное пространство справа */
+    /*max-width: 50%; !* Максимальная ширина детальной информации *!*/
+    min-width: 15rem !important;
+}
+
+/* ---------------------------------------------------------------- */
+
+.margin-0 {
+    margin: 0 !important;
+}

@@ -7,9 +7,10 @@ import { BookView } from './BookView';
 import { BookRatingStatistic } from './BookRatingStatistic';
 import { BookViewStatistic } from './BookViewStatistic';
 import { BookFile } from './BookFile';
+import { BaseEntity } from "./BaseEntity";
 
 
-export class Book {
+export class Book extends BaseEntity {
     id: number;
 
     title: string;
@@ -34,16 +35,25 @@ export class Book {
 
     bookRatings?: BookRating[];
 
-    bookRatingStatistics?: BookRatingStatistic[];
+    bookRatingStatistic?: BookRatingStatistic;
 
     userCartItems?: UserCartItem[];
 
     bookViews?: BookView[];
 
-    bookViewStatistics?: BookViewStatistic[];
+    bookViewStatistic?: BookViewStatistic;
 
 
-    constructor(id?: number, title?: string, description?, image?: string, price?: number, publicationYear?: number, isbn?: string) {
+    constructor(
+        id?: number,
+        title?: string,
+        description?: string,
+        image?: string,
+        price?: number,
+        publicationYear?: number,
+        isbn?: string
+    ) {
+        super();
         this.id = id;
         this.title = title;
         this.description = description;
@@ -62,12 +72,15 @@ export class Book {
         a.price = b.price;
         a.publicationYear = b.publicationYear;
         a.isbn = b.isbn;
+        a.createdAt = b.createdAt;
+        a.updatedAt = b.updatedAt;
+        a.deletedAt = b.deletedAt;
 
         a.categories = b.categories !== undefined
-            ? b.categories.map(b => Category.assign(new Category(), b))
+            ? b.categories.map(c => Category.assign(new Category(), c))
             : undefined;
         a.authors = b.authors !== undefined
-            ? b.authors.map(b => Author.assign(new Author(), b))
+            ? b.authors.map(a => Author.assign(new Author(), a))
             : undefined;
 
         a.bookFiles = b.bookFiles !== undefined
@@ -75,15 +88,15 @@ export class Book {
             : undefined;
 
         a.sales = b.sales !== undefined
-            ? b.sales.map(b => Sale.assign(new Sale(), b))
+            ? b.sales.map(s => Sale.assign(new Sale(), s))
             : undefined;
 
         a.bookRatings = b.bookRatings !== undefined
             ? b.bookRatings.map(b => BookRating.assign(new BookRating(), b))
             : undefined;
 
-        a.bookRatingStatistics = b.bookRatingStatistics !== undefined
-            ? b.bookRatingStatistics.map(b => BookRatingStatistic.assign(new BookRatingStatistic(), b))
+        a.bookRatingStatistic = b.bookRatingStatistic !== undefined
+            ? BookRatingStatistic.assign(new BookRatingStatistic(), b.bookRatingStatistic)
             : undefined;
 
         a.userCartItems = b.userCartItems !== undefined
@@ -94,8 +107,10 @@ export class Book {
             ? b.bookViews.map(b => BookView.assign(new BookView(), b))
             : undefined;
 
-        a.bookViewStatistics = b.bookViewStatistics !== undefined
-            ? b.bookViewStatistics.map(b => BookViewStatistic.assign(new BookViewStatistic(), b))
+        // console.log(b.id);
+
+        a.bookViewStatistic = b.bookViewStatistic
+            ? BookViewStatistic.assign(new BookViewStatistic(), b.bookViewStatistic)
             : undefined;
 
         return a;

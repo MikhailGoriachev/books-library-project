@@ -1,0 +1,81 @@
+<div mat-dialog-title class="dialog-title">
+    <h1>{{book?.title}}</h1>
+    <button mat-icon-button mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<div mat-dialog-content class="dialog-content">
+    <div class="modal-content gap-4">
+        <div class="image-container">
+            <img *ngIf="book" src="{{baseUrl}}public/images/books/{{book?.image}}?v={{imagesVersion}}" alt="">
+            <div class="flex justify-center m-5 items-baseline text-green-500">
+                <button *ngFor="let i of 5 | range" mat-icon-button class="place-self-center"
+                        (click)="setBookRating(i + 1)">
+                    <mat-icon>
+                        {{userRating?.value > i ? "star" : "star_border"}}
+                    </mat-icon>
+                </button>
+
+                <div class="place-self-center {{rating?.value < 3 ? 'text-red-500' : 'text-green-500'}}">
+                    ({{rating?.value | number: '0.2-2'}})
+                </div>
+            </div>
+        </div>
+        <div class="details text-black">
+            <!--            <div class="my-5 block"><b>Автор:</b> <a *ngFor="let a of book?.authors" href=""></a> {{book?.authors | authors}}</div>-->
+            <div class="my-5 block"><b>Автор: </b>
+                <span *ngFor="let a of book?.authors; let last = last">
+                    <a href="#" (click)="toAuthorCardDetails($event, a.id)">{{a.name}}</a><span *ngIf="!last">, </span>
+                </span>
+                <span *ngIf="book?.authors.length === 0">неизвестно</span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="my-5 block"><b>Год выпуска:</b> {{book?.publicationYear}}</div>
+            <mat-divider></mat-divider>
+            <div class="my-5 block"><b>Категория:</b>
+                <span *ngFor="let c of book?.categories; let last = last">
+                {{c.name}}<span *ngIf="!last">, </span>
+                </span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="my-5 block"><b>ISBN:</b> {{book?.isbn}}</div>
+            <mat-divider></mat-divider>
+            <div class="my-5 block"><b>Рейтинг:</b> {{rating?.value | number: '0.0-2'}}</div>
+            <mat-divider></mat-divider>
+            <div class="my-5 block"><b>Цена:</b> {{book?.price}}&nbsp;&#8381;</div>
+            <mat-divider></mat-divider>
+            <div class="my-5 block"><b>Описание:</b> {{book?.description}}</div>
+        </div>
+
+    </div>
+</div>
+
+<div mat-dialog-actions class="justify-content-center">
+    <!--    <button mat-button (click)="onSubmit()" [disabled]="!isValid" color="success" cdkFocusInitial>-->
+    <!--        {{isRegistration ? 'Зарегистрироваться' : 'Войти'}}-->
+    <!--    </button>-->
+    <button *ngIf="isExistsSales" mat-raised-button color="primary"
+            class="mx-5 w-36" [matMenuTriggerFor]="downloadMenu"
+            (click)="$event.stopPropagation()">
+        <mat-icon>download</mat-icon>&nbsp;Скачать
+    </button>
+    <mat-menu #downloadMenu='matMenu'>
+        <button mat-menu-item (click)="download($event, f)"
+                *ngFor="let f of getBookFiles()">
+            {{f.fileExtension.name | uppercase}}
+        </button>
+    </mat-menu>
+
+    <button *ngIf="!isExistsCart && !isExistsSales" mat-raised-button color="success" class="mx-5"
+            (click)="addToCart()">
+        <mat-icon>local_mall</mat-icon>&nbsp;В&nbsp;корзину&nbsp;|&nbsp;<b>{{book?.price}}&nbsp;&#8381;</b>
+    </button>
+    <button *ngIf="isExistsCart" mat-raised-button color="warn" class="mx-5"
+            (click)="removeFromCart()">
+        <mat-icon>local_mall</mat-icon>&nbsp;Удалить&nbsp;из&nbsp;корзины&nbsp;
+    </button>
+    <button mat-raised-button class="mx-5 w-36" color="accent" mat-dialog-close>
+        <mat-icon>arrow_back_ios</mat-icon>Назад
+    </button>
+</div>

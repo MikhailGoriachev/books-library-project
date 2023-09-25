@@ -13,8 +13,10 @@ exports.BookFile = void 0;
 const typeorm_1 = require("typeorm");
 const Book_1 = require("./Book");
 const FileExtension_1 = require("./FileExtension");
-let BookFile = exports.BookFile = class BookFile {
+const BaseEntity_1 = require("./BaseEntity");
+let BookFile = exports.BookFile = class BookFile extends BaseEntity_1.BaseEntity {
     constructor(path, fileExtension, book) {
+        super();
         this.path = path;
         this.fileExtension = fileExtension;
         this.book = book;

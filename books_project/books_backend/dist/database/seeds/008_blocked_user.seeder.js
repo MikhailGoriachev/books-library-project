@@ -6,7 +6,7 @@ const BlockedUser_1 = require("../entities/BlockedUser");
 class BlockedUserSeeder {
     async run(dataSource, factoryManager) {
         const userRepository = dataSource.getRepository(User_1.User);
-        const users = await userRepository.find();
+        const users = (await userRepository.find()).slice(2);
         const blockedUsers = await Promise.all(users.filter(u => (0, crypto_1.randomInt)(0, 10) < 3)
             .map(u => factoryManager.get(BlockedUser_1.BlockedUser).make({ user: u })));
         return dataSource.getRepository(BlockedUser_1.BlockedUser).save(blockedUsers);

@@ -13,8 +13,10 @@ exports.Sale = void 0;
 const typeorm_1 = require("typeorm");
 const Book_1 = require("./Book");
 const User_1 = require("./User");
-let Sale = exports.Sale = class Sale {
+const BaseEntity_1 = require("./BaseEntity");
+let Sale = exports.Sale = class Sale extends BaseEntity_1.BaseEntity {
     constructor(user, book, price, saleAt) {
+        super();
         this.user = user;
         this.book = book;
         this.price = price;

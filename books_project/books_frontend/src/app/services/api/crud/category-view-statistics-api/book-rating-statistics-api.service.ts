@@ -11,7 +11,7 @@ import { CategoryViewStatisticDto } from "../../../../dto/crud/category-view-sta
 })
 export class CategoryViewStatisticsApiService {
 
-    private static readonly basePath = 'category-view-statistics/';
+    private static readonly basePath = 'category-view-statistics';
 
     constructor(private readonly _apiService: ApiService) { }
 
@@ -30,12 +30,12 @@ export class CategoryViewStatisticsApiService {
     }
 
     create(item: CategoryViewStatistic) {
-        const dto = new CategoryViewStatisticDto(0, item.category.id, item.amount);
+        const dto = new CategoryViewStatisticDto(0, item.categoryName.id, item.amount);
         return this._apiService.post(CategoryViewStatisticsApiService.basePath, item);
     }
 
     update(item: CategoryViewStatistic) {
-        const dto = new CategoryViewStatisticDto(item.id, item.category.id, item.amount);
+        const dto = new CategoryViewStatisticDto(item.id, item.categoryName.id, item.amount);
         return this._apiService.put(CategoryViewStatisticsApiService.basePath, item);
     }
 }

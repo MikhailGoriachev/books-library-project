@@ -1,1 +1,35 @@
-<p>main works!</p>
+<div class="mat-headline-4 p-5 margin-0">
+    <mat-icon color="accent">star</mat-icon>&nbsp;Самые рейтинговые
+</div>
+<div class="mx-5 mb-5">
+    <h1 *ngIf="ratingBooks?.length <= 0">Книг нет</h1>
+    <div class="grid-cards">
+        <div *ngFor="let b of ratingBooks" class="mt-3">
+            <app-book-card [book]="b" (onClickCard)="toCardDetails($event.id)"></app-book-card>
+        </div>
+    </div>
+</div>
+
+<div class="mat-headline-4 p-5 margin-0">
+    <mat-icon color="accent">visibility</mat-icon>&nbsp;Самые просматриваемые
+</div>
+<div class="mx-5 mb-5">
+    <h1 *ngIf="viewedBooks?.length <= 0">Книг нет</h1>
+    <div class="grid-cards">
+        <div *ngFor="let b of viewedBooks" class="mt-3">
+            <app-book-card [book]="b" (onClickCard)="toCardDetails($event.id)"></app-book-card>
+        </div>
+    </div>
+</div>
+
+<div class="mat-headline-4 p-5 margin-0">
+    <mat-icon color="accent">arrow_circle_up</mat-icon>&nbsp;Последние добавленные
+</div>
+<div class="mx-5 mb-5">
+    <h1 *ngIf="additionBooks?.length <= 0">Книг нет</h1>
+    <div class="grid-cards">
+        <div *ngFor="let b of additionBooks" class="mt-3">
+            <app-book-card [book]="b" (onClickCard)="toCardDetails($event.id)"></app-book-card>
+        </div>
+    </div>
+</div>

@@ -66,6 +66,7 @@ export class AuthController {
     @UseGuards(JwtRefreshAuthGuard)
     @Get('token')
     async getAccessToken(@Request() req) {
+        console.log(`GET ACCESS TOKEN ${new Date()}`);
         return this._authService.generateJwtAccessToken(req.user.email);
     }
 

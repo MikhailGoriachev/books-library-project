@@ -1,8 +1,8 @@
 import { Book } from './Book';
-import { User } from "./User";
+import { BaseEntity } from "./BaseEntity";
 
 
-export class BookRatingStatistic {
+export class BookRatingStatistic extends BaseEntity {
 
     id: number;
 
@@ -14,6 +14,7 @@ export class BookRatingStatistic {
 
 
     constructor(id?: number, book?: Book, value?: number, amount?: number) {
+        super();
         this.id = id;
         this.book = book;
         this.value = value;
@@ -23,6 +24,9 @@ export class BookRatingStatistic {
 
     static assign(a: BookRatingStatistic, b: Partial<BookRatingStatistic>) {
         a.id = b.id
+        a.createdAt = b.createdAt;
+        a.updatedAt = b.updatedAt;
+        a.deletedAt = b.deletedAt;
 
         a.book = b.book !== undefined
             ? Book.assign(new Book(), b.book)
@@ -30,7 +34,7 @@ export class BookRatingStatistic {
 
         a.value = b.value;
         a.amount = b.amount;
-        
+
         return a;
     }
 }

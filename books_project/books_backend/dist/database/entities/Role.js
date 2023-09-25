@@ -12,8 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Role = void 0;
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
-let Role = exports.Role = class Role {
+const BaseEntity_1 = require("./BaseEntity");
+let Role = exports.Role = class Role extends BaseEntity_1.BaseEntity {
     constructor(name) {
+        super();
         this.name = name;
     }
 };

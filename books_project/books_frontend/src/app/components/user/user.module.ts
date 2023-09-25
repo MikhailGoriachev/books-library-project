@@ -16,11 +16,20 @@ import { MatBadgeModule } from "@angular/material/badge";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatSelectModule } from "@angular/material/select";
 import { MatTabsModule } from "@angular/material/tabs";
-import { MatLineModule } from "@angular/material/core";
+import { MatLineModule, MatRippleModule } from "@angular/material/core";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatDialogModule } from "@angular/material/dialog";
+import { CartComponent } from './cart/cart.component';
+import { MatTableModule } from "@angular/material/table";
+import { BooksModule } from "./books/books.module";
+import { MatCardModule } from "@angular/material/card";
+import { PipesModule } from "../../pipes/pipes.module";
+import { ProfileComponent } from './profile/profile.component';
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { BooksManagementModule } from "./books-management/books-management.module";
+import { ModalsModule } from "./modals/modals.module";
 
 
 @NgModule({
@@ -28,13 +37,16 @@ import { MatDialogModule } from "@angular/material/dialog";
         NavigationComponent,
         MainComponent,
         FooterComponent,
-        AuthComponent
+        AuthComponent,
+        CartComponent,
+        ProfileComponent,
     ],
     exports: [
         NavigationComponent,
         FooterComponent
     ],
     imports: [
+        ModalsModule,
         UserRoutingModule,
         MatToolbarModule,
         MatButtonModule,
@@ -54,7 +66,14 @@ import { MatDialogModule } from "@angular/material/dialog";
         MatButtonModule,
         NgIf,
         MatDialogModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatTableModule,
+        BooksModule,
+        MatCardModule,
+        PipesModule,
+        MatRippleModule,
+        MatCheckboxModule,
+        BooksManagementModule,
     ]
 })
 export class UserModule {}

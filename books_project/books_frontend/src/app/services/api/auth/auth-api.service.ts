@@ -44,7 +44,8 @@ export class AuthApiService {
             AuthApiService.basePath + 'token',
             undefined,
             { Authorization: 'Bearer ' + this._localStorageService.refreshToken }
-        ).pipe() as Observable<Partial<any>>;
+        );
+        // ) as Observable<Partial<any>>;
     }
 
     getProfile(): Observable<User> {

@@ -20,6 +20,7 @@ import { UserComponent } from './components/user/user.component';
 import { UserModule } from "./components/user/user.module";
 import { CommonModule } from "@angular/common";
 import { UnauthorizedInterceptor } from "./interceptors/unauthorized/unauthorized.interceptor";
+import { PipesModule } from "./pipes/pipes.module";
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { UnauthorizedInterceptor } from "./interceptors/unauthorized/unauthorize
         MatLineModule,
         MatButtonToggleModule,
         UserModule,
-        CommonModule
+        PipesModule,
+        CommonModule,
     ],
     providers: [
         {
@@ -53,6 +55,7 @@ import { UnauthorizedInterceptor } from "./interceptors/unauthorized/unauthorize
             multi: true
         }
     ],
-    bootstrap: [AppComponent],
+    bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

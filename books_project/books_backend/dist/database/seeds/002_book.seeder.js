@@ -10,7 +10,7 @@ class BookSeeder {
                 image: 'war_and_peace.jpg',
                 price: 1500.00,
                 publicationYear: 1869,
-                isbn: '978-5-9900024-1-4',
+                isbn: '978-5-990-00241-4',
             },
             {
                 title: 'Преступление и наказание',
@@ -18,7 +18,7 @@ class BookSeeder {
                 image: 'crime_and_punishment.jpg',
                 price: 1200.00,
                 publicationYear: 1866,
-                isbn: '978-5-9900024-2-1',
+                isbn: '978-5-990-00242-1',
             },
             {
                 title: 'Анна Каренина',
@@ -26,7 +26,7 @@ class BookSeeder {
                 image: 'anna_karenina.jpg',
                 price: 1350.00,
                 publicationYear: 1877,
-                isbn: '978-5-9900024-3-8',
+                isbn: '978-5-990-00243-8',
             },
             {
                 title: 'Мастер и Маргарита',
@@ -34,7 +34,7 @@ class BookSeeder {
                 image: 'master_and_margarita.jpg',
                 price: 1100.00,
                 publicationYear: 1967,
-                isbn: '978-5-9900024-4-5',
+                isbn: '978-5-990-00244-5',
             },
             {
                 title: 'Герой нашего времени',
@@ -42,7 +42,7 @@ class BookSeeder {
                 image: 'hero_of_our_time.jpg',
                 price: 1000.00,
                 publicationYear: 1840,
-                isbn: '978-5-9900024-5-2',
+                isbn: '978-5-990-00261-2',
             },
             {
                 title: 'Братья Карамазовы',
@@ -50,7 +50,7 @@ class BookSeeder {
                 image: 'the_brothers_karamazov.jpg',
                 price: 1400.00,
                 publicationYear: 1880,
-                isbn: '978-5-9900024-6-9',
+                isbn: '978-5-990-00246-9',
             },
             {
                 title: 'Дубровский',
@@ -58,7 +58,7 @@ class BookSeeder {
                 image: 'dubrovsky.jpg',
                 price: 950.00,
                 publicationYear: 1841,
-                isbn: '978-5-9900024-7-6',
+                isbn: '978-5-990-00247-6',
             },
             {
                 title: 'Евгений Онегин',
@@ -66,7 +66,7 @@ class BookSeeder {
                 image: 'eugene_onegin.jpg',
                 price: 1050.00,
                 publicationYear: 1833,
-                isbn: '978-5-9900024-8-3',
+                isbn: '978-5-990-00248-3',
             },
             {
                 title: 'Отцы и дети',
@@ -74,7 +74,7 @@ class BookSeeder {
                 image: 'fathers_and_sons.jpg',
                 price: 1150.00,
                 publicationYear: 1862,
-                isbn: '978-5-9900024-9-0',
+                isbn: '978-5-990-00249-0',
             },
             {
                 title: 'Дети капитана Гранта',
@@ -82,7 +82,7 @@ class BookSeeder {
                 image: 'captain_grants_children.jpg',
                 price: 975.00,
                 publicationYear: 1868,
-                isbn: '978-5-9900024-1-4',
+                isbn: '978-5-990-00241-4',
             },
             {
                 title: 'Тихий Дон',
@@ -90,7 +90,7 @@ class BookSeeder {
                 image: 'quiet_flows_the_don.jpg',
                 price: 1450.00,
                 publicationYear: 1940,
-                isbn: '978-5-9900024-2-1',
+                isbn: '978-5-990-00242-1',
             },
             {
                 title: '12 стульев',
@@ -98,7 +98,7 @@ class BookSeeder {
                 image: 'the_twelve_chairs.jpg',
                 price: 1025.00,
                 publicationYear: 1928,
-                isbn: '978-5-9900024-3-8',
+                isbn: '978-5-990-00243-8',
             },
             {
                 title: 'Двенадцать',
@@ -106,7 +106,7 @@ class BookSeeder {
                 image: 'the_twelve.jpg',
                 price: 1075.00,
                 publicationYear: 1918,
-                isbn: '978-5-9900024-4-5',
+                isbn: '978-5-990-00244-5',
             },
             {
                 title: 'Мёртвые души',
@@ -114,7 +114,7 @@ class BookSeeder {
                 image: 'dead_souls.jpg',
                 price: 1125.00,
                 publicationYear: 1842,
-                isbn: '978-5-9900024-5-2',
+                isbn: '978-5-990-00245-2',
             },
             {
                 title: 'Пиковая дама',
@@ -122,7 +122,7 @@ class BookSeeder {
                 image: 'the_queen_of_spades.jpg',
                 price: 1175.00,
                 publicationYear: 1834,
-                isbn: '978-5-9900024-6-9',
+                isbn: '978-5-990-00246-9',
             },
             {
                 title: 'Метро 2033',
@@ -130,7 +130,7 @@ class BookSeeder {
                 image: 'metro_2033.jpg',
                 price: 1200.00,
                 publicationYear: 2005,
-                isbn: '978-5-9900024-7-6',
+                isbn: '978-5-990-00247-6',
             },
             {
                 title: 'Обломов',
@@ -138,7 +138,7 @@ class BookSeeder {
                 image: 'oblomov.jpg',
                 price: 925.00,
                 publicationYear: 1859,
-                isbn: '978-5-9900024-8-3',
+                isbn: '978-5-990-00248-3',
             },
             {
                 title: 'Председатель',
@@ -146,7 +146,7 @@ class BookSeeder {
                 image: 'the_chairman.jpg',
                 price: 975.00,
                 publicationYear: 1998,
-                isbn: '978-5-9900024-9-0',
+                isbn: '978-5-990-00249-0',
             },
             {
                 title: 'Тарас Бульба',
@@ -154,7 +154,7 @@ class BookSeeder {
                 image: 'taras_bulba.jpg',
                 price: 1050.00,
                 publicationYear: 1835,
-                isbn: '978-5-9900024-0-7',
+                isbn: '978-5-990-00240-7',
             },
         ]);
     }

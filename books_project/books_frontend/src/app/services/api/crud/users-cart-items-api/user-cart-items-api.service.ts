@@ -9,7 +9,7 @@ import { UserCartItemDto } from "../../../../dto/crud/user-cart-item.dto";
     providedIn: 'root'
 })
 export class UserCartItemsApiService {
-    private static readonly basePath = 'user-cart-items/';
+    private static readonly basePath = 'user-cart-items';
 
     constructor(private readonly _apiService: ApiService) { }
 

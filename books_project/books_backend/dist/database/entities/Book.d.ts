@@ -8,7 +8,8 @@ import { UserCartItem } from './UserCartItem';
 import { BookView } from './BookView';
 import { BookRatingStatistic } from './BookRatingStatistic';
 import { BookViewStatistic } from './BookViewStatistic';
-export declare class Book {
+import { BaseEntity } from './BaseEntity';
+export declare class Book extends BaseEntity {
     id: number;
     title: string;
     description: string;
@@ -21,9 +22,9 @@ export declare class Book {
     bookFiles: Relation<BookFile[]>;
     sales: Relation<Sale[]>;
     bookRatings: Relation<BookRating[]>;
-    bookRatingStatistics: Relation<BookRatingStatistic[]>;
+    bookRatingStatistic: Relation<BookRatingStatistic>;
     userCartItems: Relation<UserCartItem[]>;
     bookViews: Relation<BookView[]>;
-    bookViewStatistics: Relation<BookViewStatistic[]>;
-    constructor(title?: string, description?: any, image?: string, price?: number, publicationYear?: number, isbn?: string);
+    bookViewStatistic: Relation<BookViewStatistic>;
+    constructor(title?: string, description?: string, image?: string, price?: number, publicationYear?: number, isbn?: string);
 }

@@ -7,7 +7,7 @@ const config_1 = require("@nestjs/config");
 const all_exception_filter_1 = require("./filters/all-exception/all-exception.filter");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    app.useGlobalPipes(new common_1.ValidationPipe());
+    app.useGlobalPipes(new common_1.ValidationPipe({ transform: true }));
     app.useGlobalFilters(new all_exception_filter_1.AllExceptionFilter());
     app.enableCors({ origin: '*' });
     const configService = app.get(config_1.ConfigService);

@@ -17,6 +17,11 @@ export class BookFilterDto {
     id?: number;
 
     @IsOptional()
+    @Transform(transformStringToArrayNumber)
+    @IsArray()
+    ids?: number[];
+
+    @IsOptional()
     @IsString()
     @IsNotEmpty()
     @MaxLength(250)
@@ -75,7 +80,8 @@ export class BookFilterDto {
     maxPublicationYear?: number;
 
     @IsOptional()
-    @IsISBN()
+    // @IsISBN(13)
+    @IsString()
     isbn?: string;
 
     @IsOptional()

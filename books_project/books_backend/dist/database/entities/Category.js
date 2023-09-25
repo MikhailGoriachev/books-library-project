@@ -15,8 +15,10 @@ const Book_1 = require("./Book");
 const typeorm_2 = require("typeorm");
 const CategoryView_1 = require("./CategoryView");
 const CategoryViewStatistic_1 = require("./CategoryViewStatistic");
-let Category = exports.Category = class Category {
+const BaseEntity_1 = require("./BaseEntity");
+let Category = exports.Category = class Category extends BaseEntity_1.BaseEntity {
     constructor(name) {
+        super();
         this.name = name;
     }
 };
@@ -38,9 +40,9 @@ __decorate([
     __metadata("design:type", Object)
 ], Category.prototype, "categoryViews", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(type => CategoryViewStatistic_1.CategoryViewStatistic, categoryViewStatistic => categoryViewStatistic.category),
+    (0, typeorm_1.OneToOne)(type => CategoryViewStatistic_1.CategoryViewStatistic, categoryViewStatistic => categoryViewStatistic.category),
     __metadata("design:type", Object)
-], Category.prototype, "categoryViewStatistics", void 0);
+], Category.prototype, "categoryViewStatistic", void 0);
 exports.Category = Category = __decorate([
     (0, typeorm_1.Entity)(),
     __metadata("design:paramtypes", [String])

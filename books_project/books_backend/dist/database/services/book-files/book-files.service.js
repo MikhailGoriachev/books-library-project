@@ -26,16 +26,18 @@ let BookFilesService = exports.BookFilesService = class BookFilesService {
         this.bookRepository = bookRepository;
         this.fileExtensionRepository = fileExtensionRepository;
     }
-    async findAll(filter) {
+    async findAll(filter, withDeleted = false) {
         return this.bookFileRepository.find({
             where: this.getFilter(filter),
             relations: ['fileExtension', 'book'],
+            withDeleted
         });
     }
-    async findOne(filter) {
+    async findOne(filter, withDeleted = false) {
         return this.bookFileRepository.findOne({
             where: this.getFilter(filter),
             relations: ['fileExtension', 'book'],
+            withDeleted
         });
     }
     getFilter(filter) {
@@ -48,6 +50,9 @@ let BookFilesService = exports.BookFilesService = class BookFilesService {
     }
     async save(item) {
         return this.bookFileRepository.save(item);
+    }
+    async delete(item) {
+        return this.bookFileRepository.remove(item);
     }
 };
 exports.BookFilesService = BookFilesService = __decorate([

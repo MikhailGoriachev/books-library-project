@@ -8,9 +8,10 @@ import { CategoryView } from './CategoryView';
 import { BlockedUser } from './BlockedUser';
 import { Role } from './Role';
 import { UserPassword } from './UserPassword';
+import { BaseEntity } from './BaseEntity';
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -55,6 +56,7 @@ export class User {
     
 
     constructor(name?: string, email?: string) {
+        super();
         this.name = name;
         this.email = email;
     }

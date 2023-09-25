@@ -12,13 +12,14 @@ const user_panel_service_1 = require("./panels/user-panel/user-panel.service");
 const admin_panel_service_1 = require("./panels/admin-panel/admin-panel.service");
 const database_module_1 = require("../database/database.module");
 const api_config_service_1 = require("./api-config/api-config.service");
+const guest_panel_service_1 = require("./panels/guest-panel/guest-panel.service");
 let ServicesModule = exports.ServicesModule = class ServicesModule {
 };
 exports.ServicesModule = ServicesModule = __decorate([
     (0, common_1.Module)({
         imports: [database_module_1.DatabaseModule],
-        providers: [api_config_service_1.ApiConfigService, user_panel_service_1.UserPanelService, admin_panel_service_1.AdminPanelService],
-        exports: [api_config_service_1.ApiConfigService, user_panel_service_1.UserPanelService, admin_panel_service_1.AdminPanelService]
+        providers: [api_config_service_1.ApiConfigService, user_panel_service_1.UserPanelService, admin_panel_service_1.AdminPanelService, guest_panel_service_1.GuestPanelService],
+        exports: [api_config_service_1.ApiConfigService, user_panel_service_1.UserPanelService, admin_panel_service_1.AdminPanelService, guest_panel_service_1.GuestPanelService]
     })
 ], ServicesModule);
 //# sourceMappingURL=services.module.js.map

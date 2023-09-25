@@ -40,37 +40,53 @@ import * as fs from 'fs';
 import { join } from 'path';
 import * as process from 'process';
 import { ApiConfigService } from '../../api-config/api-config.service';
+import { Sale } from '../../../database/entities/Sale';
+import { transliterate as tr, slugify } from 'transliteration';
+import * as console from 'console';
+import { UserEditProfileDto } from '../../../dto/user-panel/user-edit-profile.dto';
+import { UserPasswordEditDto } from '../../../dto/user-panel/user-password-edit.dto';
+import * as bcrypt from 'bcrypt';
+import { UserPasswordsService } from '../../../database/services/user-passwords/user-passwords.service';
 
 @Injectable()
 export class UserPanelService {
-    constructor(private _usersService: UsersService,
-                private _userCartItemsService: UserCartItemsService,
-                private _booksService: BooksService,
-                private _bookRatingsService: BookRatingsService,
-                private _bookRatingStatisticsService: BookRatingStatisticsService,
-                private _bookViewsService: BookViewsService,
-                private _bookViewStatisticsService: BookViewStatisticsService,
-                private _bookFilesService: BookFilesService,
-                private _authorsService: AuthorsService,
-                private _authorViewsService: AuthorViewsService,
-                private _authorViewStatisticsService: AuthorViewStatisticsService,
-                private _categoriesService: CategoriesService,
-                private _categoryViewsService: CategoryViewsService,
-                private _categoryViewStatisticsService: CategoryViewStatisticsService,
-                private _salesService: SalesService,
-                private _apiConfigService: ApiConfigService,
+    constructor(private readonly _usersService: UsersService,
+                private readonly _userCartItemsService: UserCartItemsService,
+                private readonly _booksService: BooksService,
+                private readonly _bookRatingsService: BookRatingsService,
+                private readonly _bookRatingStatisticsService: BookRatingStatisticsService,
+                private readonly _bookViewsService: BookViewsService,
+                private readonly _bookViewStatisticsService: BookViewStatisticsService,
+                private readonly _bookFilesService: BookFilesService,
+                private readonly _authorsService: AuthorsService,
+                private readonly _authorViewsService: AuthorViewsService,
+                private readonly _authorViewStatisticsService: AuthorViewStatisticsService,
+                private readonly _categoriesService: CategoriesService,
+                private readonly _categoryViewsService: CategoryViewsService,
+                private readonly _categoryViewStatisticsService: CategoryViewStatisticsService,
+                private readonly _salesService: SalesService,
+                private readonly _apiConfigService: ApiConfigService,
+                private readonly _userPasswordsService: UserPasswordsService,
                 @InjectEntityManager()
-                private _entityManager: EntityManager) {}
+                private readonly _entityManager: EntityManager) {}
 
     // добавить книгу в корзину
     async addBookToCart(user: User, bookId: number): Promise<UserCartItem> {
-        const isExists = await this._userCartItemsService.findOne({
+        const isExistsCart = await this._userCartItemsService.findOne({
             userId: user.id,
             bookId: bookId,
         });
 
-        if (isExists)
+        if (isExistsCart)
             throw new Error('The book exists in the cart');
+
+        const isExistsSales = await this._salesService.findOne({
+            userId: user.id,
+            bookId: bookId,
+        });
+
+        if (isExistsSales)
+            throw new Error('The book has already been purchased');
 
         const book = await this._booksService.findOne({ id: bookId });
 
@@ -92,13 +108,22 @@ export class UserPanelService {
         if (!isExists)
             throw new Error('The book is not exists in the cart');
 
-        await this._userCartItemsService.remove(isExists.id);
+
+        const isExistsSales = await this._salesService.findOne({
+            userId: user.id,
+            bookId: bookId,
+        });
+
+        if (isExistsSales)
+            throw new Error('The book has already been purchased');
+
+        await this._userCartItemsService.delete(isExists.id);
     }
 
     // очистка корзины пользователя
     async clearCart(user: User) {
         const cartItems = await this._userCartItemsService.findAll({ userId: user.id });
-        await this._userCartItemsService.removeAll(cartItems);
+        await this._userCartItemsService.deleteAll(cartItems);
     }
 
     // получить список книг в корзине
@@ -107,8 +132,8 @@ export class UserPanelService {
     }
 
     // установить оценку книги
-    async setBookRating(user: User, rating: SetBookRatingDto) {
-        const item = await this._bookRatingsService.findOne({
+    async setBookRating(user: User, rating: SetBookRatingDto): Promise<BookRating> {
+        let bookRating = await this._bookRatingsService.findOne({
             userId: user.id, bookId: rating.bookId,
         });
 
@@ -117,15 +142,16 @@ export class UserPanelService {
         if (!book)
             throw new Error('The book is not exists');
 
-        const queryRunner = this._entityManager.queryRunner;
-        await queryRunner.startTransaction();
+        await this._entityManager.transaction(async entityManager => {
 
-        try {
-            if (!item) {
-                await this._entityManager.save(new BookRating(user, book, rating.value));
+            const isExistsBookRating = !!bookRating;
+            let oldValue = bookRating?.value;
+
+            if (!isExistsBookRating) {
+                bookRating = await this._entityManager.save(new BookRating(user, book, rating.value));
             } else {
-                item.value = rating.value;
-                await this._entityManager.save(item);
+                bookRating.value = rating.value;
+                await this._entityManager.save(bookRating);
             }
 
             const bookRatingStatistic = await this._bookRatingStatisticsService.findOne(
@@ -134,14 +160,14 @@ export class UserPanelService {
 
             if (bookRatingStatistic) {
 
-                if (item) {
-                    bookRatingStatistic.value = ((bookRatingStatistic.value * bookRatingStatistic.amount) - item.value)
+                if (isExistsBookRating) {
+                    bookRatingStatistic.value = (((bookRatingStatistic.value * bookRatingStatistic.amount) - oldValue) + bookRating.value)
                         / bookRatingStatistic.amount;
 
                     await this._entityManager.save(bookRatingStatistic);
                 } else {
-                    bookRatingStatistic.value = ((bookRatingStatistic.value * bookRatingStatistic.amount) - item.value)
-                        / bookRatingStatistic.amount + 1;
+                    bookRatingStatistic.value = ((bookRatingStatistic.value * bookRatingStatistic.amount) + bookRating.value)
+                        / (bookRatingStatistic.amount + 1);
 
                     bookRatingStatistic.amount++;
 
@@ -152,25 +178,73 @@ export class UserPanelService {
             } else
                 await this._entityManager.save(new BookRatingStatistic(book, rating.value, 1));
 
-            await queryRunner.commitTransaction();
-        } catch (err) {
-            await queryRunner.rollbackTransaction();
-            throw err;
-        } finally {
-            await queryRunner.release();
-        }
+        });
+
+        return bookRating;
+
+        // const queryRunner = this._entityManager.queryRunner;
+        // await queryRunner.startTransaction();
+        //
+        // try {
+        //     if (!item) {
+        //         await this._entityManager.save(new BookRating(user, book, rating.value));
+        //     } else {
+        //         item.value = rating.value;
+        //         await this._entityManager.save(item);
+        //     }
+        //
+        //     const bookRatingStatistic = await this._bookRatingStatisticsService.findOne(
+        //         { bookId: rating.bookId },
+        //     );
+        //
+        //     if (bookRatingStatistic) {
+        //
+        //         if (item) {
+        //             bookRatingStatistic.value = ((bookRatingStatistic.value * bookRatingStatistic.amount) -
+        // item.value) / bookRatingStatistic.amount;  await this._entityManager.save(bookRatingStatistic); } else {
+        // bookRatingStatistic.value = ((bookRatingStatistic.value * bookRatingStatistic.amount) - item.value) /
+        // bookRatingStatistic.amount + 1;  bookRatingStatistic.amount++;  await
+        // this._entityManager.save(bookRatingStatistic); }  await this._entityManager.save(bookRatingStatistic); }
+        // else await this._entityManager.save(new BookRatingStatistic(book, rating.value, 1));  await
+        // queryRunner.commitTransaction(); } catch (err) { await queryRunner.rollbackTransaction(); throw err; }
+        // finally { await queryRunner.release(); }
     }
 
     // снять оценку с книги
     async removeBookRating(user: User, bookId: number): Promise<BookRating | void> {
-        const item = await this._bookRatingsService.findOne({
+        const bookRating = await this._bookRatingsService.findOne({
             userId: user.id, bookId,
         });
 
-        if (!item)
+        if (!bookRating)
             return;
 
-        await this._bookRatingsService.delete(item);
+        await this._entityManager.transaction(async entityManager => {
+
+            const bookRatingStatistic = await this._bookRatingStatisticsService.findOne(
+                { bookId },
+            );
+
+            if (bookRatingStatistic) {
+
+                bookRatingStatistic.value = ((bookRatingStatistic.value * bookRatingStatistic.amount) - bookRating.value)
+                    / (bookRatingStatistic.amount - 1);
+
+                bookRatingStatistic.amount--;
+
+                await this._entityManager.save(bookRatingStatistic);
+
+                await this._entityManager.delete(BookRating, { id: bookRating.id });
+            } else
+                return;
+        });
+    }
+
+    // получить оценку книги
+    async getBookRating(user: User, bookId: number): Promise<BookRating | void> {
+        return await this._bookRatingsService.findOne({
+            userId: user.id, bookId,
+        });
     }
 
     // запись просмотра книги в статистику
@@ -240,21 +314,70 @@ export class UserPanelService {
 
     // скачать купленную книгу
     async downloadBook(user: User, bookFileId: number) {
-        const bookFile = await this._bookFilesService.findOne({ id: bookFileId });
+        const bookFile = await this._bookFilesService.findOne({ id: bookFileId }, true);
 
         if (!bookFile)
             throw new HttpException('Book file is not exists', 404);
 
-        // поиск книги в покупках пользователя
-        // const sale = await this._salesService.findOne({ userId: user.id, bookId: bookFile.book.id });
-        //
-        // if (!sale)
-        //     throw new HttpException('Sale is not exists', 404);
+        if (!user.roles.find(r => r.name === 'admin')) {
+            // поиск книги в покупках пользователя
+            const sale = await this._salesService.findOne({ userId: user.id, bookId: bookFile.book.id });
 
+            if (!sale)
+                throw new HttpException('Sale is not exists', 404);
+        }
         // const file = fs.createReadStream(join(this._apiConfigService.storageBookFilesPath, 'kali.png'));
-        const file = fs.createReadStream(join(this._apiConfigService.storageBookFilesPath, bookFile.path));
+        const file = fs.createReadStream(
+            join(this._apiConfigService.storageBookFilesPath, bookFile.path),
+            // join(this._apiConfigService.storageBookFilesPath, 'kali.png'),
+        );
 
-        return new StreamableFile(file, { disposition: `filename="${bookFile.path + '.' + bookFile.fileExtension.name}"` });
+        const fileName = `${tr(bookFile.book.title)}.${bookFile.fileExtension.name}`
+            .replace(/ /g, '_')
+            .toLowerCase();
+        return new StreamableFile(file,
+            { disposition: `filename="${fileName}"` });
         // return new StreamableFile(file);
+    }
+
+    // получить список покупок
+    getSales(user: User) {
+        return this._salesService.findAll({ userId: user.id });
+    }
+
+    // купить книги
+    async buy(user: User) {
+        const items = await this._userCartItemsService.findAll({ userId: user.id });
+
+        const saleDate = new Date();
+        const sales = items.map(c => new Sale(user, c.book, c.book.price, saleDate));
+
+        const result = await this._salesService.saveAll(sales);
+
+        await this.clearCart(user);
+
+        return result;
+    }
+
+    // изменить данные профиля
+    async profileEdit(user: User, userEditProfileDto: UserEditProfileDto) {
+        user.name = userEditProfileDto.name;
+
+        return this._usersService.save(user);
+    }
+
+    // изменить пароль
+    async passwordEdit(user: User, userPasswordEditDto: UserPasswordEditDto) {
+        user = await this._usersService.getUserWithPassword({ id: user.id });
+
+        if (await bcrypt.compare(userPasswordEditDto.password, user.userPassword.password)) {
+            const saltRounds = 10;
+            user.userPassword.password = await bcrypt.hash(userPasswordEditDto.newPassword, saltRounds);
+
+            await this._userPasswordsService.save(user.userPassword);
+            return { result: true };
+        }
+
+        return { result: false };
     }
 }

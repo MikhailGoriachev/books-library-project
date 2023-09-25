@@ -25,6 +25,13 @@ __decorate([
 ], AuthorFilterDto.prototype, "id", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
+    (0, class_transformer_1.Transform)(utils_1.transformStringToArrayNumber),
+    (0, class_transformer_1.Type)(() => Array),
+    (0, class_validator_1.IsArray)(),
+    __metadata("design:type", Array)
+], AuthorFilterDto.prototype, "ids", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MaxLength)(150),

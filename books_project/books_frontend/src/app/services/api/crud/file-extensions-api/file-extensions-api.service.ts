@@ -9,7 +9,7 @@ import { FileExtensionDto } from "../../../../dto/crud/file-extension.dto";
     providedIn: 'root'
 })
 export class FileExtensionsApiService {
-    private static readonly basePath = 'file-extensions/';
+    private static readonly basePath = 'file-extensions';
 
     constructor(private readonly _apiService: ApiService) { }
 

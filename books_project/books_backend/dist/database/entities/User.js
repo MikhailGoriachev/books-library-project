@@ -20,13 +20,15 @@ const CategoryView_1 = require("./CategoryView");
 const BlockedUser_1 = require("./BlockedUser");
 const Role_1 = require("./Role");
 const UserPassword_1 = require("./UserPassword");
-let User = exports.User = class User {
+const BaseEntity_1 = require("./BaseEntity");
+let User = exports.User = class User extends BaseEntity_1.BaseEntity {
     get isBlocked() {
         return this.blockedUsers
             ? this.blockedUsers.find(b => b.unblockedAt === null) !== undefined
             : null;
     }
     constructor(name, email) {
+        super();
         this.name = name;
         this.email = email;
     }

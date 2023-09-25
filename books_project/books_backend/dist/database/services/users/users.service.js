@@ -22,16 +22,18 @@ let UsersService = exports.UsersService = class UsersService {
     constructor(usersRepository) {
         this.usersRepository = usersRepository;
     }
-    async findAll(filter) {
+    async findAll(filter, withDeleted = false) {
         return this.usersRepository.find({
             where: this.getFilter(filter),
             relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
+            withDeleted
         });
     }
-    async findOne(filter) {
+    async findOne(filter, withDeleted = false) {
         return this.usersRepository.findOne({
             where: this.getFilter(filter),
             relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
+            withDeleted
         });
     }
     getFilter(filter) {

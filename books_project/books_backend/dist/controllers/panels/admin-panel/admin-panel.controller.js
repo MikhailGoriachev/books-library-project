@@ -20,6 +20,12 @@ const roles_guard_1 = require("../../../guards/roles/roles.guard");
 const roles_decorator_1 = require("../../../decorators/roles/roles.decorator");
 const RolesEnum_1 = require("../../../infrastructure/RolesEnum");
 const user_role_dto_1 = require("../../../dto/user-role.dto");
+const platform_express_1 = require("@nestjs/platform-express");
+const process = require("process");
+const book_edit_dto_1 = require("../../../dto/admin-panel/book/book-edit.dto");
+const book_create_dto_1 = require("../../../dto/admin-panel/book/book-create.dto");
+const author_create_dto_1 = require("../../../dto/admin-panel/author/author-create.dto");
+const author_edit_dto_1 = require("../../../dto/admin-panel/author/author-edit.dto");
 let AdminPanelController = exports.AdminPanelController = class AdminPanelController {
     constructor(_adminPanelService) {
         this._adminPanelService = _adminPanelService;
@@ -39,7 +45,50 @@ let AdminPanelController = exports.AdminPanelController = class AdminPanelContro
     async removeUserRole(userRole) {
         await this._adminPanelService.removeUserRole(userRole);
     }
-    async addBook() {
+    async addBook(bookCreateDto) {
+        return this._adminPanelService.createBook(bookCreateDto);
+    }
+    async editBook(bookEditDto) {
+        return this._adminPanelService.editBook(bookEditDto);
+    }
+    async uploadBookImageFile(file, fileName) {
+        return {
+            fileName: await this._adminPanelService
+                .uploadFile(file, `${process.cwd()}/public/images/books`, fileName),
+        };
+    }
+    async uploadBookFile(file, fileName) {
+        return {
+            fileName: await this._adminPanelService
+                .uploadFile(file, `${process.cwd()}/storage/files/books`, fileName),
+        };
+    }
+    async deleteBookFile(data) {
+        await this._adminPanelService.deleteBookFile(data.bookFileId);
+    }
+    async deleteBook(data) {
+        await this._adminPanelService.deleteBook(data.bookId);
+    }
+    async restoreBook(data) {
+        await this._adminPanelService.restoreBook(data.bookId);
+    }
+    async addAuthor(bookCreateDto) {
+        return this._adminPanelService.createAuthor(bookCreateDto);
+    }
+    async editAuthor(bookEditDto) {
+        return this._adminPanelService.editAuthor(bookEditDto);
+    }
+    async uploadAuthorImageFile(file, fileName) {
+        return {
+            fileName: await this._adminPanelService
+                .uploadFile(file, `${process.cwd()}/public/images/authors`, fileName),
+        };
+    }
+    async deleteAuthor(data) {
+        await this._adminPanelService.deleteAuthor(data.authorId);
+    }
+    async restoreAuthor(data) {
+        await this._adminPanelService.restoreAuthor(data.authorId);
     }
 };
 __decorate([
@@ -84,11 +133,106 @@ __decorate([
 ], AdminPanelController.prototype, "removeUserRole", null);
 __decorate([
     (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
-    (0, common_1.Post)('user/roles/add'),
+    (0, common_1.Post)('books/create'),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [book_create_dto_1.BookCreateDto]),
     __metadata("design:returntype", Promise)
 ], AdminPanelController.prototype, "addBook", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Put)('books/edit'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [book_edit_dto_1.BookEditDto]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "editBook", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    (0, common_1.Post)('upload/book/image'),
+    __param(0, (0, common_1.UploadedFile)()),
+    __param(1, (0, common_1.Body)('fileName')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "uploadBookImageFile", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    (0, common_1.Post)('upload/book/file'),
+    __param(0, (0, common_1.UploadedFile)()),
+    __param(1, (0, common_1.Body)('fileName')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "uploadBookFile", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Post)('delete/book/file'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "deleteBookFile", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Post)('delete/book'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "deleteBook", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Post)('restore/book'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "restoreBook", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Post)('authors/create'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [author_create_dto_1.AuthorCreateDto]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "addAuthor", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Put)('authors/edit'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [author_edit_dto_1.AuthorEditDto]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "editAuthor", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    (0, common_1.Post)('upload/author/image'),
+    __param(0, (0, common_1.UploadedFile)()),
+    __param(1, (0, common_1.Body)('fileName')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "uploadAuthorImageFile", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Post)('delete/author'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "deleteAuthor", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Post)('restore/author'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "restoreAuthor", null);
 exports.AdminPanelController = AdminPanelController = __decorate([
     (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, common_1.UseGuards)(jwt_access_auth_guard_1.JwtAccessAuthGuard),

@@ -19,26 +19,52 @@ const Author_1 = require("../../entities/Author");
 const typeorm_2 = require("typeorm");
 const utils_1 = require("../../../infrastructure/utils");
 const Book_1 = require("../../entities/Book");
+const page_dto_1 = require("../../../dto/pagination/page.dto");
+const page_meta_dto_1 = require("../../../dto/pagination/page-meta.dto");
 let AuthorsService = exports.AuthorsService = class AuthorsService {
     constructor(authorRepository, bookRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
     }
-    async findAll(filter) {
+    async findAll(filter, withDeleted = false) {
         return this.authorRepository.find({
             where: this.getFilter(filter),
-            relations: ['books'],
+            relations: ['books', 'authorViewStatistic'],
+            withDeleted,
         });
     }
-    async findOne(filter) {
+    async findOne(filter, withDeleted = false) {
         return this.authorRepository.findOne({
             where: this.getFilter(filter),
-            relations: ['books'],
+            relations: ['books', 'authorViewStatistic'],
+            withDeleted,
         });
     }
+    async findAllByPagination(filter, withDeleted = false) {
+        const count = await this.authorRepository.count({
+            where: this.getFilter(filter),
+            skip: filter.skip,
+            take: filter.take,
+            relations: ['books', 'authorViewStatistic'],
+            withDeleted,
+        });
+        const items = await this.authorRepository.find({
+            where: Object.assign({}, this.getFilter(filter)),
+            skip: filter.skip,
+            take: filter.take,
+            relations: ['books', 'authorViewStatistic'],
+            withDeleted,
+        });
+        const pageMetaDto = new page_meta_dto_1.PageMetaDto({
+            itemCount: count,
+            pageOptionsDto: filter,
+        });
+        return new page_dto_1.PageDto(items, pageMetaDto);
+    }
     getFilter(filter) {
+        var _a;
         const fields = {};
-        fields['id'] = filter.id;
+        fields['id'] = (_a = filter.id) !== null && _a !== void 0 ? _a : (filter.ids ? (0, typeorm_2.In)(filter.ids) : undefined);
         fields['name'] = (0, utils_1.getLike)(filter.name);
         fields['description'] = (0, utils_1.getLike)(filter.description);
         fields['detailsLink'] = (0, utils_1.getLike)(filter.detailsLink);
@@ -48,6 +74,9 @@ let AuthorsService = exports.AuthorsService = class AuthorsService {
     }
     async save(item) {
         return this.authorRepository.save(item);
+    }
+    async delete(item) {
+        return this.authorRepository.softRemove(item);
     }
 };
 exports.AuthorsService = AuthorsService = __decorate([

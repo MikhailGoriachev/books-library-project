@@ -1,9 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, Relation, OneToMany, ManyToOne } from 'typeorm';
 import { Book } from './Book';
 import { FileExtension } from './FileExtension';
+import { BaseEntity } from './BaseEntity';
 
 @Entity()
-export class BookFile {
+export class BookFile extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -18,6 +19,7 @@ export class BookFile {
 
 
     constructor(path?: string, fileExtension?: FileExtension, book?: Book) {
+        super();
         this.path = path;
         this.fileExtension = fileExtension;
         this.book = book;

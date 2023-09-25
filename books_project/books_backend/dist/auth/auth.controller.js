@@ -56,6 +56,7 @@ let AuthController = exports.AuthController = class AuthController {
         }
     }
     async getAccessToken(req) {
+        console.log(`GET ACCESS TOKEN ${new Date()}`);
         return this._authService.generateJwtAccessToken(req.user.email);
     }
     getProfile(req) {

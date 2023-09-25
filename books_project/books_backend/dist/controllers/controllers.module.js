@@ -31,6 +31,7 @@ const book_rating_statistics_controller_1 = require("./crud/book-rating-statisti
 const category_view_statistics_controller_1 = require("./crud/category-view-statistics/category-view-statistics.controller");
 const book_view_statistics_controller_1 = require("./crud/book-view-statistics/book-view-statistics.controller");
 const services_module_1 = require("../services/services.module");
+const guest_panel_controller_1 = require("./panels/guest-panel/guest-panel.controller");
 let ControllersModule = exports.ControllersModule = class ControllersModule {
 };
 exports.ControllersModule = ControllersModule = __decorate([
@@ -57,6 +58,7 @@ exports.ControllersModule = ControllersModule = __decorate([
             user_passwords_controller_1.UserPasswordsController,
             user_panel_controller_1.UserPanelController,
             admin_panel_controller_1.AdminPanelController,
+            guest_panel_controller_1.GuestPanelController,
         ],
         imports: [database_module_1.DatabaseModule, services_module_1.ServicesModule],
         exports: [database_module_1.DatabaseModule]

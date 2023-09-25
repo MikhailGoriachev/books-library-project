@@ -9,7 +9,7 @@ import { RoleDto } from "../../../../dto/crud/role.dto";
     providedIn: 'root'
 })
 export class RolesApiService {
-    private static readonly basePath = 'roles/';
+    private static readonly basePath = 'roles';
 
     constructor(private readonly _apiService: ApiService) { }
 

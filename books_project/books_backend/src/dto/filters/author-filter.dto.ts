@@ -16,6 +16,12 @@ export class AuthorFilterDto {
     id?: number;
 
     @IsOptional()
+    @Transform(transformStringToArrayNumber)
+    @Type(() => Array<Number>)
+    @IsArray()
+    ids?: number[];
+
+    @IsOptional()
     @IsString()
     @IsNotEmpty()
     @MaxLength(150)

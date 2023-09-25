@@ -2,7 +2,8 @@ import { Relation } from 'typeorm';
 import { Book } from './Book';
 import { AuthorView } from './AuthorView';
 import { AuthorViewStatistic } from './AuthorViewStatistic';
-export declare class Author {
+import { BaseEntity } from './BaseEntity';
+export declare class Author extends BaseEntity {
     id: number;
     name: string;
     description: string;
@@ -10,6 +11,6 @@ export declare class Author {
     image: string;
     books: Relation<Book[]>;
     authorViews: Relation<AuthorView[]>;
-    authorViewStatistics: Relation<AuthorViewStatistic[]>;
+    authorViewStatistic: Relation<AuthorViewStatistic>;
     constructor(name?: string, description?: string, detailsLink?: string, image?: string);
 }

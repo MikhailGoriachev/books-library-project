@@ -12,8 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryViewStatistic = void 0;
 const typeorm_1 = require("typeorm");
 const Category_1 = require("./Category");
-let CategoryViewStatistic = exports.CategoryViewStatistic = class CategoryViewStatistic {
+const BaseEntity_1 = require("./BaseEntity");
+let CategoryViewStatistic = exports.CategoryViewStatistic = class CategoryViewStatistic extends BaseEntity_1.BaseEntity {
     constructor(category, amount) {
+        super();
         this.category = category;
         this.amount = amount;
     }
@@ -23,7 +25,8 @@ __decorate([
     __metadata("design:type", Number)
 ], CategoryViewStatistic.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(type => Category_1.Category, category => category.categoryViewStatistics, { cascade: true }),
+    (0, typeorm_1.OneToOne)(type => Category_1.Category, category => category.categoryViewStatistic),
+    (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Object)
 ], CategoryViewStatistic.prototype, "category", void 0);
 __decorate([

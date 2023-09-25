@@ -26,6 +26,12 @@ __decorate([
 ], BookFilterDto.prototype, "id", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
+    (0, class_transformer_1.Transform)(utils_1.transformStringToArrayNumber),
+    (0, class_validator_1.IsArray)(),
+    __metadata("design:type", Array)
+], BookFilterDto.prototype, "ids", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MaxLength)(250),
@@ -93,7 +99,7 @@ __decorate([
 ], BookFilterDto.prototype, "maxPublicationYear", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsISBN)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], BookFilterDto.prototype, "isbn", void 0);
 __decorate([

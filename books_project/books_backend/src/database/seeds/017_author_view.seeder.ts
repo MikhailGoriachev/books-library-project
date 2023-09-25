@@ -19,11 +19,13 @@ export default class AuthorViewSeeder implements Seeder {
         const authors = await authorRepository.find();
 
         const n = 150;
+        
+        const guest = users.find(u => u.name === 'guest');
 
         const authorViews = Array(n)
             .fill(0)
             .map((_) => {
-                const user = randomInt(0, 10) < 3 ? null : users[randomInt(0, users.length)];
+                const user = randomInt(0, 10) < 3 ? guest : users[randomInt(0, users.length)];
                 const author = authors[randomInt(0, authors.length)];
 
                 const date = new Date();

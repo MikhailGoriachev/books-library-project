@@ -1,38 +1,97 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="">
     <mat-toolbar-row>
         <!--    <span>Your Logo</span>-->
         <div>
-<!--            <button mat-button routerLink="/">-->
-<!--                <mat-icon svgIcon="logo" class="h-full"></mat-icon>-->
-<!--                BookShop-->
-<!--            </button>-->
-            <button mat-button routerLink="/" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-link">Главная</button>
-            <button mat-button routerLink="/books" routerLinkActive="active-link">Книги</button>
-            <button mat-button routerLink="/authors" routerLinkActive="active-link">Авторы</button>
+            <!--            <button mat-button routerLink="/">-->
+            <!--                <mat-icon svgIcon="logo" class="h-full"></mat-icon>-->
+            <!--                BookShop-->
+            <!--            </button>-->
+            <button mat-button class="mx-2" routerLink="/" [routerLinkActiveOptions]="{ exact: true }"
+                    routerLinkActive="active-link">
+                <mat-icon>home</mat-icon>&nbsp;Главная
+            </button>
+
+            <button mat-button class="mx-2" routerLink="/books" routerLinkActive="active-link">
+                <mat-icon>auto_stories</mat-icon>&nbsp;Книги
+            </button>
+
+            <button mat-button class="mx-2" routerLink="/authors" routerLinkActive="active-link">
+                <mat-icon>self_improvement</mat-icon>&nbsp;Авторы
+            </button>
+
+            <!-- Для пользователя -->
+            <button mat-button class="mx-2" *ngIf="user" routerLink="/my-books" routerLinkActive="active-link">
+                <mat-icon>collections_bookmark</mat-icon>&nbsp;Мои книги
+            </button>
+
+            <!-- Для панели администратора -->
+            <button mat-button class="mx-2" *ngIf="isAdmin" [matMenuTriggerFor]="dataMenu"
+                    routerLinkActive="active-link">
+                <mat-icon>storage</mat-icon>&nbsp;Управление данными
+            </button>
+
+            <mat-menu #dataMenu='matMenu'>
+                <button mat-menu-item routerLink="/books-management" routerLinkActive="active-link">
+                    <mat-icon>auto_stories</mat-icon>&nbsp;Книги
+                </button>
+<!--                <mat-divider></mat-divider>-->
+                <button mat-menu-item routerLink="/authors-management" routerLinkActive="active-link">
+                    <mat-icon>self_improvement</mat-icon>&nbsp;Авторы
+                </button>
+<!--                <mat-divider></mat-divider>-->
+                <button mat-menu-item routerLink="/users-management" routerLinkActive="active-link">
+                    <mat-icon>groups</mat-icon>&nbsp;Пользователи
+                </button>
+            </mat-menu>
+
+            <button mat-button class="mx-2" *ngIf="isAdmin" [matMenuTriggerFor]="statisticMenu"
+                    routerLinkActive="active-link">
+<!--                <mat-icon>bar_chart</mat-icon>&nbsp;Статистика-->
+                <mat-icon>leaderboard</mat-icon>&nbsp;Статистика
+            </button>
+
+            <mat-menu #statisticMenu='matMenu'>
+                <button mat-menu-item routerLink="/books-management" routerLinkActive="active-link">
+                    <mat-icon>auto_stories</mat-icon>&nbsp;Книги
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item routerLink="/authors-management" routerLinkActive="active-link">
+                    <mat-icon>self_improvement</mat-icon>&nbsp;Авторы
+                </button>
+            </mat-menu>
+
         </div>
         <div class="w-full"></div>
         <div class="flex">
-            <ng-container *ngIf="user">
-                <button mat-button matBadge="4" matBadgeColor="accent" class="mx-5">
-<!--                <button mat-button matBadge="{{cartItems.length}}" matBadgeColor="accent" class="mx-5">-->
-                    <mat-icon>local_mall</mat-icon>
-                    Корзина
-                </button>
+            <button mat-button matBadge="{{cartItems?.length}}" matBadgeColor="accent" class="mx-5"
+                    (click)="cart()">
+                <mat-icon>local_mall</mat-icon>
+                Корзина
+            </button>
 
-                <button mat-raised-button [matMenuTriggerFor]="authMenu" routerLink="/user">
+            <ng-container *ngIf="user">
+                <!--                <button mat-button matBadge="4" matBadgeColor="accent" class="mx-5">-->
+                <button mat-raised-button [matMenuTriggerFor]="authMenu">
                     <mat-icon>account_circle</mat-icon>
                     {{user.name}}
                 </button>
 
                 <mat-menu #authMenu='matMenu'>
-                    <button mat-menu-item>Управление профилем</button>
+                    <button mat-menu-item (click)="profileSettings()">
+                        <mat-icon>manage_accounts</mat-icon>&nbsp;Управление профилем
+                    </button>
                     <mat-divider></mat-divider>
-                    <button mat-menu-item (click)="logout()">Выйти</button>
+                    <button mat-menu-item (click)="logout()">
+                        <mat-icon>logout</mat-icon>&nbsp;Выйти
+                    </button>
                 </mat-menu>
             </ng-container>
 
-            <ng-container *ngIf="!isAuth">
-                <button mat-raised-button color="accent" (click)="login()">Войти</button>
+            <ng-container *ngIf="!user">
+                <button mat-raised-button color="" (click)="login()">
+                    <mat-icon>login</mat-icon>&nbsp;Войти
+                </button>
+                <!--                <button mat-raised-button color="accent" (click)="login()">Войти</button>-->
             </ng-container>
             <!--            <ng-container *ngIf="isAuth">-->
             <!--                <button mat-raised-button color="warn" (click)="logout()">Выйти</button>-->

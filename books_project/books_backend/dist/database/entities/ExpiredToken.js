@@ -11,8 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExpiredToken = void 0;
 const typeorm_1 = require("typeorm");
-let ExpiredToken = exports.ExpiredToken = class ExpiredToken {
+const BaseEntity_1 = require("./BaseEntity");
+let ExpiredToken = exports.ExpiredToken = class ExpiredToken extends BaseEntity_1.BaseEntity {
     constructor(token, expiredAt) {
+        super();
         this.token = token;
         this.expiredAt = expiredAt;
     }

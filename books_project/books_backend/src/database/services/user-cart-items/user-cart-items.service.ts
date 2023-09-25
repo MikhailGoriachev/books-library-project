@@ -8,6 +8,7 @@ import { UserCartItemFilterDto } from '../../../dto/filters/user-cart-item-filte
 
 @Injectable()
 export class UserCartItemsService {
+    
     constructor(
         @InjectRepository(UserCartItem)
         private cartItemRepository: Repository<UserCartItem>,
@@ -20,14 +21,14 @@ export class UserCartItemsService {
     async findAll(filter?: UserCartItemFilterDto): Promise<UserCartItem[]> {
         return this.cartItemRepository.find({
             where: this.getFilter(filter),
-            relations: ['user', 'book'],
+            relations: ['user', 'book', 'book.authors'],
         });
     }
 
     async findOne(filter?: UserCartItemFilterDto): Promise<UserCartItem> {
         return this.cartItemRepository.findOne({
             where: this.getFilter(filter),
-            relations: ['user', 'book'],
+            relations: ['user', 'book', 'book.authors'],
         });
     }
 
@@ -49,11 +50,11 @@ export class UserCartItemsService {
         return this.cartItemRepository.save(item);
     }
 
-    async remove(id: number): Promise<any> {
+    async delete(id: number): Promise<any> {
         await this.cartItemRepository.remove(await this.cartItemRepository.findOneBy({ id }));
     }
     
-    async removeAll(cartItems: UserCartItem[]): Promise<any> {
+    async deleteAll(cartItems: UserCartItem[]): Promise<any> {
         await this.cartItemRepository.remove(cartItems);
     }
 }

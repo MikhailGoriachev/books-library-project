@@ -12,8 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookRatingStatistic = void 0;
 const typeorm_1 = require("typeorm");
 const Book_1 = require("./Book");
-let BookRatingStatistic = exports.BookRatingStatistic = class BookRatingStatistic {
+const BaseEntity_1 = require("./BaseEntity");
+let BookRatingStatistic = exports.BookRatingStatistic = class BookRatingStatistic extends BaseEntity_1.BaseEntity {
     constructor(book, value, amount) {
+        super();
         this.book = book;
         this.value = value;
         this.amount = amount;
@@ -24,7 +26,8 @@ __decorate([
     __metadata("design:type", Number)
 ], BookRatingStatistic.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(type => Book_1.Book, book => book.bookRatingStatistics, { cascade: true }),
+    (0, typeorm_1.OneToOne)(type => Book_1.Book, book => book.bookRatingStatistic),
+    (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Object)
 ], BookRatingStatistic.prototype, "book", void 0);
 __decorate([

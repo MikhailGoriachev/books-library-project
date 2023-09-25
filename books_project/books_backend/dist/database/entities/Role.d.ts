@@ -1,6 +1,7 @@
 import { Relation } from 'typeorm';
 import { User } from './User';
-export declare class Role {
+import { BaseEntity } from './BaseEntity';
+export declare class Role extends BaseEntity {
     id: number;
     name: string;
     users: Relation<User[]>;

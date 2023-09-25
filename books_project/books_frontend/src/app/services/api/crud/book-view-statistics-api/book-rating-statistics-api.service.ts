@@ -11,7 +11,7 @@ import { BookViewStatisticDto } from "../../../../dto/crud/book-view-statistic.d
 })
 export class BookViewStatisticsApiService {
 
-    private static readonly basePath = 'book-view-statistics/';
+    private static readonly basePath = 'book-view-statistics';
 
     constructor(private readonly _apiService: ApiService) { }
 

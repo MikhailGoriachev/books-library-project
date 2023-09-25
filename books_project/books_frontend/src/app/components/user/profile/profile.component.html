@@ -1,0 +1,100 @@
+<div mat-dialog-title class="dialog-title">
+    <h1>Управление профилем</h1>
+    <button mat-icon-button mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<div mat-dialog-content class="dialog-content">
+    <div class="flex gap-7 text-black">
+        <div class="w-full">
+            <form [formGroup]="dataForm">
+                <div class="text-center">
+                    <img mat-card-avatar class="h-48 w-48" src="assets/icons/user.jpg" alt="">
+                </div>
+                <h3>Данные пользователя</h3>
+                <div>
+                    <mat-form-field class="w-full">
+                        <mat-label>Почта (нельзя изменить)</mat-label>
+                        <input matInput formControlName="email" readonly>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field class="w-full">
+                        <mat-label>Имя</mat-label>
+                        <input matInput formControlName="name">
+                    </mat-form-field>
+                </div>
+            </form>
+        </div>
+        <div class="w-full">
+            <h3>Замена пароля</h3>
+            <form [formGroup]="passwordForm">
+                <div>
+                    <mat-form-field class="w-full">
+                        <mat-label>Текущий пароль</mat-label>
+                        <input matInput type="password" formControlName="password">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field class="w-full">
+                        <mat-label>Новый пароль</mat-label>
+                        <input matInput type="password" formControlName="newPassword">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field class="w-full">
+                        <mat-label>Подтверждение нового пароля</mat-label>
+                        <input matInput type="password" formControlName="newPasswordConfirm">
+                    </mat-form-field>
+                </div>
+
+                <ng-container *ngIf="passwordEditResult !== null">
+                    <p *ngIf="passwordEditResult" class="text-green-500">Пароль успешно изменён!</p>
+                    <p *ngIf="!passwordEditResult" class="text-red-500">
+                        Ошибка при изменении пароля, проверьте правильность ввода текущего пароля
+                    </p>
+                </ng-container>
+
+                <button mat-raised-button (click)="passwordFormSubmit()" [disabled]="!passwordForm.valid"
+                        color="primary">
+                    Обновить пароль
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div mat-dialog-actions class="justify-content-center">
+    <!--    <button mat-button (click)="onSubmit()" [disabled]="!isValid" color="success" cdkFocusInitial>-->
+    <!--        {{isRegistration ? 'Зарегистрироваться' : 'Войти'}}-->
+    <!--    </button>-->
+    <!--    <button *ngIf="isExistsSales" mat-raised-button color="primary"-->
+    <!--            class="mx-5 w-36" [matMenuTriggerFor]="downloadMenu"-->
+    <!--            (click)="$event.stopPropagation()">-->
+    <!--        <mat-icon>download</mat-icon>&nbsp;Скачать-->
+    <!--    </button>-->
+    <!--    <mat-menu #downloadMenu='matMenu'>-->
+    <!--        <button mat-menu-item (click)="download($event, f)"-->
+    <!--                *ngFor="let f of getBookFiles()">-->
+    <!--            {{f.fileExtension.name | uppercase}}-->
+    <!--        </button>-->
+    <!--    </mat-menu>-->
+
+    <!--    <button *ngIf="!isExistsCart && !isExistsSales" mat-raised-button color="success" class="mx-5"-->
+    <!--            (click)="addToCart()">-->
+    <!--        <mat-icon>local_mall</mat-icon>&nbsp;В&nbsp;корзину&nbsp;|&nbsp;<b>{{book?.price}}&nbsp;&#8381;</b>-->
+    <!--    </button>-->
+    <!--    <button *ngIf="isExistsCart" mat-raised-button color="warn" class="mx-5"-->
+    <!--            (click)="removeFromCart()">-->
+    <!--        <mat-icon>local_mall</mat-icon>&nbsp;Удалить&nbsp;из&nbsp;корзины&nbsp;-->
+    <!--    </button>-->
+    <button mat-raised-button class="mx-5 mb-3 w-36" (click)="dataFormSubmit()"
+            [disabled]="!dataForm.valid || !isChanges" color="success" mat-dialog-close>
+        Сохранить
+    </button>
+    <button mat-raised-button class="mx-5 mb-3 w-36" color="accent" mat-dialog-close>
+        <mat-icon>arrow_back_ios</mat-icon>
+        Назад
+    </button>
+</div>

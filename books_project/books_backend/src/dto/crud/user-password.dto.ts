@@ -1,13 +1,13 @@
-﻿import { IsBoolean, IsDefined, IsInt, IsString, IsStrongPassword, Min } from 'class-validator';
+﻿import { IsBoolean, IsDefined, IsInt, IsOptional, IsString, IsStrongPassword, MaxLength, Min } from 'class-validator';
 
 export class UserPasswordDto {
     @IsInt()
     @Min(0)
     id: string;
-
-    @IsDefined()
+    
+    @IsOptional()
     @IsString()
-    @IsStrongPassword()
+    @MaxLength(255)
     password: string;
 
     // признак аутентификации с помощью внешних сервисов

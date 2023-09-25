@@ -14,8 +14,10 @@ const typeorm_1 = require("typeorm");
 const Book_1 = require("./Book");
 const AuthorView_1 = require("./AuthorView");
 const AuthorViewStatistic_1 = require("./AuthorViewStatistic");
-let Author = exports.Author = class Author {
+const BaseEntity_1 = require("./BaseEntity");
+let Author = exports.Author = class Author extends BaseEntity_1.BaseEntity {
     constructor(name, description, detailsLink, image) {
+        super();
         this.name = name;
         this.description = description;
         this.detailsLink = detailsLink;
@@ -52,9 +54,9 @@ __decorate([
     __metadata("design:type", Object)
 ], Author.prototype, "authorViews", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(type => AuthorViewStatistic_1.AuthorViewStatistic, authorViewStatistic => authorViewStatistic.author),
+    (0, typeorm_1.OneToOne)(type => AuthorViewStatistic_1.AuthorViewStatistic, authorViewStatistic => authorViewStatistic.author),
     __metadata("design:type", Object)
-], Author.prototype, "authorViewStatistics", void 0);
+], Author.prototype, "authorViewStatistic", void 0);
 exports.Author = Author = __decorate([
     (0, typeorm_1.Entity)(),
     __metadata("design:paramtypes", [String, String, String, String])

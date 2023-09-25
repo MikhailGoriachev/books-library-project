@@ -28,8 +28,11 @@ let JwtRefreshStrategy = exports.JwtRefreshStrategy = class JwtRefreshStrategy e
     async validate(payload) {
         const result = await this.authService.validateUser(payload.email);
         if (!result)
-            throw new common_1.UnauthorizedException();
+            throw new common_1.HttpException('Invalid refresh token', 498);
         return result;
+    }
+    async authenticate(req, options) {
+        return super.authenticate(req, options);
     }
 };
 exports.JwtRefreshStrategy = JwtRefreshStrategy = __decorate([

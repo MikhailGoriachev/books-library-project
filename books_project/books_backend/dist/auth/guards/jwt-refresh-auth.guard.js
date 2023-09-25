@@ -19,14 +19,22 @@ let JwtRefreshAuthGuard = exports.JwtRefreshAuthGuard = class JwtRefreshAuthGuar
         this._expiredTokensService = _expiredTokensService;
     }
     async canActivate(context) {
-        const res = await super.canActivate(context);
-        if (!res)
-            return new Promise(() => res);
-        const request = context.switchToHttp().getRequest();
-        const token = this.extractTokenFromHeader(request);
-        if (!token || (await this._expiredTokensService.findOne(token)))
-            throw new common_1.UnauthorizedException();
-        return true;
+        try {
+            const res = await super.canActivate(context);
+            if (!res)
+                return new Promise(() => res);
+            const request = context.switchToHttp().getRequest();
+            const token = this.extractTokenFromHeader(request);
+            if (!token || (await this._expiredTokensService.findOne(token)))
+                throw new common_1.HttpException('Invalid refresh token', 498);
+            return true;
+        }
+        catch (err) {
+            if (err instanceof common_1.UnauthorizedException) {
+                throw new common_1.HttpException('Invalid refresh token', 498);
+            }
+            throw err;
+        }
     }
     extractTokenFromHeader(request) {
         var _a, _b;

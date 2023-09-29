@@ -2,7 +2,7 @@
     IsEmail, IsInt,
     IsNotEmpty, IsOptional,
     IsString,
-    MaxLength, Min,
+    MaxLength, Min, Type
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -11,6 +11,7 @@ export class UserFilterDto {
     @Type(() => Number)
     @IsInt()
     @Min(0)
+    @Type(() => Number)
     id?: number;
 
     @IsOptional()

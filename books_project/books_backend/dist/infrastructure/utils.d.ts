@@ -16,3 +16,4 @@ export declare function transformStringToArrayNumber({ value }: {
 export declare function transformStringToArrayString({ value }: {
     value: any;
 }): any;
+export declare function generateRandomPassword(length?: number): string;

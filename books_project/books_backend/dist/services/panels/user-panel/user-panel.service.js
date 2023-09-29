@@ -42,11 +42,13 @@ const sales_service_1 = require("../../../database/services/sales/sales.service"
 const book_files_service_1 = require("../../../database/services/book-files/book-files.service");
 const fs = require("fs");
 const path_1 = require("path");
+const process = require("process");
 const api_config_service_1 = require("../../api-config/api-config.service");
 const Sale_1 = require("../../../database/entities/Sale");
 const transliteration_1 = require("transliteration");
 const bcrypt = require("bcrypt");
 const user_passwords_service_1 = require("../../../database/services/user-passwords/user-passwords.service");
+const uuid_1 = require("uuid");
 let UserPanelService = exports.UserPanelService = class UserPanelService {
     constructor(_usersService, _userCartItemsService, _booksService, _bookRatingsService, _bookRatingStatisticsService, _bookViewsService, _bookViewStatisticsService, _bookFilesService, _authorsService, _authorViewsService, _authorViewStatisticsService, _categoriesService, _categoryViewsService, _categoryViewStatisticsService, _salesService, _apiConfigService, _userPasswordsService, _entityManager) {
         this._usersService = _usersService;
@@ -243,6 +245,7 @@ let UserPanelService = exports.UserPanelService = class UserPanelService {
     }
     async profileEdit(user, userEditProfileDto) {
         user.name = userEditProfileDto.name;
+        user.image = userEditProfileDto.image;
         return this._usersService.save(user);
     }
     async passwordEdit(user, userPasswordEditDto) {
@@ -254,6 +257,16 @@ let UserPanelService = exports.UserPanelService = class UserPanelService {
             return { result: true };
         }
         return { result: false };
+    }
+    async uploadUserImageFile(user, file) {
+        user.image = user.image.startsWith('default')
+            ? (0, uuid_1.v4)()
+            : user.image;
+        const path = `${process.cwd()}/public/images/users/${user.image}`;
+        const fileStream = fs.createWriteStream(path);
+        fileStream.write(file.buffer);
+        fileStream.end();
+        return user.image;
     }
 };
 exports.UserPanelService = UserPanelService = __decorate([

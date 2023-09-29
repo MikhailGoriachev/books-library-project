@@ -1,6 +1,7 @@
 ﻿import { IsDate, IsInt, IsOptional, Min, Validate } from 'class-validator';
 import { LessThanOrEqualsValidator } from '../../validators/less-than-or-equals.validator';
 import { Type } from 'class-transformer';
+import { FindOperator } from 'typeorm';
 
 export class BlockedUserFilterDto {
     @IsOptional()
@@ -34,7 +35,7 @@ export class BlockedUserFilterDto {
     @IsOptional()
     @Type(() => Date)
     @IsDate()
-    unblockedAt?: Date;
+    unblockedAt?: Date | FindOperator<any>;
 
     @IsOptional()
     @Type(() => Date)

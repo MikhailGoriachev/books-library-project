@@ -22,25 +22,34 @@
         <mat-form-field class="block">
             <mat-label>Пароль</mat-label>
             <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
-<!--            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"-->
-<!--                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">-->
-<!--                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>-->
-<!--            </button>-->
+            <!--            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"-->
+            <!--                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">-->
+            <!--                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>-->
+            <!--            </button>-->
         </mat-form-field>
 
-        <mat-checkbox formControlName="isCart" class="mb-3 -mx-2">Перенести корзину в аккаунт (<b>если она не пустая</b>)</mat-checkbox>
+        <mat-checkbox formControlName="isCart" class="mb-3 -mx-2">Перенести корзину в аккаунт (<b>если она не пустая</b>)
+        </mat-checkbox>
 
         <p *ngIf="!isRegistration">Если Вы ещё не создали аккаунт, то можете зарегистрироваться</p>
         <p *ngIf="isRegistration">Если у Вас уже есть аккаунт, то можете в него войти</p>
         <p class="text-red-500">{{error}}</p>
     </div>
 
-    <div mat-dialog-actions>
-        <button mat-raised-button (click)="onSubmit()" class="w-44" [disabled]="!isValid" color="success" cdkFocusInitial>
-            {{isRegistration ? 'Зарегистрироваться' : 'Войти'}}
-        </button>
-        <button mat-raised-button (click)="onClose()" color="accent">
-            <mat-icon>arrow_back_ios</mat-icon>Отмена
+    <div mat-dialog-actions class="flex justify-between">
+        <div class="flex">
+            <button mat-raised-button (click)="onSubmit()" class="w-44" [disabled]="!isValid" color="success"
+                    cdkFocusInitial>
+                {{isRegistration ? 'Зарегистрироваться' : 'Войти'}}
+            </button>
+            <button mat-raised-button (click)="onClose()" color="accent">
+                <mat-icon>arrow_back_ios</mat-icon>
+                Отмена
+            </button>
+        </div>
+        <button *ngIf="!isRegistration" mat-raised-button (click)="toResetPassword()" color="primary">
+            <mat-icon>lock_reset</mat-icon>
+            Сброс пароля
         </button>
     </div>
 </form>

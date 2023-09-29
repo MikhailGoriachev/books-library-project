@@ -27,10 +27,11 @@ let User = exports.User = class User extends BaseEntity_1.BaseEntity {
             ? this.blockedUsers.find(b => b.unblockedAt === null) !== undefined
             : null;
     }
-    constructor(name, email) {
+    constructor(name, email, image) {
         super();
         this.name = name;
         this.email = email;
+        this.image = image;
     }
 };
 __decorate([
@@ -45,6 +46,10 @@ __decorate([
     (0, typeorm_1.Column)({ length: 255, unique: true }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 255, default: '' }),
+    __metadata("design:type", String)
+], User.prototype, "image", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(type => Sale_1.Sale, sale => sale.user),
     __metadata("design:type", Object)
@@ -83,6 +88,6 @@ __decorate([
 ], User.prototype, "userPassword", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)(),
-    __metadata("design:paramtypes", [String, String])
+    __metadata("design:paramtypes", [String, String, String])
 ], User);
 //# sourceMappingURL=User.js.map

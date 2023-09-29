@@ -7,8 +7,8 @@ import {
     ParseIntPipe,
     Post,
     Request, Res,
-    Response,
-    UseGuards,
+    Response, UploadedFile,
+    UseGuards, UseInterceptors,
 } from '@nestjs/common';
 import { UserPanelService } from '../../../services/panels/user-panel/user-panel.service';
 import { UserCartItemDto } from '../../../dto/crud/user-cart-item.dto';
@@ -20,6 +20,7 @@ import { RolesEnum } from '../../../infrastructure/RolesEnum';
 import { SetBookRatingDto } from '../../../dto/auth/set-book-rating.dto';
 import { UserEditProfileDto } from '../../../dto/user-panel/user-edit-profile.dto';
 import { UserPasswordEditDto } from '../../../dto/user-panel/user-password-edit.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @UseGuards(RolesGuard)
 @UseGuards(JwtAccessAuthGuard)
@@ -123,7 +124,7 @@ export class UserPanelController {
         return this._userPanelService.getSales(req.user);
     }
 
-    // купить книги
+    // купить книгу
     @Roles(RolesEnum.user)
     @Get('buy')
     async buy(@Request() req) {
@@ -142,5 +143,16 @@ export class UserPanelController {
     @Post('profile/password-edit')
     async passwordEdit(@Request() req, @Body() userPasswordEditDto: UserPasswordEditDto) {
         return this._userPanelService.passwordEdit(req.user, userPasswordEditDto);
+    }
+    
+    // загрузить файл изображения для пользователя
+    @Roles(RolesEnum.user)
+    @UseInterceptors(FileInterceptor('file'))
+    @Post('upload/profile/image')
+    async uploadUserImageFile(@Request() request, @UploadedFile() file: Express.Multer.File, @Body('fileName') fileName: string) {
+        return {
+            fileName: await this._userPanelService
+                .uploadUserImageFile(request.user, file),
+        };
     }
 }

@@ -26,7 +26,7 @@ import { PipesModule } from "./pipes/pipes.module";
 @NgModule({
     declarations: [
         AppComponent,
-        UserComponent,
+        UserComponent
     ],
     imports: [
         BrowserModule,

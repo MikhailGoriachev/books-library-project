@@ -25,19 +25,34 @@ export class BooksService {
     async findAll(filter?: BookFilterDto, withDeleted: boolean = false): Promise<Book[]> {
         return this.bookRepository.find({
             where: await this.getFilter(filter),
-            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
-            withDeleted
+            relations: [
+                'categories',
+                'authors',
+                'bookFiles',
+                'bookFiles.fileExtension',
+                'bookRatingStatistic',
+                'bookViewStatistic',
+            ],
+            withDeleted,
         });
     }
 
-    public async findAllByPagination(filter: BookPaginationFilterDto, withDeleted: boolean = false): Promise<PageDto<Book>> {
+    public async findAllByPagination(filter: BookPaginationFilterDto,
+                                     withDeleted: boolean = false): Promise<PageDto<Book>> {
 
         const count = await this.bookRepository.count({
             where: await this.getFilter(filter),
             skip: filter.skip,
             take: filter.take,
-            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatingStatistic', 'bookViewStatistic'],
-            withDeleted
+            relations: [
+                'categories',
+                'authors',
+                'bookFiles',
+                'bookFiles.fileExtension',
+                'bookRatingStatistic',
+                'bookViewStatistic',
+            ],
+            withDeleted,
             // order: { bookViewStatistic: { amount: 'DESC' } },
         });
 
@@ -45,10 +60,17 @@ export class BooksService {
             where: await this.getFilter(filter),
             skip: filter.skip,
             take: filter.take,
-            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatingStatistic', 'bookViewStatistic'],
+            relations: [
+                'categories',
+                'authors',
+                'bookFiles',
+                'bookFiles.fileExtension',
+                'bookRatingStatistic',
+                'bookViewStatistic',
+            ],
             order: { deletedAt: 'ASC', bookRatingStatistic: { value: 'DESC' } },
             relationLoadStrategy: 'join',
-            withDeleted
+            withDeleted,
         });
 
         const pageMetaDto = new PageMetaDto({
@@ -62,16 +84,30 @@ export class BooksService {
     async findOne(filter?: BookFilterDto, withDeleted: boolean = false): Promise<Book> {
         return this.bookRepository.findOne({
             where: await this.getFilter(filter),
-            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatingStatistic', 'bookViewStatistic'],
-            withDeleted
+            relations: [
+                'categories',
+                'authors',
+                'bookFiles',
+                'bookFiles.fileExtension',
+                'bookRatingStatistic',
+                'bookViewStatistic',
+            ],
+            withDeleted,
         });
     }
-    
+
     async findOneWithCartItems(filter?: BookFilterDto, withDeleted: boolean = false): Promise<Book> {
         return this.bookRepository.findOne({
             where: await this.getFilter(filter),
-            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatingStatistic', 'bookViewStatistic', 'userCartItems'],
-            withDeleted
+            relations: [
+                'categories',
+                'authors',
+                'bookFiles',
+                'bookFiles.fileExtension',
+                'bookRatingStatistic',
+                'bookViewStatistic',
+            ],
+            withDeleted,
         });
     }
 
@@ -104,7 +140,7 @@ export class BooksService {
     async save(item: Book): Promise<Book> {
         return this.bookRepository.save(item);
     }
-    
+
     async delete(item: Book): Promise<Book> {
         return this.bookRepository.softRemove(item);
     }
@@ -129,7 +165,7 @@ export class BooksService {
             order: { bookRatingStatistic: { value: 'DESC' } },
             take: 10,
             relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
-            relationLoadStrategy: 'join'
+            relationLoadStrategy: 'join',
         });
     }
 
@@ -139,7 +175,7 @@ export class BooksService {
             order: { bookViewStatistic: { amount: 'DESC' } },
             take: 10,
             relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
-            relationLoadStrategy: 'join'
+            relationLoadStrategy: 'join',
         });
     }
 
@@ -149,7 +185,7 @@ export class BooksService {
             order: { createdAt: 'DESC' },
             take: 10,
             relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
-            relationLoadStrategy: 'join'
+            relationLoadStrategy: 'join',
         });
     }
 }

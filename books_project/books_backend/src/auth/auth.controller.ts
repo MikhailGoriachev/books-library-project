@@ -77,4 +77,10 @@ export class AuthController {
     getProfile(@Request() req) {
         return req.user;
     }
+
+    // сбросить пароль
+    @Post('reset-password')
+    async resetPassword(@Body('email') email: string) {
+        return this._authService.resetPassword(email);
+    }
 }

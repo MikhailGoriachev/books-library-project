@@ -18,6 +18,8 @@ import { RolesGuard } from '../../../guards/roles/roles.guard';
 import { JwtAccessAuthGuard } from '../../../auth/guards/jwt-access-auth.guard';
 import { Roles } from '../../../decorators/roles/roles.decorator';
 import { RolesEnum } from '../../../infrastructure/RolesEnum';
+import { BookPaginationFilterDto } from '../../../dto/filters/book-pagination-filter.dto';
+import { UserPaginationFilterDto } from '../../../dto/filters/user-pagination-filter.dto';
 
 @UseGuards(RolesGuard)
 @UseGuards(JwtAccessAuthGuard)
@@ -29,6 +31,12 @@ export class UsersController {
     @Get()
     findAll(@Query(new ValidationPipe({ transform: true })) filter: UserFilterDto) {
         return this._usersService.findAll(filter);
+    }
+    
+    @Roles(RolesEnum.admin)
+    @Get('pagination')
+    findAllPagination(@Query() pageOptionsDto: UserPaginationFilterDto) {
+        return this._usersService.findAllByPagination(pageOptionsDto);
     }
 
     @Roles(RolesEnum.admin)

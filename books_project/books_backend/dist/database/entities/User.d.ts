@@ -13,6 +13,7 @@ export declare class User extends BaseEntity {
     id: number;
     name: string;
     email: string;
+    image: string;
     sales: Relation<Sale[]>;
     bookRatings: Relation<BookRating[]>;
     userCartItems: Relation<UserCartItem[]>;
@@ -23,5 +24,5 @@ export declare class User extends BaseEntity {
     roles: Relation<Role[]>;
     userPassword: Relation<UserPassword>;
     get isBlocked(): boolean | null;
-    constructor(name?: string, email?: string);
+    constructor(name?: string, email?: string, image?: string);
 }

@@ -65,7 +65,7 @@ export class AuthorFormComponent implements OnInit {
                 });
         else {
             this.author = new Author();
-            this.author.image = 'default.jpg';
+            this.author.image = 'default';
             this.form.patchValue({image: this.author.image});
             this.imageUrl = `${this.baseUrl}public/images/authors/${this.author.image}?v=${this._dataManagerService.imagesVersion}`;
         }
@@ -75,7 +75,7 @@ export class AuthorFormComponent implements OnInit {
         if (this.authorImageFile) {
             const formData = new FormData();
             formData.append('file', this.authorImageFile);
-            formData.append('fileName', this.isEdit && this.author.image !== 'default.jpg' ? this.author.image : '');
+            formData.append('fileName', this.isEdit && this.author.image !== 'default' ? this.author.image : '');
 
             this.form.value.image = (await lastValueFrom(this._adminPanelService.uploadAuthorImageFile(formData))).fileName;
 

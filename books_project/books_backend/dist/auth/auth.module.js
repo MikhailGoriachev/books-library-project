@@ -18,6 +18,7 @@ const jwt_access_auth_guard_1 = require("./guards/jwt-access-auth.guard");
 const jwt_refresh_auth_guard_1 = require("./guards/jwt-refresh-auth.guard");
 const jwt_access_strategy_1 = require("./strategies/jwt-access.strategy");
 const jwt_refresh_strategy_1 = require("./strategies/jwt-refresh.strategy");
+const mail_module_1 = require("../mail/mail.module");
 let AuthModule = exports.AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule = __decorate([
@@ -29,6 +30,7 @@ exports.AuthModule = AuthModule = __decorate([
                 global: true,
                 useFactory: () => ({}),
             }),
+            mail_module_1.MailModule
         ],
         providers: [
             auth_service_1.AuthService,
@@ -37,6 +39,9 @@ exports.AuthModule = AuthModule = __decorate([
             api_config_service_1.ApiConfigService,
             jwt_access_auth_guard_1.JwtAccessAuthGuard,
             jwt_refresh_auth_guard_1.JwtRefreshAuthGuard
+        ],
+        exports: [
+            auth_service_1.AuthService
         ],
         controllers: [auth_controller_1.AuthController],
     })

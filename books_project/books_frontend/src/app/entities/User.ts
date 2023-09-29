@@ -16,6 +16,8 @@ export class User extends BaseEntity {
 
     email: string;
 
+    image: string;
+
     sales?: Sale[];
 
     bookRatings?: BookRating[];
@@ -38,6 +40,12 @@ export class User extends BaseEntity {
             : null;
     }
 
+    get isAdmin(): boolean | null {
+        return this.roles
+            ? this.roles.find(r => r.name === 'admin') !== undefined
+            : null;
+    }
+
 
     constructor(id?: number, name?: string, email?: string) {
         super();
@@ -52,6 +60,7 @@ export class User extends BaseEntity {
 
         a.name = b.name;
         a.email = b.email;
+        a.image = b.image;
 
         a.createdAt = b.createdAt;
         a.updatedAt = b.updatedAt;

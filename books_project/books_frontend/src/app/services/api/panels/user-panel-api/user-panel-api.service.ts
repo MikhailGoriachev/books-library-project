@@ -104,7 +104,7 @@ export class UserPanelApiService {
         return this._apiService.post(UserPanelApiService.basePath + 'profile/edit', userEditProfileDto)
                    .pipe(
                        map((u: any) => User.assign(new User(), u)),
-                       tap(u => this._eventsService.changeUser.next(u))
+                       tap(u => this._eventsService.changeCurrentUser.next(u))
                    );
     }
 
@@ -114,5 +114,11 @@ export class UserPanelApiService {
             UserPanelApiService.basePath + 'profile/password-edit',
             userPasswordEdit
         ) as Observable<{ result: boolean }>;
+    }
+
+    // отправить файл изображение пользователя
+    uploadBookImageFile(formData: FormData) {
+        return this._apiService.post(UserPanelApiService.basePath + 'upload/profile/image', formData) as
+            Observable<{ fileName: string }>;
     }
 }

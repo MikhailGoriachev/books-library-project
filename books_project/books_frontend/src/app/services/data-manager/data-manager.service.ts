@@ -95,7 +95,7 @@ export class DataManagerService {
                     .subscribe(b => this.sales[index].book = b);
         });
 
-        this._eventsService.changeUser.subscribe(user => this.user = user);
+        this._eventsService.changeCurrentUser.subscribe(user => this.user = user);
 
         this._eventsService.changeImage.subscribe(() => this._imagesVersion++);
 

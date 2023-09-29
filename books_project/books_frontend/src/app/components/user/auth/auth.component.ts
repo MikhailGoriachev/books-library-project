@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from "@angular/material/dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FormBuilder, FormControl, Validators } from "@angular/forms";
 import { MatButtonToggleChange } from "@angular/material/button-toggle";
 import { RegistrationDto } from "../../../dto/auth/registration.dto";
@@ -7,6 +7,8 @@ import { AuthDto } from "../../../dto/auth/auth.dto";
 import { AuthService } from "../../../services/auth/auth.service";
 import { DataManagerService } from "../../../services/data-manager/data-manager.service";
 import { EventsService } from "../../../services/events/events.service";
+import { UserFormComponent } from "../users-management/user-form/user-form.component";
+import { ResetPasswordComponent } from "./reset-password/reset-password.component";
 
 @Component({
     selector: 'app-auth',
@@ -31,12 +33,14 @@ export class AuthComponent implements OnInit {
 
     public hidePassword = true;
 
+
     constructor(
         public dialogRef: MatDialogRef<AuthComponent>,
         private readonly _fb: FormBuilder,
         private readonly _authService: AuthService,
         private readonly _dataManagerService: DataManagerService,
-        private readonly _eventsService: EventsService
+        private readonly _eventsService: EventsService,
+        private readonly _matDialog: MatDialog
     ) {}
 
     ngOnInit() {
@@ -59,26 +63,6 @@ export class AuthComponent implements OnInit {
 
         const dataCart = [...this._dataManagerService.cartItems];
 
-        // const sub = this._eventsService.changeLogin.subscribe(
-        //     async ({isAuth}) => {
-        //         if (isAuth) {
-        //             if (data.isCart) {
-        //                 // await this._dataManagerService.clearCart();
-        //                 await this._dataManagerService.loadCartItems();
-        //                 await this._dataManagerService.loadSales();
-        //
-        //                 console.log('Перед заполнением: ' + this._dataManagerService.cartItems.length);
-        //                 console.log('Перед заполнением (тек): ' + dataCart.length);
-        //                 dataCart.filter(c =>
-        //                         !this._dataManagerService.cartItems.find(cur => cur.id === c.id)
-        //                     // && !this._dataManagerService.sales.find(cur => cur.book.id === c.id)
-        //                 )
-        //                         .forEach(c => this._dataManagerService.addToCart(c));
-        //             }
-        //         }
-        //     }
-        // )
-
         try {
             if (this.isRegistration)
                 await this._authService.registration(
@@ -88,22 +72,12 @@ export class AuthComponent implements OnInit {
                 await this._authService.login(new AuthDto(data.email, data.password));
 
             if (data.isCart) {
-                // await this._dataManagerService.clearCart();
-                // await this._dataManagerService.loadCartItems();
-                // await this._dataManagerService.loadSales();
-
-                console.log('Перед заполнением: ' + this._dataManagerService.cartItems.length);
-                console.log('Перед заполнением (тек): ' + dataCart.length);
                 dataCart.forEach(c => this._dataManagerService.addToCart(c));
             }
-
-            console.log(this.isRegistration ? 'Регистрация' : 'Вход')
 
             this.dialogRef.close(true);
         } catch (error) {
             this.error = error.error.message;
-
-            console.log(error.error.message);
 
             const message = error.error.message;
             switch (message) {
@@ -114,8 +88,12 @@ export class AuthComponent implements OnInit {
                     this.error = 'Такая почта уже существует';
                     break;
             }
-
-            console.dir(error);
         }
+    }
+
+    toResetPassword() {
+        const dialogRef = this._matDialog.open(ResetPasswordComponent, {
+            minWidth: '30vw'
+        });
     }
 }

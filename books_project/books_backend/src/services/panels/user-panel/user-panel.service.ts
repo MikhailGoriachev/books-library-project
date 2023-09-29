@@ -1,4 +1,13 @@
-import { HttpException, Injectable, NotFoundException, StreamableFile } from '@nestjs/common';
+import {
+    Body,
+    HttpException,
+    Injectable,
+    NotFoundException,
+    Post,
+    StreamableFile,
+    UploadedFile,
+    UseInterceptors,
+} from '@nestjs/common';
 import { User } from '../../../database/entities/User';
 import { UserCartItem } from '../../../database/entities/UserCartItem';
 import { UsersService } from '../../../database/services/users/users.service';
@@ -47,6 +56,11 @@ import { UserEditProfileDto } from '../../../dto/user-panel/user-edit-profile.dt
 import { UserPasswordEditDto } from '../../../dto/user-panel/user-password-edit.dto';
 import * as bcrypt from 'bcrypt';
 import { UserPasswordsService } from '../../../database/services/user-passwords/user-passwords.service';
+import { Roles } from '../../../decorators/roles/roles.decorator';
+import { RolesEnum } from '../../../infrastructure/RolesEnum';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { v4 as uuidv4 } from 'uuid';
+import * as path from 'path';
 
 @Injectable()
 export class UserPanelService {
@@ -362,6 +376,7 @@ export class UserPanelService {
     // изменить данные профиля
     async profileEdit(user: User, userEditProfileDto: UserEditProfileDto) {
         user.name = userEditProfileDto.name;
+        user.image = userEditProfileDto.image;
 
         return this._usersService.save(user);
     }
@@ -379,5 +394,23 @@ export class UserPanelService {
         }
 
         return { result: false };
+    }
+
+
+    async uploadUserImageFile(user: User, file: Express.Multer.File) {
+        user.image = user.image.startsWith('default')
+            ? uuidv4()
+            : user.image;
+
+
+        const path = `${process.cwd()}/public/images/users/${user.image}`;
+
+        const fileStream = fs.createWriteStream(path);
+
+        fileStream.write(file.buffer);
+
+        fileStream.end();
+
+        return user.image;
     }
 }

@@ -24,7 +24,12 @@ export class EventsService {
 
     changeSales: Subject<void> = new Subject<void>();
 
-    changeUser: Subject<User> = new Subject<User>();
+    // changeUser: Subject<User> = new Subject<User>();
+    changeCurrentUser: Subject<User> = new Subject<User>();
+
+    changeUser: Subject<{id: number}> = new Subject<{id: number}>();
+
+    changeUserCollection: Subject<void> = new Subject<void>();
 
     changeImage: Subject<void> = new Subject<void>();
 }

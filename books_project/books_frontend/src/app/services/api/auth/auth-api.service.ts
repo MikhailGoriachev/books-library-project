@@ -13,8 +13,10 @@ import { User } from "../../../entities/User";
 export class AuthApiService {
     private static readonly basePath = 'auth/';
 
-    constructor(private readonly _apiService: ApiService,
-                private readonly _localStorageService: LocalStorageService) {}
+    constructor(
+        private readonly _apiService: ApiService,
+        private readonly _localStorageService: LocalStorageService
+    ) {}
 
     registration(registration: RegistrationDto) {
         return this._apiService.post(AuthApiService.basePath + 'registration', registration).pipe(
@@ -43,15 +45,19 @@ export class AuthApiService {
         return this._apiService.get(
             AuthApiService.basePath + 'token',
             undefined,
-            { Authorization: 'Bearer ' + this._localStorageService.refreshToken }
+            {Authorization: 'Bearer ' + this._localStorageService.refreshToken}
         );
         // ) as Observable<Partial<any>>;
     }
 
     getProfile(): Observable<User> {
         return this._apiService.get(AuthApiService.basePath + 'profile')
-            .pipe(
-                map(u => User.assign(new User(), u))
-            );
+                   .pipe(
+                       map(u => User.assign(new User(), u))
+                   );
+    }
+
+    resetPassword(email: string) {
+        return this._apiService.post(AuthApiService.basePath + 'reset-password', {email});
     }
 }

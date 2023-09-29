@@ -1,4 +1,5 @@
 ﻿import { Between, FindOperator, In, Like } from 'typeorm';
+import * as crypto from 'crypto';
 
 export function getLike(value?: string): FindOperator<string> | undefined {
     return value ? Like('%' + value + '%') : undefined;
@@ -33,17 +34,31 @@ export function transformStringToArrayNumber({ value }) {
     // if (value)
     if (!Array.isArray(value))
         return [+value];
-        
+
     if (value.length > 1)
         return value.map(v => +v);
-    
-    return typeof(value[0]) === "string"
+
+    return typeof (value[0]) === 'string'
         ? value[0].split(',').map((v) => +v)
         : value;
 }
 
 export function transformStringToArrayString({ value }) {
-    return typeof(value[0]) === "string"
+    return typeof (value[0]) === 'string'
         ? value[0].split(',')
         : value;
+}
+
+
+// Функция для генерации случайного пароля
+export function generateRandomPassword(length: number = 8): string {
+    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let password = '';
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = crypto.randomInt(0, charset.length);
+        password += charset[randomIndex];
+    }
+
+    return password;
 }

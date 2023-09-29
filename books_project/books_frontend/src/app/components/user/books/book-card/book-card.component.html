@@ -3,60 +3,62 @@
           matRipple>
     <img mat-card-image class="transition duration-300 hover:scale-105"
          src="{{baseUrl}}public/images/books/{{book.image}}?v={{imagesVersion}}" alt="">
-    <mat-card-header>
-        <mat-card-title class="truncate-text">
-            {{book.title}} ({{book.publicationYear}})
-        </mat-card-title>
-        <mat-card-subtitle>
-            {{book.authors | authors}}
-            <span *ngIf="book?.authors.length === 0">Автор неизвестен</span>
-        </mat-card-subtitle>
-        <mat-card-subtitle class="flex-baseline">
-            <mat-icon *ngIf="book.bookRatingStatistic?.value < 3"
-                      class="text-red-500">
-                star_border
-            </mat-icon>
-            <mat-icon
-                *ngIf="book.bookRatingStatistic?.value >= 3 && book.bookRatingStatistic?.value < 4.7"
-                class="text-green-500">
-                star_half
-            </mat-icon>
-            <mat-icon *ngIf="book.bookRatingStatistic?.value >= 4.7"
-                      class="text-green-500">
-                star
-            </mat-icon>
-            &nbsp;
-            <span
-                class="{{book.bookRatingStatistic?.value < 3 ? 'text-red-500' : 'text-green-500'}}">
+    <div>
+        <mat-card-header>
+            <mat-card-title class="truncate-text">
+                {{book.title}} ({{book.publicationYear}})
+            </mat-card-title>
+            <mat-card-subtitle>
+                {{book.authors | authors}}
+                <span *ngIf="book?.authors.length === 0">Автор неизвестен</span>
+            </mat-card-subtitle>
+            <mat-card-subtitle class="flex-baseline">
+                <mat-icon *ngIf="book.bookRatingStatistic?.value < 3"
+                          class="text-red-500">
+                    star_border
+                </mat-icon>
+                <mat-icon
+                    *ngIf="book.bookRatingStatistic?.value >= 3 && book.bookRatingStatistic?.value < 4.7"
+                    class="text-green-500">
+                    star_half
+                </mat-icon>
+                <mat-icon *ngIf="book.bookRatingStatistic?.value >= 4.7"
+                          class="text-green-500">
+                    star
+                </mat-icon>
+                &nbsp;
+                <span
+                    class="{{book.bookRatingStatistic?.value < 3 ? 'text-red-500' : 'text-green-500'}}">
                                         {{book.bookRatingStatistic?.value | number: '0.2-2'}}
-                ({{book.bookRatingStatistic?.amount}})
+                    ({{book.bookRatingStatistic?.amount}})
                                     </span>
-        </mat-card-subtitle>
-        <mat-card-subtitle class="flex-baseline">
-            <mat-icon>visibility</mat-icon>&nbsp;{{book.bookViewStatistic.amount}}
-        </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-actions>
-        <button *ngIf="isExistsSales" mat-raised-button color="primary"
-                class="w-full m-5" [matMenuTriggerFor]="downloadMenu"
-                (click)="$event.stopPropagation()">
-            <mat-icon>download</mat-icon>&nbsp;Скачать
-        </button>
-        <mat-menu #downloadMenu='matMenu'>
-            <button mat-menu-item (click)="download($event, f)"
-                    *ngFor="let f of getBookFiles()">
-                {{f.fileExtension.name | uppercase}}
+            </mat-card-subtitle>
+            <mat-card-subtitle class="flex-baseline">
+                <mat-icon>visibility</mat-icon>&nbsp;{{book.bookViewStatistic.amount}}
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions>
+            <button *ngIf="isExistsSales" mat-raised-button color="primary"
+                    class="w-full m-5" [matMenuTriggerFor]="downloadMenu"
+                    (click)="$event.stopPropagation()">
+                <mat-icon>download</mat-icon>&nbsp;Скачать
             </button>
-        </mat-menu>
+            <mat-menu #downloadMenu='matMenu'>
+                <button mat-menu-item (click)="download($event, f)"
+                        *ngFor="let f of getBookFiles()">
+                    {{f.fileExtension.name | uppercase}}
+                </button>
+            </mat-menu>
 
-        <button *ngIf="!isExistsCart && !isExistsSales" mat-raised-button
-                color="success" class="w-full m-5"
-                (click)="addToCart($event)">
-            <mat-icon>local_mall</mat-icon>&nbsp;В&nbsp;корзину&nbsp;|&nbsp;<b>{{book.price}}&nbsp;&#8381;</b>
-        </button>
-        <button *ngIf="isExistsCart" mat-raised-button color="warn" class="w-full m-5"
-                (click)="removeFromCart($event)">
-            <mat-icon>local_mall</mat-icon>&nbsp;Удалить&nbsp;из&nbsp;корзины
-        </button>
-    </mat-card-actions>
+            <button *ngIf="!isExistsCart && !isExistsSales" mat-raised-button
+                    color="success" class="w-full m-5"
+                    (click)="addToCart($event)">
+                <mat-icon>local_mall</mat-icon>&nbsp;В&nbsp;корзину&nbsp;|&nbsp;<b>{{book.price}}&nbsp;&#8381;</b>
+            </button>
+            <button *ngIf="isExistsCart" mat-raised-button color="warn" class="w-full m-5"
+                    (click)="removeFromCart($event)">
+                <mat-icon>local_mall</mat-icon>&nbsp;Удалить&nbsp;из&nbsp;корзины
+            </button>
+        </mat-card-actions>
+    </div>
 </mat-card>

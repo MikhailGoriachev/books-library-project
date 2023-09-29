@@ -32,7 +32,7 @@ let BooksService = exports.BooksService = class BooksService {
         return this.bookRepository.find({
             where: await this.getFilter(filter),
             relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
-            withDeleted
+            withDeleted,
         });
     }
     async findAllByPagination(filter, withDeleted = false) {
@@ -41,7 +41,7 @@ let BooksService = exports.BooksService = class BooksService {
             skip: filter.skip,
             take: filter.take,
             relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatingStatistic', 'bookViewStatistic'],
-            withDeleted
+            withDeleted,
         });
         const items = await this.bookRepository.find({
             where: await this.getFilter(filter),
@@ -50,7 +50,7 @@ let BooksService = exports.BooksService = class BooksService {
             relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatingStatistic', 'bookViewStatistic'],
             order: { deletedAt: 'ASC', bookRatingStatistic: { value: 'DESC' } },
             relationLoadStrategy: 'join',
-            withDeleted
+            withDeleted,
         });
         const pageMetaDto = new page_meta_dto_1.PageMetaDto({
             itemCount: count,
@@ -62,14 +62,14 @@ let BooksService = exports.BooksService = class BooksService {
         return this.bookRepository.findOne({
             where: await this.getFilter(filter),
             relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatingStatistic', 'bookViewStatistic'],
-            withDeleted
+            withDeleted,
         });
     }
     async findOneWithCartItems(filter, withDeleted = false) {
         return this.bookRepository.findOne({
             where: await this.getFilter(filter),
             relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatingStatistic', 'bookViewStatistic', 'userCartItems'],
-            withDeleted
+            withDeleted,
         });
     }
     async getFilter(filter) {
@@ -113,7 +113,14 @@ let BooksService = exports.BooksService = class BooksService {
             order: { bookRatingStatistic: { value: 'DESC' } },
             take: 10,
             relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
-            relationLoadStrategy: 'join'
+            relationLoadStrategy: 'join',
+        });
+    }
+    async topBookByRating() {
+        return this.bookRepository.findOne({
+            order: { bookRatingStatistic: { value: 'DESC' } },
+            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
+            relationLoadStrategy: 'join',
         });
     }
     async topBooksByViewed() {
@@ -121,7 +128,14 @@ let BooksService = exports.BooksService = class BooksService {
             order: { bookViewStatistic: { amount: 'DESC' } },
             take: 10,
             relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
-            relationLoadStrategy: 'join'
+            relationLoadStrategy: 'join',
+        });
+    }
+    async topBookByViewed() {
+        return this.bookRepository.findOne({
+            order: { bookViewStatistic: { amount: 'DESC' } },
+            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
+            relationLoadStrategy: 'join',
         });
     }
     async topBooksByAddition() {
@@ -129,7 +143,7 @@ let BooksService = exports.BooksService = class BooksService {
             order: { createdAt: 'DESC' },
             take: 10,
             relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
-            relationLoadStrategy: 'join'
+            relationLoadStrategy: 'join',
         });
     }
 };

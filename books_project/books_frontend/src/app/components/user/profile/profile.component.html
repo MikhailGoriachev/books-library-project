@@ -10,9 +10,17 @@
         <div class="w-full">
             <form [formGroup]="dataForm">
                 <div class="text-center">
-                    <img mat-card-avatar class="h-48 w-48" src="assets/icons/user.jpg" alt="">
+                    <img mat-card-avatar class="h-60 w-60" src="{{imageUrl}}" alt="">
                 </div>
+
+                <button mat-raised-button class="mb-3 w-full" color="primary" (click)="fileInput.click()">
+                    Загрузить изображение
+                </button>
+
+                <input hidden type="file" (change)="changeImage($event)" #fileInput>
+
                 <h3>Данные пользователя</h3>
+
                 <div>
                     <mat-form-field class="w-full">
                         <mat-label>Почта (нельзя изменить)</mat-label>

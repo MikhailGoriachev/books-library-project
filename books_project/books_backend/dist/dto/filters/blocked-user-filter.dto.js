@@ -53,7 +53,7 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_transformer_1.Type)(() => Date),
     (0, class_validator_1.IsDate)(),
-    __metadata("design:type", Date)
+    __metadata("design:type", Object)
 ], BlockedUserFilterDto.prototype, "unblockedAt", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),

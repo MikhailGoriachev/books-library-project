@@ -18,6 +18,7 @@ const roles_guard_1 = require("./guards/roles/roles.guard");
 const services_module_1 = require("./services/services.module");
 const serve_static_1 = require("@nestjs/serve-static");
 const path_1 = require("path");
+const mail_module_1 = require("./mail/mail.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -37,6 +38,7 @@ exports.AppModule = AppModule = __decorate([
             }),
             services_module_1.ServicesModule,
             controllers_module_1.ControllersModule,
+            mail_module_1.MailModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, roles_guard_1.RolesGuard],

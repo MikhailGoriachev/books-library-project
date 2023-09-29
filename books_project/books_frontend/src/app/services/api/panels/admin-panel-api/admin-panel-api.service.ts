@@ -2,13 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { UserRoleDto } from "../../../../dto/user-role.dto";
 import { ApiService } from "../../api.service";
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 import { BookCreateDto } from "../../../../dto/admin-panel/book/book-create.dto";
 import { BookEditDto } from "../../../../dto/admin-panel/book/book-edit.dto";
 import { Book } from "../../../../entities/Book";
 import { AuthorCreateDto } from "../../../../dto/admin-panel/author/author-create.dto";
 import { Author } from "../../../../entities/Author";
 import { AuthorEditDto } from "../../../../dto/admin-panel/author/author-edit.dto";
+import { UserCreateDto } from "../../../../dto/admin-panel/user/user-create.dto";
+import { UserEditDto } from "../../../../dto/admin-panel/user/user-edit.dto";
+import { User } from "../../../../entities/User";
+import { Sale } from "../../../../entities/Sale";
 
 @Injectable({
     providedIn: 'root'
@@ -17,6 +21,27 @@ export class AdminPanelApiService {
     private static readonly basePath = 'admin-panel/'
 
     constructor(private readonly _apiService: ApiService) {}
+
+    // добавить данные о пользователе
+    createUser(userCreateDto: UserCreateDto): Observable<User> {
+        return this._apiService.post(AdminPanelApiService.basePath + 'user/create', userCreateDto) as Observable<User>;
+    }
+
+    // изменить данные о пользователе
+    editUser(userEditDto: UserEditDto): Observable<User> {
+        return this._apiService.put(AdminPanelApiService.basePath + 'user/edit', userEditDto) as Observable<User>;
+    }
+
+    // изменить данные о пользователе
+    resetPasswordUser(userId: number) {
+        return this._apiService.post(AdminPanelApiService.basePath + 'user/reset-password', {userId});
+    }
+
+    // отправить файл изображение книги
+    uploadUserImageFile(formData: FormData) {
+        return this._apiService.post(AdminPanelApiService.basePath + 'upload/user/image', formData) as
+            Observable<{ fileName: string }>;
+    }
 
     // заблокировать пользователя
     blockUser(userId: number) {
@@ -41,6 +66,18 @@ export class AdminPanelApiService {
     // убрать роль пользователя
     removeUserRole(userRole: UserRoleDto) {
         return this._apiService.post(AdminPanelApiService.basePath + 'user/roles/remove', userRole);
+    }
+
+    // получить список книг в корзине
+    getUserBooksFromCart(userId: number): Observable<Book[]> {
+        return this._apiService.post(AdminPanelApiService.basePath + 'user/cart', {userId})
+                   .pipe(map((data: []) => data.map(s => Book.assign(new Book(), s)))) as Observable<Book[]>;
+    }
+
+    // получить список покупок
+    getUserSales(userId: number): Observable<Sale[]> {
+        return this._apiService.post(AdminPanelApiService.basePath + 'user/sales', {userId})
+                   .pipe(map((data: []) => data.map(s => Sale.assign(new Sale(), s)))) as Observable<Sale[]>;
     }
 
     // добавить данные о книге
@@ -82,12 +119,18 @@ export class AdminPanelApiService {
 
     // добавить данные о книге
     createAuthor(authorCreateDto: AuthorCreateDto): Observable<Author> {
-        return this._apiService.post(AdminPanelApiService.basePath + 'authors/create', authorCreateDto) as Observable<Author>;
+        return this._apiService.post(
+            AdminPanelApiService.basePath + 'authors/create',
+            authorCreateDto
+        ) as Observable<Author>;
     }
 
     // изменить данные о книге
     editAuthor(authorEditDto: AuthorEditDto): Observable<Author> {
-        return this._apiService.put(AdminPanelApiService.basePath + 'authors/edit', authorEditDto) as Observable<Author>;
+        return this._apiService.put(
+            AdminPanelApiService.basePath + 'authors/edit',
+            authorEditDto
+        ) as Observable<Author>;
     }
 
     // отправить файл изображение книги

@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../database/services/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { ApiConfigService } from '../services/api-config/api-config.service';
@@ -10,15 +10,19 @@ import { RolesService } from '../database/services/roles/roles.service';
 import * as bcrypt from 'bcrypt';
 import { ExpiredTokensService } from '../database/services/expired-tokens/expired-tokens.service';
 import { ExpiredToken } from '../database/entities/ExpiredToken';
+import { generateRandomPassword } from '../infrastructure/utils';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class AuthService {
-    constructor(private _usersService: UsersService,
-                private _jwtService: JwtService,
-                private _apiConfigService: ApiConfigService,
-                private _userPasswordsService: UserPasswordsService,
-                private _roles: RolesService,
-                private _expiredTokensService: ExpiredTokensService) {}
+    constructor(private readonly _usersService: UsersService,
+                private readonly _jwtService: JwtService,
+                private readonly _apiConfigService: ApiConfigService,
+                private readonly _userPasswordsService: UserPasswordsService,
+                private readonly _roles: RolesService,
+                private readonly _expiredTokensService: ExpiredTokensService,
+                private readonly _mailService: MailService,
+    ) {}
 
     async generateJwtRefreshToken(email: string, password: string): Promise<any> {
         const user = await this._usersService.getUserWithPassword({ email });
@@ -94,11 +98,11 @@ export class AuthService {
         } catch (e) {
             return e;
         }
-    }   
+    }
 
     async registration(registration: RegistrationDto) {
         try {
-            const user = new User(registration.name, registration.email);
+            const user = new User(registration.name, registration.email, 'default');
             user.roles = [await this._roles.findOne({ name: 'user' })];
 
             await this._usersService.save(user);
@@ -112,5 +116,24 @@ export class AuthService {
             if (e.code === 'ER_DUP_ENTRY')
                 return { message: 'Duplicate email' };
         }
+    }
+
+    // сбросить пароль пользователя
+    async resetPassword(email: string) {
+        const user = await this._usersService.getUserWithPassword({ email });
+
+        if (!user)
+            throw new HttpException('User is not found', 404);
+
+        const saltRounds = 10;
+
+        const password = generateRandomPassword();
+        user.userPassword.password = await bcrypt.hash(password, saltRounds);
+
+        await this._userPasswordsService.save(user.userPassword);
+
+        this._mailService.sendResetPasswordMessage(
+            { email: user.email, name: user.name }, password,
+        ).then();
     }
 }

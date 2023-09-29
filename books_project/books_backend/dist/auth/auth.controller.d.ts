@@ -16,4 +16,5 @@ export declare class AuthController {
     logout(token: TokenDto): Promise<any>;
     getAccessToken(req: any): Promise<any>;
     getProfile(req: any): any;
+    resetPassword(email: string): Promise<void>;
 }

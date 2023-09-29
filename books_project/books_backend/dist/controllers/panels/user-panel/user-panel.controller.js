@@ -22,6 +22,7 @@ const RolesEnum_1 = require("../../../infrastructure/RolesEnum");
 const set_book_rating_dto_1 = require("../../../dto/auth/set-book-rating.dto");
 const user_edit_profile_dto_1 = require("../../../dto/user-panel/user-edit-profile.dto");
 const user_password_edit_dto_1 = require("../../../dto/user-panel/user-password-edit.dto");
+const platform_express_1 = require("@nestjs/platform-express");
 let UserPanelController = exports.UserPanelController = class UserPanelController {
     constructor(_userPanelService) {
         this._userPanelService = _userPanelService;
@@ -74,6 +75,12 @@ let UserPanelController = exports.UserPanelController = class UserPanelControlle
     }
     async passwordEdit(req, userPasswordEditDto) {
         return this._userPanelService.passwordEdit(req.user, userPasswordEditDto);
+    }
+    async uploadUserImageFile(request, file, fileName) {
+        return {
+            fileName: await this._userPanelService
+                .uploadUserImageFile(request.user, file),
+        };
     }
 };
 __decorate([
@@ -208,6 +215,17 @@ __decorate([
     __metadata("design:paramtypes", [Object, user_password_edit_dto_1.UserPasswordEditDto]),
     __metadata("design:returntype", Promise)
 ], UserPanelController.prototype, "passwordEdit", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.user),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    (0, common_1.Post)('upload/profile/image'),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.UploadedFile)()),
+    __param(2, (0, common_1.Body)('fileName')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, String]),
+    __metadata("design:returntype", Promise)
+], UserPanelController.prototype, "uploadUserImageFile", null);
 exports.UserPanelController = UserPanelController = __decorate([
     (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, common_1.UseGuards)(jwt_access_auth_guard_1.JwtAccessAuthGuard),

@@ -20,7 +20,12 @@ export class UserFilterDto {
     name?: string;
 
     @IsOptional()
-    @IsEmail()
+    @IsString()
     @MaxLength(255)
     email?: string;
+    
+    @IsOptional()
+    @IsString()
+    @MaxLength(255)
+    image?: string;
 }

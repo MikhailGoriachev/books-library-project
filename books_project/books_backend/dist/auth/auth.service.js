@@ -32,14 +32,17 @@ const roles_service_1 = require("../database/services/roles/roles.service");
 const bcrypt = require("bcrypt");
 const expired_tokens_service_1 = require("../database/services/expired-tokens/expired-tokens.service");
 const ExpiredToken_1 = require("../database/entities/ExpiredToken");
+const utils_1 = require("../infrastructure/utils");
+const mail_service_1 = require("../mail/mail.service");
 let AuthService = exports.AuthService = class AuthService {
-    constructor(_usersService, _jwtService, _apiConfigService, _userPasswordsService, _roles, _expiredTokensService) {
+    constructor(_usersService, _jwtService, _apiConfigService, _userPasswordsService, _roles, _expiredTokensService, _mailService) {
         this._usersService = _usersService;
         this._jwtService = _jwtService;
         this._apiConfigService = _apiConfigService;
         this._userPasswordsService = _userPasswordsService;
         this._roles = _roles;
         this._expiredTokensService = _expiredTokensService;
+        this._mailService = _mailService;
     }
     async generateJwtRefreshToken(email, password) {
         const user = await this._usersService.getUserWithPassword({ email });
@@ -98,7 +101,7 @@ let AuthService = exports.AuthService = class AuthService {
     }
     async registration(registration) {
         try {
-            const user = new User_1.User(registration.name, registration.email);
+            const user = new User_1.User(registration.name, registration.email, 'default');
             user.roles = [await this._roles.findOne({ name: 'user' })];
             await this._usersService.save(user);
             const saltRounds = 10;
@@ -111,6 +114,16 @@ let AuthService = exports.AuthService = class AuthService {
                 return { message: 'Duplicate email' };
         }
     }
+    async resetPassword(email) {
+        const user = await this._usersService.getUserWithPassword({ email });
+        if (!user)
+            throw new common_1.HttpException('User is not found', 404);
+        const saltRounds = 10;
+        const password = (0, utils_1.generateRandomPassword)();
+        user.userPassword.password = await bcrypt.hash(password, saltRounds);
+        await this._userPasswordsService.save(user.userPassword);
+        this._mailService.sendResetPasswordMessage({ email: user.email, name: user.name }, password).then();
+    }
 };
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
@@ -119,6 +132,7 @@ exports.AuthService = AuthService = __decorate([
         api_config_service_1.ApiConfigService,
         user_passwords_service_1.UserPasswordsService,
         roles_service_1.RolesService,
-        expired_tokens_service_1.ExpiredTokensService])
+        expired_tokens_service_1.ExpiredTokensService,
+        mail_service_1.MailService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

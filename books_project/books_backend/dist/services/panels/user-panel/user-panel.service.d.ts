@@ -1,3 +1,4 @@
+/// <reference types="multer" />
 import { StreamableFile } from '@nestjs/common';
 import { User } from '../../../database/entities/User';
 import { UserCartItem } from '../../../database/entities/UserCartItem';
@@ -62,4 +63,5 @@ export declare class UserPanelService {
     passwordEdit(user: User, userPasswordEditDto: UserPasswordEditDto): Promise<{
         result: boolean;
     }>;
+    uploadUserImageFile(user: User, file: Express.Multer.File): Promise<string>;
 }

@@ -99,7 +99,7 @@ export class BookFormComponent implements OnInit {
                 });
         else {
             this.book = new Book();
-            this.book.image = 'default.jpg';
+            this.book.image = 'default';
             this.form.patchValue({image: this.book.image, authorsId: [], categoriesId: []});
             this.imageUrl = `${this.baseUrl}public/images/books/${this.book?.image}?v=${this._dataManagerService.imagesVersion}`;
         }
@@ -121,7 +121,7 @@ export class BookFormComponent implements OnInit {
         if (this.bookImageFile) {
             const formData = new FormData();
             formData.append('file', this.bookImageFile);
-            formData.append('fileName', this.isEdit && this.book.image !== 'default.jpg' ? this.book.image : '');
+            formData.append('fileName', this.isEdit && this.book.image !== 'default' ? this.book.image : '');
 
             this.form.value.image = (await lastValueFrom(this._adminPanelService.uploadBookImageFile(formData))).fileName;
 

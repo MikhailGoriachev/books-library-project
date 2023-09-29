@@ -4,27 +4,61 @@ import { User } from '../../entities/User';
 import { Repository } from 'typeorm';
 import { getLike } from '../../../infrastructure/utils';
 import { UserFilterDto } from '../../../dto/filters/user-filter.dto';
+import { BookPaginationFilterDto } from '../../../dto/filters/book-pagination-filter.dto';
+import { PageDto } from '../../../dto/pagination/page.dto';
+import { Book } from '../../entities/Book';
+import { PageMetaDto } from '../../../dto/pagination/page-meta.dto';
+import { UserPaginationFilterDto } from '../../../dto/filters/user-pagination-filter.dto';
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(User)
-        private usersRepository: Repository<User>,
+        private readonly _usersRepository: Repository<User>,
     ) {}
 
+
     async findAll(filter?: UserFilterDto, withDeleted: boolean = false): Promise<User[]> {
-        return this.usersRepository.find({
+        return this._usersRepository.find({
             where: this.getFilter(filter),
             relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
-            withDeleted
+            withDeleted,
         });
     }
 
+    public async findAllByPagination(filter: UserPaginationFilterDto,
+                                     withDeleted: boolean = false): Promise<PageDto<User>> {
+
+        const count = await this._usersRepository.count({
+            where: this.getFilter(filter),
+            skip: filter.skip,
+            take: filter.take,
+            relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
+            withDeleted,
+        });
+
+        const items = await this._usersRepository.find({
+            where: this.getFilter(filter),
+            skip: filter.skip,
+            take: filter.take,
+            relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
+            relationLoadStrategy: 'join',
+            withDeleted,
+        });
+
+        const pageMetaDto = new PageMetaDto({
+            itemCount: count,
+            pageOptionsDto: filter,
+        });
+
+        return new PageDto(items, pageMetaDto);
+    }
+
     async findOne(filter?: UserFilterDto, withDeleted: boolean = false): Promise<User> {
-        return this.usersRepository.findOne({
+        return this._usersRepository.findOne({
             where: this.getFilter(filter),
             relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
-            withDeleted
+            withDeleted,
         });
     }
 
@@ -40,11 +74,11 @@ export class UsersService {
     }
 
     async save(item: User): Promise<User> {
-        return this.usersRepository.save(item);
+        return this._usersRepository.save(item);
     }
-    
+
     async getUserWithPassword(filter?: UserFilterDto) {
-        return await this.usersRepository.findOne({
+        return await this._usersRepository.findOne({
             where: this.getFilter(filter),
             relations: ['sales', 'userCartItems', 'blockedUsers', 'roles', 'userPassword'],
         });

@@ -1,3 +1,4 @@
+/// <reference types="multer" />
 import { UserPanelService } from '../../../services/panels/user-panel/user-panel.service';
 import { User } from '../../../database/entities/User';
 import { SetBookRatingDto } from '../../../dto/auth/set-book-rating.dto';
@@ -22,5 +23,8 @@ export declare class UserPanelController {
     profileEdit(req: any, userEditProfileDto: UserEditProfileDto): Promise<User>;
     passwordEdit(req: any, userPasswordEditDto: UserPasswordEditDto): Promise<{
         result: boolean;
+    }>;
+    uploadUserImageFile(request: any, file: Express.Multer.File, fileName: string): Promise<{
+        fileName: string;
     }>;
 }

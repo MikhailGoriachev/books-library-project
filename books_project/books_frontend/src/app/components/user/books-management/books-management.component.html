@@ -158,7 +158,9 @@
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="headers; sticky: true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: headers" (click)="editBook(row.id)"></tr>
+                    <tr mat-row *matRowDef="let row; columns: headers" class="cursor-pointer"
+                        (click)="editBook(row.id)">
+                    </tr>
                 </table>
             </div>
 

@@ -6,6 +6,8 @@ import { UserPanelApiService } from "../../../services/api/panels/user-panel-api
 import { UserPasswordEditDto } from "../../../dto/user-panel/user-password-edit.dto";
 import { UserEditProfileDto } from "../../../dto/user-panel/user-edit-profile.dto";
 import { lastValueFrom } from "rxjs";
+import { BACKEND_API } from "../../../infrastructure/constants";
+import { EventsService } from "../../../services/events/events.service";
 
 @Component({
     selector: 'app-profile',
@@ -14,8 +16,15 @@ import { lastValueFrom } from "rxjs";
 })
 export class ProfileComponent implements OnInit {
     public dataForm = this._fb.group({
-        name: [this._dataManager.user.name, [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
-        email: [this._dataManager.user.email, [Validators.minLength(1), Validators.maxLength(255), Validators.email]],
+        name: [
+            this._dataManagerService.user.name,
+            [Validators.required, Validators.minLength(1), Validators.maxLength(255)]
+        ],
+        email: [
+            this._dataManagerService.user.email,
+            [Validators.minLength(1), Validators.maxLength(255), Validators.email]
+        ],
+        image: [this._dataManagerService.user.image, [Validators.minLength(1), Validators.maxLength(255)]],
         // password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(255)]],
     });
 
@@ -26,29 +35,69 @@ export class ProfileComponent implements OnInit {
     }, {validators: passwordConfirmValidator('newPassword', 'newPasswordConfirm')});
 
     public get isChanges(): boolean {
-        const {name, email} = this.dataForm.value;
-        const user = this._dataManager.user;
-        return !(name === user.name && email === user.email);
+        return this.dataForm.dirty;
     }
 
     passwordEditResult: boolean | null = null;
 
+    userImageFile = null;
+
+    imageUrl?: string = '';
+
+    baseUrl = BACKEND_API;
+
+    get imagesVersion() {
+        return this._dataManagerService.imagesVersion;
+    }
 
     constructor(
         private readonly _fb: FormBuilder,
-        private readonly _dataManager: DataManagerService,
-        private readonly _userPanelApiService: UserPanelApiService
+        private readonly _dataManagerService: DataManagerService,
+        private readonly _userPanelApiService: UserPanelApiService,
+        private readonly _eventsService: EventsService
     ) {}
 
 
     ngOnInit() {
-        // this.dataForm.controls.email.disable();
+        this.imageUrl = `${this.baseUrl}public/images/users/${this._dataManagerService.user.image}?v=${this._dataManagerService.imagesVersion}`;
     }
 
     async dataFormSubmit() {
-        const data = new UserEditProfileDto(this.dataForm.value.name);
-        console.log(this.dataForm.value.name);
+        if (this.userImageFile) {
+            const formData = new FormData();
+            formData.append('file', this.userImageFile);
+            formData.append(
+                'fileName',
+                this._dataManagerService.user.image !== 'default' ? this._dataManagerService.user.image : ''
+            );
+
+            this.dataForm.value.image = (await lastValueFrom(this._userPanelApiService.uploadBookImageFile(formData))).fileName;
+
+            this._eventsService.changeImage.next();
+        }
+
+        const values = this.dataForm.value;
+        console.dir(values)
+        const data = new UserEditProfileDto(values.name, values.image);
         await lastValueFrom(this._userPanelApiService.profileEdit(data));
+    }
+
+    changeImage(event: any) {
+        const file = event.target.files[0];
+
+        if (file) {
+            this.userImageFile = file;
+
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                this.imageUrl = reader.result.toString();
+            }
+
+            reader.readAsDataURL(file);
+
+            this.dataForm.markAsDirty();
+        }
     }
 
     async passwordFormSubmit() {

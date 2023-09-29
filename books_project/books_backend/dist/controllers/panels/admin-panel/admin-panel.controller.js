@@ -26,9 +26,26 @@ const book_edit_dto_1 = require("../../../dto/admin-panel/book/book-edit.dto");
 const book_create_dto_1 = require("../../../dto/admin-panel/book/book-create.dto");
 const author_create_dto_1 = require("../../../dto/admin-panel/author/author-create.dto");
 const author_edit_dto_1 = require("../../../dto/admin-panel/author/author-edit.dto");
+const user_create_dto_1 = require("../../../dto/admin-panel/user/user-create.dto");
+const user_edit_dto_1 = require("../../../dto/admin-panel/user/user-edit.dto");
 let AdminPanelController = exports.AdminPanelController = class AdminPanelController {
     constructor(_adminPanelService) {
         this._adminPanelService = _adminPanelService;
+    }
+    async addUser(userCreateDto) {
+        return this._adminPanelService.createUser(userCreateDto);
+    }
+    async editUser(userEditDto) {
+        return this._adminPanelService.editUser(userEditDto);
+    }
+    async resetPasswordUser(userId) {
+        return this._adminPanelService.resetPasswordUser(userId);
+    }
+    async uploadUserImageFile(file, fileName) {
+        return {
+            fileName: await this._adminPanelService
+                .uploadFile(file, `${process.cwd()}/public/images/users`, fileName),
+        };
     }
     async blockUser(userId) {
         await this._adminPanelService.blockUser(userId);
@@ -44,6 +61,12 @@ let AdminPanelController = exports.AdminPanelController = class AdminPanelContro
     }
     async removeUserRole(userRole) {
         await this._adminPanelService.removeUserRole(userRole);
+    }
+    async getUserBooksFromCart(userId) {
+        return this._adminPanelService.getUserBooksFromCart(userId);
+    }
+    async getUserSales(userId) {
+        return this._adminPanelService.getUserSales(userId);
     }
     async addBook(bookCreateDto) {
         return this._adminPanelService.createBook(bookCreateDto);
@@ -93,6 +116,40 @@ let AdminPanelController = exports.AdminPanelController = class AdminPanelContro
 };
 __decorate([
     (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Post)('user/create'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_create_dto_1.UserCreateDto]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "addUser", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Put)('user/edit'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_edit_dto_1.UserEditDto]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "editUser", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Post)('user/reset-password'),
+    __param(0, (0, common_1.Body)('userId', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "resetPasswordUser", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    (0, common_1.Post)('upload/user/image'),
+    __param(0, (0, common_1.UploadedFile)()),
+    __param(1, (0, common_1.Body)('fileName')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "uploadUserImageFile", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
     (0, common_1.Post)('user/block'),
     __param(0, (0, common_1.Body)('userId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
@@ -131,6 +188,22 @@ __decorate([
     __metadata("design:paramtypes", [user_role_dto_1.UserRoleDto]),
     __metadata("design:returntype", Promise)
 ], AdminPanelController.prototype, "removeUserRole", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Post)('user/cart'),
+    __param(0, (0, common_1.Body)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "getUserBooksFromCart", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Post)('user/sales'),
+    __param(0, (0, common_1.Body)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], AdminPanelController.prototype, "getUserSales", null);
 __decorate([
     (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
     (0, common_1.Post)('books/create'),

@@ -18,22 +18,46 @@ const typeorm_1 = require("@nestjs/typeorm");
 const User_1 = require("../../entities/User");
 const typeorm_2 = require("typeorm");
 const utils_1 = require("../../../infrastructure/utils");
+const page_dto_1 = require("../../../dto/pagination/page.dto");
+const page_meta_dto_1 = require("../../../dto/pagination/page-meta.dto");
 let UsersService = exports.UsersService = class UsersService {
-    constructor(usersRepository) {
-        this.usersRepository = usersRepository;
+    constructor(_usersRepository) {
+        this._usersRepository = _usersRepository;
     }
     async findAll(filter, withDeleted = false) {
-        return this.usersRepository.find({
+        return this._usersRepository.find({
             where: this.getFilter(filter),
             relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
-            withDeleted
+            withDeleted,
         });
     }
+    async findAllByPagination(filter, withDeleted = false) {
+        const count = await this._usersRepository.count({
+            where: this.getFilter(filter),
+            skip: filter.skip,
+            take: filter.take,
+            relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
+            withDeleted,
+        });
+        const items = await this._usersRepository.find({
+            where: this.getFilter(filter),
+            skip: filter.skip,
+            take: filter.take,
+            relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
+            relationLoadStrategy: 'join',
+            withDeleted,
+        });
+        const pageMetaDto = new page_meta_dto_1.PageMetaDto({
+            itemCount: count,
+            pageOptionsDto: filter,
+        });
+        return new page_dto_1.PageDto(items, pageMetaDto);
+    }
     async findOne(filter, withDeleted = false) {
-        return this.usersRepository.findOne({
+        return this._usersRepository.findOne({
             where: this.getFilter(filter),
             relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
-            withDeleted
+            withDeleted,
         });
     }
     getFilter(filter) {
@@ -44,10 +68,10 @@ let UsersService = exports.UsersService = class UsersService {
         return fields;
     }
     async save(item) {
-        return this.usersRepository.save(item);
+        return this._usersRepository.save(item);
     }
     async getUserWithPassword(filter) {
-        return await this.usersRepository.findOne({
+        return await this._usersRepository.findOne({
             where: this.getFilter(filter),
             relations: ['sales', 'userCartItems', 'blockedUsers', 'roles', 'userPassword'],
         });

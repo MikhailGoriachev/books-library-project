@@ -31,8 +31,15 @@ const user_cart_items_service_1 = require("../../../database/services/user-cart-
 const Author_1 = require("../../../database/entities/Author");
 const author_view_statistics_service_1 = require("../../../database/services/author-view-statistics/author-view-statistics.service");
 const AuthorViewStatistic_1 = require("../../../database/entities/AuthorViewStatistic");
+const auth_service_1 = require("../../../auth/auth.service");
+const sales_service_1 = require("../../../database/services/sales/sales.service");
+const typeorm_1 = require("typeorm");
+const utils_1 = require("../../../infrastructure/utils");
+const mail_service_1 = require("../../../mail/mail.service");
+const bcrypt = require("bcrypt");
+const user_passwords_service_1 = require("../../../database/services/user-passwords/user-passwords.service");
 let AdminPanelService = exports.AdminPanelService = class AdminPanelService {
-    constructor(_usersService, _blockedUsersService, _rolesService, _booksService, _authorsService, _authorViewStatisticsService, _categoriesService, _bookViewStatisticsService, _bookRatingStatisticsService, _bookFilesService, _userCartItemsService) {
+    constructor(_usersService, _blockedUsersService, _rolesService, _booksService, _authorsService, _authorViewStatisticsService, _categoriesService, _bookViewStatisticsService, _bookRatingStatisticsService, _bookFilesService, _userCartItemsService, _authService, _salesService, _mailService, _userPasswordsService) {
         this._usersService = _usersService;
         this._blockedUsersService = _blockedUsersService;
         this._rolesService = _rolesService;
@@ -44,10 +51,59 @@ let AdminPanelService = exports.AdminPanelService = class AdminPanelService {
         this._bookRatingStatisticsService = _bookRatingStatisticsService;
         this._bookFilesService = _bookFilesService;
         this._userCartItemsService = _userCartItemsService;
+        this._authService = _authService;
+        this._salesService = _salesService;
+        this._mailService = _mailService;
+        this._userPasswordsService = _userPasswordsService;
+    }
+    async createUser(userCreateDto) {
+        const password = (0, utils_1.generateRandomPassword)();
+        await this._authService.registration(Object.assign(Object.assign({}, userCreateDto), { password }));
+        const user = await this._usersService.findOne({ email: userCreateDto.email });
+        if (!user)
+            return;
+        user.image = userCreateDto.image;
+        if (userCreateDto.isAdmin) {
+            const adminKey = 'admin';
+            user.roles.push(await this._rolesService.findOne({ name: adminKey }));
+        }
+        await this._usersService.save(user);
+        this._mailService.sendRegistrationMessage({
+            name: user.name,
+            email: user.email,
+        }, user.email, password).then();
+    }
+    async editUser(userEditDto) {
+        const user = await this._usersService.findOne({ id: userEditDto.id }, true);
+        if (!user)
+            throw new common_1.HttpException('User is not found', 404);
+        user.name = userEditDto.name;
+        user.email = userEditDto.email;
+        user.image = userEditDto.image;
+        const adminKey = 'admin';
+        const adminRole = await this._rolesService.findOne({ name: adminKey });
+        const indexRole = user.roles.findIndex(r => r.name === adminRole.name);
+        if (userEditDto.isAdmin && indexRole === -1) {
+            user.roles.push(adminRole);
+        }
+        else if (!userEditDto.isAdmin && indexRole > -1) {
+            user.roles.splice(indexRole, 1);
+        }
+        return this._usersService.save(user);
+    }
+    async resetPasswordUser(userId) {
+        const user = await this._usersService.getUserWithPassword({ id: userId });
+        if (!user)
+            throw new common_1.HttpException('User is not found', 404);
+        const saltRounds = 10;
+        const password = (0, utils_1.generateRandomPassword)();
+        user.userPassword.password = await bcrypt.hash(password, saltRounds);
+        await this._userPasswordsService.save(user.userPassword);
+        this._mailService.sendResetPasswordMessage({ email: user.email, name: user.name }, password).then();
     }
     async blockUser(userId) {
         const isBlockedUser = (await this._blockedUsersService
-            .findOne({ userId, unblockedAt: null })) !== null;
+            .findOne({ userId, unblockedAt: (0, typeorm_1.IsNull)() })) !== null;
         if (isBlockedUser)
             return;
         const user = await this._usersService.findOne({ id: userId });
@@ -58,7 +114,7 @@ let AdminPanelService = exports.AdminPanelService = class AdminPanelService {
     }
     async unblockUser(userId) {
         const blockedUser = await this._blockedUsersService
-            .findOne({ userId, unblockedAt: null });
+            .findOne({ userId, unblockedAt: (0, typeorm_1.IsNull)() });
         if (!blockedUser)
             return;
         blockedUser.unblockedAt = new Date();
@@ -91,6 +147,20 @@ let AdminPanelService = exports.AdminPanelService = class AdminPanelService {
         if (!user)
             throw new common_1.HttpException('User is not found', 404);
         return user.roles;
+    }
+    async getUserSales(userId) {
+        const user = await this._usersService.findOne({ id: userId });
+        if (!user)
+            throw new common_1.HttpException('User is not found', 404);
+        return this._salesService.findAll({ userId: user.id });
+    }
+    async getUserBooksFromCart(userId) {
+        const user = await this._usersService.findOne({ id: userId });
+        if (!user)
+            throw new common_1.HttpException('User is not found', 404);
+        return (await this._userCartItemsService
+            .findAll({ userId: user.id }))
+            .map(c => c.book);
     }
     async uploadFile(file, path, fileName) {
         fileName = fileName.length > 0 ? fileName : (0, uuid_1.v4)();
@@ -200,6 +270,10 @@ exports.AdminPanelService = AdminPanelService = __decorate([
         book_view_statistics_service_1.BookViewStatisticsService,
         book_rating_statistics_service_1.BookRatingStatisticsService,
         book_files_service_1.BookFilesService,
-        user_cart_items_service_1.UserCartItemsService])
+        user_cart_items_service_1.UserCartItemsService,
+        auth_service_1.AuthService,
+        sales_service_1.SalesService,
+        mail_service_1.MailService,
+        user_passwords_service_1.UserPasswordsService])
 ], AdminPanelService);
 //# sourceMappingURL=admin-panel.service.js.map

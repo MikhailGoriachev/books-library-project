@@ -69,6 +69,7 @@ export class AuthorsManagementComponent implements OnInit, OnDestroy {
                 this.dataSource.data = this.authorsPage.data;
             });
 
+
         this.changeAuthorSubscription = this._eventsService.changeAuthor.subscribe(({id}) => {
             const index = this.authorsPage.data.findIndex(a => a.id === id);
             if (index !== -1)

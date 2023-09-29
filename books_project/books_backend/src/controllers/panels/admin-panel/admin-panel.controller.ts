@@ -1,10 +1,10 @@
 import {
     Body,
-    Controller,
+    Controller, Get,
     NotFoundException,
     ParseIntPipe,
     Post,
-    Put,
+    Put, Request,
     UploadedFile,
     UseGuards,
     UseInterceptors,
@@ -24,6 +24,8 @@ import { BookFilesService } from '../../../database/services/book-files/book-fil
 import * as fs from 'fs';
 import { AuthorCreateDto } from '../../../dto/admin-panel/author/author-create.dto';
 import { AuthorEditDto } from '../../../dto/admin-panel/author/author-edit.dto';
+import { UserCreateDto } from '../../../dto/admin-panel/user/user-create.dto';
+import { UserEditDto } from '../../../dto/admin-panel/user/user-edit.dto';
 
 @UseGuards(RolesGuard)
 @UseGuards(JwtAccessAuthGuard)
@@ -32,6 +34,38 @@ export class AdminPanelController {
     constructor(
         private readonly _adminPanelService: AdminPanelService,
     ) {}
+
+    // добавить данные о пользователе
+    @Roles(RolesEnum.admin)
+    @Post('user/create')
+    async addUser(@Body() userCreateDto: UserCreateDto) {
+        return this._adminPanelService.createUser(userCreateDto);
+    }
+
+    // изменить данные о пользователе
+    @Roles(RolesEnum.admin)
+    @Put('user/edit')
+    async editUser(@Body() userEditDto: UserEditDto) {
+        return this._adminPanelService.editUser(userEditDto);
+    }
+    
+    // изменить данные о пользователе
+    @Roles(RolesEnum.admin)
+    @Post('user/reset-password')
+    async resetPasswordUser(@Body('userId', ParseIntPipe) userId: number) {
+        return this._adminPanelService.resetPasswordUser(userId);
+    }
+
+    // загрузить файл изображения для пользователя
+    @Roles(RolesEnum.admin)
+    @UseInterceptors(FileInterceptor('file'))
+    @Post('upload/user/image')
+    async uploadUserImageFile(@UploadedFile() file: Express.Multer.File, @Body('fileName') fileName: string) {
+        return {
+            fileName: await this._adminPanelService
+                .uploadFile(file, `${process.cwd()}/public/images/users`, fileName),
+        };
+    }
 
     // заблокировать пользователя
     @Roles(RolesEnum.admin)
@@ -66,6 +100,20 @@ export class AdminPanelController {
     @Post('user/roles/remove')
     async removeUserRole(@Body() userRole: UserRoleDto) {
         await this._adminPanelService.removeUserRole(userRole);
+    }
+
+    // получить список книг в корзине
+    @Roles(RolesEnum.admin)
+    @Post('user/cart')
+    async getUserBooksFromCart(@Body('userId') userId: number) {
+        return this._adminPanelService.getUserBooksFromCart(userId);
+    }
+
+    // получить список покупок
+    @Roles(RolesEnum.admin)
+    @Post('user/sales')
+    async getUserSales(@Body('userId') userId: number) {
+        return this._adminPanelService.getUserSales(userId);
     }
 
     // добавить данные о книге

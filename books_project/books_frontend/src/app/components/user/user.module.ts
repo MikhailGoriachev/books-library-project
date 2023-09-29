@@ -30,6 +30,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { BooksManagementModule } from "./books-management/books-management.module";
 import { ModalsModule } from "./modals/modals.module";
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { ModalsModule } from "./modals/modals.module";
         AuthComponent,
         CartComponent,
         ProfileComponent,
+        ResetPasswordComponent,
     ],
     exports: [
         NavigationComponent,

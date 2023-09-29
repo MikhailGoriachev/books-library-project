@@ -1,0 +1,6 @@
+.data-container {
+    height: 70vh;
+    /*width: 550px;*/
+    max-width: 100%;
+    overflow: auto;
+}

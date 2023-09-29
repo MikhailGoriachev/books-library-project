@@ -22,12 +22,16 @@ const roles_guard_1 = require("../../../guards/roles/roles.guard");
 const jwt_access_auth_guard_1 = require("../../../auth/guards/jwt-access-auth.guard");
 const roles_decorator_1 = require("../../../decorators/roles/roles.decorator");
 const RolesEnum_1 = require("../../../infrastructure/RolesEnum");
+const user_pagination_filter_dto_1 = require("../../../dto/filters/user-pagination-filter.dto");
 let UsersController = exports.UsersController = class UsersController {
     constructor(_usersService) {
         this._usersService = _usersService;
     }
     findAll(filter) {
         return this._usersService.findAll(filter);
+    }
+    findAllPagination(pageOptionsDto) {
+        return this._usersService.findAllByPagination(pageOptionsDto);
     }
     findOne(filter) {
         return this._usersService.findOne(filter);
@@ -51,6 +55,14 @@ __decorate([
     __metadata("design:paramtypes", [user_filter_dto_1.UserFilterDto]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "findAll", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
+    (0, common_1.Get)('pagination'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_pagination_filter_dto_1.UserPaginationFilterDto]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "findAllPagination", null);
 __decorate([
     (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.admin),
     (0, common_1.Get)('first'),

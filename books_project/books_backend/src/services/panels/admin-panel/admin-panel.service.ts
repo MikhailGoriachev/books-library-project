@@ -28,10 +28,20 @@ import { lastValueFrom } from 'rxjs';
 import { Author } from '../../../database/entities/Author';
 import { AuthorCreateDto } from '../../../dto/admin-panel/author/author-create.dto';
 import {
-    AuthorViewStatisticsService
+    AuthorViewStatisticsService,
 } from '../../../database/services/author-view-statistics/author-view-statistics.service';
 import { AuthorViewStatistic } from '../../../database/entities/AuthorViewStatistic';
 import { AuthorEditDto } from '../../../dto/admin-panel/author/author-edit.dto';
+import { UserCreateDto } from '../../../dto/admin-panel/user/user-create.dto';
+import { User } from '../../../database/entities/User';
+import { UserEditDto } from '../../../dto/admin-panel/user/user-edit.dto';
+import { AuthService } from '../../../auth/auth.service';
+import { SalesService } from '../../../database/services/sales/sales.service';
+import { IsNull } from 'typeorm';
+import { generateRandomPassword } from '../../../infrastructure/utils';
+import { MailService } from '../../../mail/mail.service';
+import * as bcrypt from 'bcrypt';
+import { UserPasswordsService } from '../../../database/services/user-passwords/user-passwords.service';
 
 @Injectable()
 export class AdminPanelService {
@@ -46,12 +56,93 @@ export class AdminPanelService {
                 private readonly _bookRatingStatisticsService: BookRatingStatisticsService,
                 private readonly _bookFilesService: BookFilesService,
                 private readonly _userCartItemsService: UserCartItemsService,
+                private readonly _authService: AuthService,
+                private readonly _salesService: SalesService,
+                private readonly _mailService: MailService,
+                private readonly _userPasswordsService: UserPasswordsService,
     ) {}
+
+    // добавить пользователя
+    async createUser(userCreateDto: UserCreateDto) {
+        const password = generateRandomPassword();
+
+        await this._authService.registration({
+            ...userCreateDto,
+            password,
+        });
+
+        const user = await this._usersService.findOne({ email: userCreateDto.email });
+
+        if (!user)
+            return;
+
+        user.image = userCreateDto.image;
+
+        if (userCreateDto.isAdmin) {
+            const adminKey = 'admin';
+            user.roles.push(await this._rolesService.findOne({ name: adminKey }));
+        }
+
+        await this._usersService.save(user);
+
+        this._mailService.sendRegistrationMessage(
+            {
+                name: user.name,
+                email: user.email,
+            },
+            user.email,
+            password,
+        ).then();
+    }
+
+    // изменить пользователя
+    async editUser(userEditDto: UserEditDto) {
+        const user = await this._usersService.findOne({ id: userEditDto.id }, true);
+
+        if (!user)
+            throw new HttpException('User is not found', 404);
+
+        user.name = userEditDto.name;
+        user.email = userEditDto.email;
+        user.image = userEditDto.image;
+
+        const adminKey = 'admin';
+        const adminRole = await this._rolesService.findOne({ name: adminKey });
+
+        const indexRole = user.roles.findIndex(r => r.name === adminRole.name);
+
+        if (userEditDto.isAdmin && indexRole === -1) {
+            user.roles.push(adminRole);
+        } else if (!userEditDto.isAdmin && indexRole > -1) {
+            user.roles.splice(indexRole, 1);
+        }
+
+        return this._usersService.save(user);
+    }
+
+    // сбросить пароль пользователя
+    async resetPasswordUser(userId: number) {
+        const user = await this._usersService.getUserWithPassword({ id: userId });
+
+        if (!user)
+            throw new HttpException('User is not found', 404);
+
+        const saltRounds = 10;
+
+        const password = generateRandomPassword();
+        user.userPassword.password = await bcrypt.hash(password, saltRounds);
+
+        await this._userPasswordsService.save(user.userPassword);
+
+        this._mailService.sendResetPasswordMessage(
+            { email: user.email, name: user.name }, password,
+        ).then();
+    }
 
     // заблокировать пользователя
     async blockUser(userId: number): Promise<BlockedUser> {
         const isBlockedUser = (await this._blockedUsersService
-            .findOne({ userId, unblockedAt: null })) !== null;
+            .findOne({ userId, unblockedAt: IsNull() })) !== null;
 
         if (isBlockedUser)
             return;
@@ -69,7 +160,7 @@ export class AdminPanelService {
     // разблокировать пользователя
     async unblockUser(userId: number): Promise<BlockedUser> {
         const blockedUser = await this._blockedUsersService
-            .findOne({ userId, unblockedAt: null });
+            .findOne({ userId, unblockedAt: IsNull() });
 
         if (!blockedUser)
             return;
@@ -122,6 +213,28 @@ export class AdminPanelService {
             throw new HttpException('User is not found', 404);
 
         return user.roles;
+    }
+
+    // получить список покупок
+    async getUserSales(userId: number) {
+        const user = await this._usersService.findOne({ id: userId });
+
+        if (!user)
+            throw new HttpException('User is not found', 404);
+
+        return this._salesService.findAll({ userId: user.id });
+    }
+
+    // получить список книг в корзине
+    async getUserBooksFromCart(userId: number): Promise<Book[]> {
+        const user = await this._usersService.findOne({ id: userId });
+
+        if (!user)
+            throw new HttpException('User is not found', 404);
+
+        return (await this._userCartItemsService
+            .findAll({ userId: user.id }))
+            .map(c => c.book);
     }
 
     // загрузить файл
@@ -221,7 +334,7 @@ export class AdminPanelService {
 
         await this._booksService.save(item);
     }
-    
+
     // добавить автора
     async createAuthor(authorCreateDto: AuthorCreateDto) {
         const author = new Author();
@@ -229,7 +342,7 @@ export class AdminPanelService {
         author.description = authorCreateDto.description;
         author.detailsLink = authorCreateDto.detailsLink;
         author.image = authorCreateDto.image;
-        
+
         const result = await this._authorsService.save(author);
 
         await this._authorViewStatisticsService.save(new AuthorViewStatistic(author, 0));
@@ -243,12 +356,12 @@ export class AdminPanelService {
 
         if (!author)
             throw new HttpException('Author is not found', 404);
-        
+
         author.name = authorEditDto.name;
         author.description = authorEditDto.description;
         author.detailsLink = authorEditDto.detailsLink;
         author.image = authorEditDto.image;
-        
+
         const result = await this._authorsService.save(author);
 
         return this._authorsService.save(author);

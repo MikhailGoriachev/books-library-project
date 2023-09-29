@@ -9,6 +9,7 @@ import { AuthComponent } from "../auth/auth.component";
 import { EventsService } from "../../../services/events/events.service";
 import { Subscription } from "rxjs";
 import { reportUnhandledError } from "rxjs/internal/util/reportUnhandledError";
+import { BACKEND_API } from "../../../infrastructure/constants";
 
 @Component({
     selector: 'app-cart',
@@ -24,6 +25,12 @@ export class CartComponent implements OnInit, OnDestroy {
 
     get totalPrice() {
         return this._dataManagerService?.cartItems?.reduce((prev, cur) => prev + cur.price, 0);
+    }
+
+    baseUrl = BACKEND_API;
+
+    get imagesVersion() {
+        return this._dataManagerService.imagesVersion;
     }
 
     protected readonly top = top;

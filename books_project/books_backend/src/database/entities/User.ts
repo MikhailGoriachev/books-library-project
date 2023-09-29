@@ -21,6 +21,9 @@ export class User extends BaseEntity {
     @Column({ length: 255, unique: true })
     email: string;
 
+    @Column({ length: 255, default: '' })
+    image: string;
+
     @OneToMany(type => Sale, sale => sale.user)
     sales: Relation<Sale[]>;
 
@@ -55,9 +58,10 @@ export class User extends BaseEntity {
     }
     
 
-    constructor(name?: string, email?: string) {
+    constructor(name?: string, email?: string, image?: string) {
         super();
         this.name = name;
         this.email = email;
+        this.image = image;
     }
 }

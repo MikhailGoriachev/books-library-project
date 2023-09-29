@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            width: 75%;
+            box-sizing: border-box;
+            padding: 2rem;
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+
+        h1, p {
+            color: #333;
+        }
+
+        h1 {
+            font-size: 16pt;
+        }
+
+        p {
+            font-size: 12pt;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 2rem;
+            box-sizing: border-box;
+        }
+
+        .button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Уважаемый(ая) {{ name }}</h1>
+    <p>
+        Добро пожаловать в наш сервис! Мы рады приветствовать вас как нового зарегистрированного пользователя.
+    </p>
+
+    <p><b>Ваш логин:</b> {{ login }}</p>
+    <p><b>Ваш пароль:</b> {{ password }}</p>
+
+    <p>
+        Сохраните эти данные в надежном месте. Вы можете использовать их для входа в свой аккаунт. <b>Рекомендуется
+        сменить пароль после первого входа.</b>
+    </p>
+
+    <p>
+        Если у вас возникнут вопросы или потребуется дополнительная информация, не стесняйтесь обращаться к нашей службе
+        поддержки. Мы всегда готовы помочь вам.
+    </p>
+
+    <p>Спасибо, что выбрали наш сервис. Желаем вам приятного использования!</p>
+
+    <p>С наилучшими пожеланиями, <b>Book Market</b>!</p>
+
+    <div class='button-container'>
+        <a href="https://goriachev-mikhail.com" class='button'>
+            Перейти в маркет
+        </a>
+    </div>
+</main>
+</body>
+</html>

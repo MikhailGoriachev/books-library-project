@@ -20,8 +20,6 @@ export declare class BooksService {
     getPriceRange(): Promise<any>;
     getPublicationYearRange(): Promise<any>;
     topBooksByRating(): Promise<Book[]>;
-    topBookByRating(): Promise<Book>;
     topBooksByViewed(): Promise<Book[]>;
-    topBookByViewed(): Promise<Book>;
     topBooksByAddition(): Promise<Book[]>;
 }

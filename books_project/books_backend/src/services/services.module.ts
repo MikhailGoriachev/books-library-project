@@ -7,10 +7,15 @@ import { GuestPanelService } from './panels/guest-panel/guest-panel.service';
 import { AuthModule } from '../auth/auth.module';
 import { MailModule } from '../mail/mail.module';
 import { BookReportsService } from './reports/book-reports/book-reports.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppDataSource } from '../database/data-source';
+import { EntitySchema } from 'typeorm';
 
 @Module({
-    imports: [DatabaseModule, AuthModule, MailModule],
+    imports: [DatabaseModule, AuthModule, MailModule,
+        TypeOrmModule.forFeature(AppDataSource.options.entities as EntitySchema[]),
+    ],
     providers: [ApiConfigService, UserPanelService, AdminPanelService, GuestPanelService, BookReportsService],
-    exports: [ApiConfigService, UserPanelService, AdminPanelService, GuestPanelService]
+    exports: [ApiConfigService, UserPanelService, AdminPanelService, GuestPanelService],
 })
 export class ServicesModule {}

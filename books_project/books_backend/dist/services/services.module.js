@@ -16,13 +16,17 @@ const guest_panel_service_1 = require("./panels/guest-panel/guest-panel.service"
 const auth_module_1 = require("../auth/auth.module");
 const mail_module_1 = require("../mail/mail.module");
 const book_reports_service_1 = require("./reports/book-reports/book-reports.service");
+const typeorm_1 = require("@nestjs/typeorm");
+const data_source_1 = require("../database/data-source");
 let ServicesModule = exports.ServicesModule = class ServicesModule {
 };
 exports.ServicesModule = ServicesModule = __decorate([
     (0, common_1.Module)({
-        imports: [database_module_1.DatabaseModule, auth_module_1.AuthModule, mail_module_1.MailModule],
+        imports: [database_module_1.DatabaseModule, auth_module_1.AuthModule, mail_module_1.MailModule,
+            typeorm_1.TypeOrmModule.forFeature(data_source_1.AppDataSource.options.entities),
+        ],
         providers: [api_config_service_1.ApiConfigService, user_panel_service_1.UserPanelService, admin_panel_service_1.AdminPanelService, guest_panel_service_1.GuestPanelService, book_reports_service_1.BookReportsService],
-        exports: [api_config_service_1.ApiConfigService, user_panel_service_1.UserPanelService, admin_panel_service_1.AdminPanelService, guest_panel_service_1.GuestPanelService]
+        exports: [api_config_service_1.ApiConfigService, user_panel_service_1.UserPanelService, admin_panel_service_1.AdminPanelService, guest_panel_service_1.GuestPanelService],
     })
 ], ServicesModule);
 //# sourceMappingURL=services.module.js.map

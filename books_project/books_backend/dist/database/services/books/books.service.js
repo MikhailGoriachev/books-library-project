@@ -31,7 +31,14 @@ let BooksService = exports.BooksService = class BooksService {
     async findAll(filter, withDeleted = false) {
         return this.bookRepository.find({
             where: await this.getFilter(filter),
-            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
+            relations: [
+                'categories',
+                'authors',
+                'bookFiles',
+                'bookFiles.fileExtension',
+                'bookRatingStatistic',
+                'bookViewStatistic',
+            ],
             withDeleted,
         });
     }
@@ -40,14 +47,28 @@ let BooksService = exports.BooksService = class BooksService {
             where: await this.getFilter(filter),
             skip: filter.skip,
             take: filter.take,
-            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatingStatistic', 'bookViewStatistic'],
+            relations: [
+                'categories',
+                'authors',
+                'bookFiles',
+                'bookFiles.fileExtension',
+                'bookRatingStatistic',
+                'bookViewStatistic',
+            ],
             withDeleted,
         });
         const items = await this.bookRepository.find({
             where: await this.getFilter(filter),
             skip: filter.skip,
             take: filter.take,
-            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatingStatistic', 'bookViewStatistic'],
+            relations: [
+                'categories',
+                'authors',
+                'bookFiles',
+                'bookFiles.fileExtension',
+                'bookRatingStatistic',
+                'bookViewStatistic',
+            ],
             order: { deletedAt: 'ASC', bookRatingStatistic: { value: 'DESC' } },
             relationLoadStrategy: 'join',
             withDeleted,
@@ -61,14 +82,28 @@ let BooksService = exports.BooksService = class BooksService {
     async findOne(filter, withDeleted = false) {
         return this.bookRepository.findOne({
             where: await this.getFilter(filter),
-            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatingStatistic', 'bookViewStatistic'],
+            relations: [
+                'categories',
+                'authors',
+                'bookFiles',
+                'bookFiles.fileExtension',
+                'bookRatingStatistic',
+                'bookViewStatistic',
+            ],
             withDeleted,
         });
     }
     async findOneWithCartItems(filter, withDeleted = false) {
         return this.bookRepository.findOne({
             where: await this.getFilter(filter),
-            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatingStatistic', 'bookViewStatistic', 'userCartItems'],
+            relations: [
+                'categories',
+                'authors',
+                'bookFiles',
+                'bookFiles.fileExtension',
+                'bookRatingStatistic',
+                'bookViewStatistic',
+            ],
             withDeleted,
         });
     }
@@ -116,24 +151,10 @@ let BooksService = exports.BooksService = class BooksService {
             relationLoadStrategy: 'join',
         });
     }
-    async topBookByRating() {
-        return this.bookRepository.findOne({
-            order: { bookRatingStatistic: { value: 'DESC' } },
-            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
-            relationLoadStrategy: 'join',
-        });
-    }
     async topBooksByViewed() {
         return this.bookRepository.find({
             order: { bookViewStatistic: { amount: 'DESC' } },
             take: 10,
-            relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
-            relationLoadStrategy: 'join',
-        });
-    }
-    async topBookByViewed() {
-        return this.bookRepository.findOne({
-            order: { bookViewStatistic: { amount: 'DESC' } },
             relations: ['categories', 'authors', 'bookFiles', 'bookFiles.fileExtension', 'bookRatings', 'bookRatingStatistic', 'bookViewStatistic'],
             relationLoadStrategy: 'join',
         });

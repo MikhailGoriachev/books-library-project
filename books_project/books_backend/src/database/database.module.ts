@@ -70,6 +70,7 @@ import { EntitySchema } from 'typeorm';
         UserCartItemsService,
         UserPasswordsService,
         BookFilesService,
-        ExpiredTokensService],
+        ExpiredTokensService
+    ],
 })
 export class DatabaseModule {}

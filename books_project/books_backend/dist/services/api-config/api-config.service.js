@@ -35,6 +35,12 @@ let ApiConfigService = exports.ApiConfigService = class ApiConfigService {
     get storageBookFilesPath() {
         return (0, path_1.join)(process.cwd(), this._configService.get('STORAGE_BOOK_FILES_PATH'));
     }
+    get smtpMail() {
+        return (0, path_1.join)(process.cwd(), this._configService.get('SMTP_MAIL'));
+    }
+    get smtpPassword() {
+        return (0, path_1.join)(process.cwd(), this._configService.get('SMTP_PASSWORD'));
+    }
 };
 exports.ApiConfigService = ApiConfigService = __decorate([
     (0, common_1.Injectable)(),

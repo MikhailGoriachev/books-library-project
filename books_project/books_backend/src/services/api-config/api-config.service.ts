@@ -29,4 +29,12 @@ export class ApiConfigService {
     get storageBookFilesPath(): string {
         return join(process.cwd(), this._configService.get('STORAGE_BOOK_FILES_PATH'));
     }
+    
+    get smtpMail(): string {
+        return join(process.cwd(), this._configService.get('SMTP_MAIL'));
+    }
+    
+    get smtpPassword(): string {
+        return join(process.cwd(), this._configService.get('SMTP_PASSWORD'));
+    }
 }

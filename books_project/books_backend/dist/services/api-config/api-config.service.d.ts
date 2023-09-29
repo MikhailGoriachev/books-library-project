@@ -8,4 +8,6 @@ export declare class ApiConfigService {
     get jwtRefreshExpiry(): string;
     get storagePath(): string;
     get storageBookFilesPath(): string;
+    get smtpMail(): string;
+    get smtpPassword(): string;
 }

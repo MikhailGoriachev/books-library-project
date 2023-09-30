@@ -34,11 +34,11 @@
                 <button mat-menu-item routerLink="/books-management" routerLinkActive="active-link">
                     <mat-icon>auto_stories</mat-icon>&nbsp;Книги
                 </button>
-<!--                <mat-divider></mat-divider>-->
+                <!--                <mat-divider></mat-divider>-->
                 <button mat-menu-item routerLink="/authors-management" routerLinkActive="active-link">
                     <mat-icon>self_improvement</mat-icon>&nbsp;Авторы
                 </button>
-<!--                <mat-divider></mat-divider>-->
+                <!--                <mat-divider></mat-divider>-->
                 <button mat-menu-item routerLink="/users-management" routerLinkActive="active-link">
                     <mat-icon>groups</mat-icon>&nbsp;Пользователи
                 </button>
@@ -46,17 +46,20 @@
 
             <button mat-button class="mx-2" *ngIf="isAdmin" [matMenuTriggerFor]="statisticMenu"
                     routerLinkActive="active-link">
-<!--                <mat-icon>bar_chart</mat-icon>&nbsp;Статистика-->
+                <!--                <mat-icon>bar_chart</mat-icon>&nbsp;Статистика-->
                 <mat-icon>leaderboard</mat-icon>&nbsp;Статистика
             </button>
 
             <mat-menu #statisticMenu='matMenu'>
-                <button mat-menu-item routerLink="/books-management" routerLinkActive="active-link">
+                <button mat-menu-item routerLink="/reports/books-reports" routerLinkActive="active-link">
                     <mat-icon>auto_stories</mat-icon>&nbsp;Книги
                 </button>
                 <mat-divider></mat-divider>
-                <button mat-menu-item routerLink="/authors-management" routerLinkActive="active-link">
+                <button mat-menu-item routerLink="/reports/authors-reports" routerLinkActive="active-link">
                     <mat-icon>self_improvement</mat-icon>&nbsp;Авторы
+                </button>
+                <button mat-menu-item routerLink="/reports/users-reports" routerLinkActive="active-link">
+                    <mat-icon>groups</mat-icon>&nbsp;Пользователи
                 </button>
             </mat-menu>
 

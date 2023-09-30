@@ -7,7 +7,7 @@ import { BookRatingStatistic } from '../../../database/entities/BookRatingStatis
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class BookReportsService {
+export class BooksReportsService {
     constructor(
         @InjectRepository(Book)
         private readonly _booksRepository: Repository<Book>,
@@ -50,7 +50,7 @@ export class BookReportsService {
     }
 
     // самая просматриваемая книга
-    async getBookByMaxViewed() {
+    async getBooksByMaxViewed() {
         const maxViewed = await this._bookViewStatisticsRepository
             .maximum('amount');
 

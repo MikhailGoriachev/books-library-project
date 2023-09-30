@@ -23,6 +23,9 @@ import { CategoryViewStatisticsController } from './crud/category-view-statistic
 import { BookViewStatisticsController } from './crud/book-view-statistics/book-view-statistics.controller';
 import { ServicesModule } from '../services/services.module';
 import { GuestPanelController } from './panels/guest-panel/guest-panel.controller';
+import { BooksReportsController } from './reports/books-reports/books-reports.controller';
+import { AuthorsReportsController } from './reports/authors-reports/authors-reports.controller';
+import { UsersReportsController } from './reports/users-reports/users-reports.controller';
 
 @Module({
     controllers: [
@@ -48,6 +51,9 @@ import { GuestPanelController } from './panels/guest-panel/guest-panel.controlle
         UserPanelController,
         AdminPanelController,
         GuestPanelController,
+        BooksReportsController,
+        AuthorsReportsController,
+        UsersReportsController,
     ],
     imports: [DatabaseModule, ServicesModule],
     exports: [DatabaseModule]

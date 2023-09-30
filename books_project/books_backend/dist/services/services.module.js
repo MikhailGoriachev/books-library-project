@@ -15,7 +15,7 @@ const api_config_service_1 = require("./api-config/api-config.service");
 const guest_panel_service_1 = require("./panels/guest-panel/guest-panel.service");
 const auth_module_1 = require("../auth/auth.module");
 const mail_module_1 = require("../mail/mail.module");
-const book_reports_service_1 = require("./reports/book-reports/book-reports.service");
+const books_reports_service_1 = require("./reports/book-reports/books-reports.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const data_source_1 = require("../database/data-source");
 let ServicesModule = exports.ServicesModule = class ServicesModule {
@@ -25,8 +25,20 @@ exports.ServicesModule = ServicesModule = __decorate([
         imports: [database_module_1.DatabaseModule, auth_module_1.AuthModule, mail_module_1.MailModule,
             typeorm_1.TypeOrmModule.forFeature(data_source_1.AppDataSource.options.entities),
         ],
-        providers: [api_config_service_1.ApiConfigService, user_panel_service_1.UserPanelService, admin_panel_service_1.AdminPanelService, guest_panel_service_1.GuestPanelService, book_reports_service_1.BookReportsService],
-        exports: [api_config_service_1.ApiConfigService, user_panel_service_1.UserPanelService, admin_panel_service_1.AdminPanelService, guest_panel_service_1.GuestPanelService],
+        providers: [
+            api_config_service_1.ApiConfigService,
+            user_panel_service_1.UserPanelService,
+            admin_panel_service_1.AdminPanelService,
+            guest_panel_service_1.GuestPanelService,
+            books_reports_service_1.BooksReportsService,
+        ],
+        exports: [
+            api_config_service_1.ApiConfigService,
+            user_panel_service_1.UserPanelService,
+            admin_panel_service_1.AdminPanelService,
+            guest_panel_service_1.GuestPanelService,
+            books_reports_service_1.BooksReportsService,
+        ],
     })
 ], ServicesModule);
 //# sourceMappingURL=services.module.js.map

@@ -14,13 +14,15 @@ import { MatBadgeModule } from "@angular/material/badge";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatSelectModule } from "@angular/material/select";
 import { MatTabsModule } from "@angular/material/tabs";
-import { MatLineModule } from "@angular/material/core";
+import { MAT_DATE_LOCALE, MatLineModule } from "@angular/material/core";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { UserComponent } from './components/user/user.component';
 import { UserModule } from "./components/user/user.module";
 import { CommonModule } from "@angular/common";
 import { UnauthorizedInterceptor } from "./interceptors/unauthorized/unauthorized.interceptor";
 import { PipesModule } from "./pipes/pipes.module";
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from "@angular/material-moment-adapter";
+import { MAT_PAGINATOR_DEFAULT_OPTIONS } from "@angular/material/paginator";
 
 
 @NgModule({
@@ -53,7 +55,9 @@ import { PipesModule } from "./pipes/pipes.module";
             provide: HTTP_INTERCEPTORS,
             useClass: UnauthorizedInterceptor,
             multi: true
-        }
+        },
+        {provide: MAT_DATE_LOCALE, useValue: 'ru-RU'},
+        {provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: {useUtc: true}},
     ],
     bootstrap: [AppComponent]
 })

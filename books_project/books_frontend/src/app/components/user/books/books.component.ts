@@ -105,6 +105,10 @@ export class BooksComponent implements OnInit, OnDestroy {
     categorySelect(category: string) {
         this.currentFilter.categoryName = category ? category : undefined;
         this.currentFilter.page = 1;
+
+        if (category)
+            this._userPanelApiService.setCategoryView(this.categories.find(c => c.name === category).id).subscribe();
+
         this._booksApiService.findAllPagination(
             this.currentFilter
         ).subscribe(b => this.booksPage = b);

@@ -8,6 +8,7 @@ export declare class UserPanelController {
     private _userPanelService;
     constructor(_userPanelService: UserPanelService);
     addBookToCart(req: any, bookId: number): Promise<void>;
+    addBookListToCart(req: any, bookIds: number[]): Promise<void>;
     removeBookFromCart(req: any, bookId: number): Promise<void>;
     clearCart(req: any): Promise<void>;
     getBooksFromCart(req: any): Promise<import("../../../database/entities/Book").Book[]>;

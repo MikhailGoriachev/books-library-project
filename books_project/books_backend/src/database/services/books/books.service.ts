@@ -32,6 +32,7 @@ export class BooksService {
                 'bookFiles.fileExtension',
                 'bookRatingStatistic',
                 'bookViewStatistic',
+                'userCartItems'
             ],
             withDeleted,
         });
@@ -51,6 +52,7 @@ export class BooksService {
                 'bookFiles.fileExtension',
                 'bookRatingStatistic',
                 'bookViewStatistic',
+                'userCartItems'
             ],
             withDeleted,
             // order: { bookViewStatistic: { amount: 'DESC' } },
@@ -67,6 +69,7 @@ export class BooksService {
                 'bookFiles.fileExtension',
                 'bookRatingStatistic',
                 'bookViewStatistic',
+                'userCartItems'
             ],
             order: { deletedAt: 'ASC', bookRatingStatistic: { value: 'DESC' } },
             relationLoadStrategy: 'join',
@@ -91,6 +94,7 @@ export class BooksService {
                 'bookFiles.fileExtension',
                 'bookRatingStatistic',
                 'bookViewStatistic',
+                'userCartItems'
             ],
             withDeleted,
         });
@@ -106,6 +110,7 @@ export class BooksService {
                 'bookFiles.fileExtension',
                 'bookRatingStatistic',
                 'bookViewStatistic',
+                'userCartItems'
             ],
             withDeleted,
         });
@@ -156,6 +161,17 @@ export class BooksService {
         return {
             min: await this.bookRepository.minimum('publicationYear'),
             max: await this.bookRepository.maximum('publicationYear'),
+        };
+    }
+    
+    async getPublicationYearRangeWithDeleted(): Promise<any> {
+        const books = await this.bookRepository.find();
+        
+        const years = books.map(b => b.publicationYear);
+        
+        return {
+            min: Math.min(...years),
+            max: Math.max(...years),
         };
     }
 

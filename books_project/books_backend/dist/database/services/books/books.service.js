@@ -38,6 +38,7 @@ let BooksService = exports.BooksService = class BooksService {
                 'bookFiles.fileExtension',
                 'bookRatingStatistic',
                 'bookViewStatistic',
+                'userCartItems'
             ],
             withDeleted,
         });
@@ -54,6 +55,7 @@ let BooksService = exports.BooksService = class BooksService {
                 'bookFiles.fileExtension',
                 'bookRatingStatistic',
                 'bookViewStatistic',
+                'userCartItems'
             ],
             withDeleted,
         });
@@ -68,6 +70,7 @@ let BooksService = exports.BooksService = class BooksService {
                 'bookFiles.fileExtension',
                 'bookRatingStatistic',
                 'bookViewStatistic',
+                'userCartItems'
             ],
             order: { deletedAt: 'ASC', bookRatingStatistic: { value: 'DESC' } },
             relationLoadStrategy: 'join',
@@ -89,6 +92,7 @@ let BooksService = exports.BooksService = class BooksService {
                 'bookFiles.fileExtension',
                 'bookRatingStatistic',
                 'bookViewStatistic',
+                'userCartItems'
             ],
             withDeleted,
         });
@@ -103,6 +107,7 @@ let BooksService = exports.BooksService = class BooksService {
                 'bookFiles.fileExtension',
                 'bookRatingStatistic',
                 'bookViewStatistic',
+                'userCartItems'
             ],
             withDeleted,
         });
@@ -141,6 +146,14 @@ let BooksService = exports.BooksService = class BooksService {
         return {
             min: await this.bookRepository.minimum('publicationYear'),
             max: await this.bookRepository.maximum('publicationYear'),
+        };
+    }
+    async getPublicationYearRangeWithDeleted() {
+        const books = await this.bookRepository.find();
+        const years = books.map(b => b.publicationYear);
+        return {
+            min: Math.min(...years),
+            max: Math.max(...years),
         };
     }
     async topBooksByRating() {

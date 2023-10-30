@@ -14,6 +14,16 @@ const routes: Routes = [
             {path: 'login', component: AuthComponent},
             {path: 'books', loadChildren: () => import('./books/books.module').then(m => m.BooksModule)},
             {
+                path: 'my-books',
+                loadChildren: () => import('./my-books/my-books.module').then(m => m.MyBooksModule),
+                canLoad: [UserCanActivateService]
+            },
+            {
+                path: 'my-books',
+                loadChildren: () => import('./my-books/my-books.module').then(m => m.MyBooksModule),
+                canLoad: [UserCanActivateService]
+            },
+            {
                 path: 'books-management',
                 loadChildren: () => import('./books-management/books-management.module').then(m => m.BooksManagementModule),
                 canLoad: [AdminCanLoad]
@@ -30,9 +40,9 @@ const routes: Routes = [
                 canLoad: [AdminCanLoad]
             },
             {
-                path: 'my-books',
-                loadChildren: () => import('./my-books/my-books.module').then(m => m.MyBooksModule),
-                canLoad: [UserCanActivateService]
+                path: 'reports',
+                loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
+                canLoad: [AdminCanLoad]
             },
         ],
     },

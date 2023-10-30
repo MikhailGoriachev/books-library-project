@@ -38,6 +38,7 @@ export class ApiService {
     }
 
     public post(route: string, body?, headers: {} = this.authAccessTokenObject) {
+        body = Utils.removeUndefinedAndEmptyFields(body);
         return this._httpClient.post(BACKEND_API + route, body, {headers});
     }
 

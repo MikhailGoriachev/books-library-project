@@ -27,6 +27,7 @@ import { AppModule } from "../../../app.module";
 import { PipesModule } from "../../../pipes/pipes.module";
 import { MatMenuModule } from "@angular/material/menu";
 import { BookCardComponent } from './book-card/book-card.component';
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import { BookCardComponent } from './book-card/book-card.component';
         MatLineModule,
         MatBadgeModule,
         PipesModule,
-        MatMenuModule
+        MatMenuModule,
+        MatProgressSpinnerModule
     ]
 })
 export class BooksModule { }

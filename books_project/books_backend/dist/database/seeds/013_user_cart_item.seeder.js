@@ -13,7 +13,7 @@ class UserCartItemSeeder {
         const users = (await userRepository.find()).slice(2);
         const books = await bookRepository.find();
         const sales = await saleRepository.find();
-        const n = 200;
+        const n = 1000;
         let userCartItems = Array(n)
             .fill(0)
             .map((_) => {

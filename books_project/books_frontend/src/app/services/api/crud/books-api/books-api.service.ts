@@ -87,6 +87,10 @@ export class BooksApiService {
         return this._apiService.get(BooksApiService.basePath + '/publication-year-range') as Observable<RangeDto>;
     }
 
+    getPublicationYearRangeWithDeleted(): Observable<RangeDto> {
+        return this._apiService.get(BooksApiService.basePath + '/publication-year-range/with-deleted') as Observable<RangeDto>;
+    }
+
     // десять самых рейтинговых книг
     topBooksByRating(): Observable<Book[]> {
         return this._apiService.get(BooksApiService.basePath + '/top-by-rating')

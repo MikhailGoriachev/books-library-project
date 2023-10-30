@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
-import { BooksReportsService } from '../../../services/reports/book-reports/books-reports.service';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { BooksReportsService } from '../../../services/reports/books-reports/books-reports.service';
+import { BooksReportFilterDto } from '../../../dto/reports/books/books-report-filter.dto';
 
 @Controller('books-reports')
 export class BooksReportsController {
@@ -20,7 +21,13 @@ export class BooksReportsController {
     
     // самая продаваемая книга
     @Get('by-max-sales')
-    async getBookByMaxSales() {
-        return this._booksReportsService.getBookByMaxSales();
+    async getBooksByMaxSales() {
+        return this._booksReportsService.getBooksByMaxSales();
+    }
+    
+    // получить отчёт о книгах за период
+    @Post('by-period')
+    async getBooksByPeriod(@Body() periodDto: BooksReportFilterDto) {
+        return this._booksReportsService.getBooksByPeriod(periodDto);
     }
 }

@@ -30,6 +30,11 @@ export class UserPanelApiService {
         return this._apiService.post(UserPanelApiService.basePath + 'cart/add-book', {bookId});
     }
 
+    // добавить коллекцию книг в корзину
+    addBookListToCart(bookIds: number[]) {
+        return this._apiService.post(UserPanelApiService.basePath + 'cart/add-book-list', {bookIds});
+    }
+
     // удалить книгу из корзины
     removeBookFromCart(bookId: number) {
         return this._apiService.post(UserPanelApiService.basePath + 'cart/remove-book', {bookId});

@@ -50,6 +50,14 @@ export class BooksController {
     publicationYearRange() {
         return this._booksService.getPublicationYearRange();
     }
+    
+    @UseGuards(RolesGuard)
+    @Roles(RolesEnum.admin)
+    @UseGuards(JwtAccessAuthGuard)
+    @Get('publication-year-range/with-deleted')
+    publicationYearRangeWithDeleted() {
+        return this._booksService.getPublicationYearRangeWithDeleted();
+    }
 
     // десять самых рейтинговых книг
     @Get('top-by-rating')

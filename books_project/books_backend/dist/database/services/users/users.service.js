@@ -24,14 +24,14 @@ let UsersService = exports.UsersService = class UsersService {
     constructor(_usersRepository) {
         this._usersRepository = _usersRepository;
     }
-    async findAll(filter, withDeleted = false) {
+    async findAll(filter, withDeleted = true) {
         return this._usersRepository.find({
             where: this.getFilter(filter),
-            relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
+            relations: ['sales', 'sales.book', 'userCartItems', 'userCartItems.book', 'blockedUsers', 'roles'],
             withDeleted,
         });
     }
-    async findAllByPagination(filter, withDeleted = false) {
+    async findAllByPagination(filter, withDeleted = true) {
         const count = await this._usersRepository.count({
             where: this.getFilter(filter),
             skip: filter.skip,
@@ -43,7 +43,7 @@ let UsersService = exports.UsersService = class UsersService {
             where: this.getFilter(filter),
             skip: filter.skip,
             take: filter.take,
-            relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
+            relations: ['sales', 'sales.book', 'userCartItems', 'userCartItems.book', 'blockedUsers', 'roles'],
             relationLoadStrategy: 'join',
             withDeleted,
         });
@@ -53,10 +53,10 @@ let UsersService = exports.UsersService = class UsersService {
         });
         return new page_dto_1.PageDto(items, pageMetaDto);
     }
-    async findOne(filter, withDeleted = false) {
+    async findOne(filter, withDeleted = true) {
         return this._usersRepository.findOne({
             where: this.getFilter(filter),
-            relations: ['sales', 'userCartItems', 'blockedUsers', 'roles'],
+            relations: ['sales', 'sales.book', 'userCartItems', 'userCartItems.book', 'blockedUsers', 'roles'],
             withDeleted,
         });
     }
@@ -73,7 +73,8 @@ let UsersService = exports.UsersService = class UsersService {
     async getUserWithPassword(filter) {
         return await this._usersRepository.findOne({
             where: this.getFilter(filter),
-            relations: ['sales', 'userCartItems', 'blockedUsers', 'roles', 'userPassword'],
+            relations: ['sales', 'sales.book', 'userCartItems', 'userCartItems.book', 'blockedUsers', 'roles', 'userPassword'],
+            withDeleted: true,
         });
     }
 };

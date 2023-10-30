@@ -28,7 +28,7 @@
                 </mat-icon>
                 &nbsp;
                 <span
-                    class="{{book.bookRatingStatistic?.value < 3 ? 'text-red-500' : 'text-green-500'}}">
+                    class="{{+book.bookRatingStatistic?.value.toFixed(2) < 3 ? 'text-red-500' : 'text-green-500'}}">
                                         {{book.bookRatingStatistic?.value | number: '0.2-2'}}
                     ({{book.bookRatingStatistic?.amount}})
                                     </span>

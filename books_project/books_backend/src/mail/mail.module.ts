@@ -12,9 +12,9 @@ dotenv.config();
     imports: [
         MailerModule.forRoot({
             transport: {
-                host: 'smtp.forwardemail.net',
+                host: 'smtp.gmail.com',
                 secure: false,
-                port: 465,
+                port: 587,
                 auth: {
                     user: process.env.SMTP_MAIL,
                     pass: process.env.SMTP_PASSWORD,

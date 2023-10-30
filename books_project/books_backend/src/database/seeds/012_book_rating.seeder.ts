@@ -5,6 +5,7 @@ import { randomInt } from 'crypto';
 import { Book } from '../entities/Book';
 import { BookRating } from '../entities/BookRating';
 import { BookRatingStatistic } from '../entities/BookRatingStatistic';
+import { addDays } from 'date-fns';
 
 export default class BookRatingSeeder implements Seeder {
     async run(
@@ -15,10 +16,10 @@ export default class BookRatingSeeder implements Seeder {
         const bookRepository = dataSource.getRepository(Book);
         const bookRatingStatisticsRepository = dataSource.getRepository(BookRatingStatistic);
 
-        const users = await userRepository.find();
+        const users = (await userRepository.find()).slice(2);
         const books = await bookRepository.find();
 
-        const n = 150;
+        const n = 1500;
         const minValue = 1;
         const maxValue = 6;
 
@@ -35,6 +36,17 @@ export default class BookRatingSeeder implements Seeder {
                 );
             });
 
+        const minDays = -30, maxDays = 0;
+        
+        bookRatings.forEach(r => {
+            const date = addDays(new Date(), randomInt(minDays, maxDays));
+            date.setHours(randomInt(1, 24));
+            date.setMinutes(randomInt(1, 60));
+            date.setSeconds(randomInt(1, 60));
+            
+            r.createdAt = date;
+        });
+
         bookRatings = bookRatings.filter((item, index) => !bookRatings.slice(0, index).some(
             (uniqueItem) => item.user === uniqueItem.user && item.book === uniqueItem.book),
         );
@@ -49,7 +61,7 @@ export default class BookRatingSeeder implements Seeder {
                 statistic = new BookRatingStatistic(r.book, 0, 0);
                 statisticList.push(statistic);
             }
-            
+
             statistic.amount++;
             statistic.value = (statistic.value + r.value) / 2;
         }

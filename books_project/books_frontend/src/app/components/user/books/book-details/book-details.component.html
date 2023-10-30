@@ -17,7 +17,7 @@
                     </mat-icon>
                 </button>
 
-                <div class="place-self-center {{rating?.value < 3 ? 'text-red-500' : 'text-green-500'}}">
+                <div class="place-self-center {{+rating?.value.toFixed(2) < 3 ? 'text-red-500' : 'text-green-500'}}">
                     ({{rating?.value | number: '0.2-2'}})
                 </div>
             </div>

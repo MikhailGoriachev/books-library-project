@@ -22,6 +22,7 @@ import { AuthorDetailsComponent } from './author-details/author-details.componen
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { PipesModule } from "../../../pipes/pipes.module";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { PipesModule } from "../../../pipes/pipes.module";
         ReactiveFormsModule,
         MatDialogModule,
         MatDividerModule,
-        PipesModule
+        PipesModule,
+        MatProgressSpinnerModule
     ]
 })
 export class AuthorsModule { }

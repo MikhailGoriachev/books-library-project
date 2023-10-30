@@ -19,6 +19,7 @@ export declare class BooksService {
     delete(item: Book): Promise<Book>;
     getPriceRange(): Promise<any>;
     getPublicationYearRange(): Promise<any>;
+    getPublicationYearRangeWithDeleted(): Promise<any>;
     topBooksByRating(): Promise<Book[]>;
     topBooksByViewed(): Promise<Book[]>;
     topBooksByAddition(): Promise<Book[]>;

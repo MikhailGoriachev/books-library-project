@@ -11,7 +11,7 @@ class UserSeeder {
         const password = 'aA123456';
         const hashPassword = await bcrypt.hash(password, saltRounds);
         await factoryManager.get(UserPassword_1.UserPassword).save(new UserPassword_1.UserPassword(admin, hashPassword, false));
-        const amount = 20;
+        const amount = 100;
         return factoryManager.get(User_1.User).saveMany(amount);
     }
 }

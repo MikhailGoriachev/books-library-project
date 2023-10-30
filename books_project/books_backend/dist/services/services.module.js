@@ -15,9 +15,13 @@ const api_config_service_1 = require("./api-config/api-config.service");
 const guest_panel_service_1 = require("./panels/guest-panel/guest-panel.service");
 const auth_module_1 = require("../auth/auth.module");
 const mail_module_1 = require("../mail/mail.module");
-const books_reports_service_1 = require("./reports/book-reports/books-reports.service");
+const books_reports_service_1 = require("./reports/books-reports/books-reports.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const data_source_1 = require("../database/data-source");
+const date_service_1 = require("./date/date.service");
+const authors_reports_service_1 = require("./reports/authors-reports/authors-reports.service");
+const users_reports_service_1 = require("./reports/users-reports/users-reports.service");
+const categories_reports_service_1 = require("./reports/categories-reports/categories-reports.service");
 let ServicesModule = exports.ServicesModule = class ServicesModule {
 };
 exports.ServicesModule = ServicesModule = __decorate([
@@ -31,6 +35,10 @@ exports.ServicesModule = ServicesModule = __decorate([
             admin_panel_service_1.AdminPanelService,
             guest_panel_service_1.GuestPanelService,
             books_reports_service_1.BooksReportsService,
+            date_service_1.DateService,
+            authors_reports_service_1.AuthorsReportsService,
+            users_reports_service_1.UsersReportsService,
+            categories_reports_service_1.CategoriesReportsService
         ],
         exports: [
             api_config_service_1.ApiConfigService,
@@ -38,6 +46,10 @@ exports.ServicesModule = ServicesModule = __decorate([
             admin_panel_service_1.AdminPanelService,
             guest_panel_service_1.GuestPanelService,
             books_reports_service_1.BooksReportsService,
+            date_service_1.DateService,
+            authors_reports_service_1.AuthorsReportsService,
+            users_reports_service_1.UsersReportsService,
+            categories_reports_service_1.CategoriesReportsService
         ],
     })
 ], ServicesModule);

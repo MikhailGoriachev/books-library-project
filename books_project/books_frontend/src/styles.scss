@@ -94,7 +94,7 @@ body {
 .filter-button {
     position: fixed !important;
     bottom: 50% !important;
-    z-index: 1 !important;
+    z-index: 110 !important;
 }
 
 mat-slider {
@@ -239,4 +239,8 @@ mat-card img {
 
 .margin-0 {
     margin: 0 !important;
+}
+
+.h-30rem {
+    height: 30rem;
 }

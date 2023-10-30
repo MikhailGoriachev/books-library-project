@@ -112,7 +112,7 @@ export class DataManagerService {
         })
     }
 
-    async addToCart(book: Book) {
+    async addBookToCart(book: Book) {
         // if (this.user) {
         if (this._authService.isAuthData) {
             await lastValueFrom(this._userPanelApiService.addBookToCart(book.id));
@@ -127,7 +127,23 @@ export class DataManagerService {
         this._eventsService.changeCart.next();
     }
 
-    async removeFromCart(book: Book) {
+    async addBookListToCart(books: Book[]) {
+        // if (this.user) {
+        if (this._authService.isAuthData) {
+            await lastValueFrom(this._userPanelApiService.addBookListToCart(books.map(b => b.id)));
+
+            books = await lastValueFrom(this._userPanelApiService.getBooksFromCart());
+            this.cartItems.splice(0);
+            this.cartItems.push(...books);
+        } else {
+            this.cartItems.push(...books);
+            this._localStorageService.cartItems = this.cartItems.map(b => b.id);
+        }
+
+        this._eventsService.changeCart.next();
+    }
+
+    async removeBookFromCart(book: Book) {
         // if (this.user) {
         if (this._authService.isAuthData) {
             await lastValueFrom(this._userPanelApiService.removeBookFromCart(book.id));

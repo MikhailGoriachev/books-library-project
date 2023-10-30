@@ -35,6 +35,7 @@ const guest_panel_controller_1 = require("./panels/guest-panel/guest-panel.contr
 const books_reports_controller_1 = require("./reports/books-reports/books-reports.controller");
 const authors_reports_controller_1 = require("./reports/authors-reports/authors-reports.controller");
 const users_reports_controller_1 = require("./reports/users-reports/users-reports.controller");
+const categories_reports_controller_1 = require("./reports/categories-reports/categories-reports.controller");
 let ControllersModule = exports.ControllersModule = class ControllersModule {
 };
 exports.ControllersModule = ControllersModule = __decorate([
@@ -65,6 +66,7 @@ exports.ControllersModule = ControllersModule = __decorate([
             books_reports_controller_1.BooksReportsController,
             authors_reports_controller_1.AuthorsReportsController,
             users_reports_controller_1.UsersReportsController,
+            categories_reports_controller_1.CategoriesReportsController,
         ],
         imports: [database_module_1.DatabaseModule, services_module_1.ServicesModule],
         exports: [database_module_1.DatabaseModule]

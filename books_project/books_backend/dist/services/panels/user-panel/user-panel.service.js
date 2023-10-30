@@ -76,18 +76,30 @@ let UserPanelService = exports.UserPanelService = class UserPanelService {
             bookId: bookId,
         });
         if (isExistsCart)
-            throw new Error('The book exists in the cart');
+            throw new common_1.HttpException('The book exists in the cart', 400);
         const isExistsSales = await this._salesService.findOne({
             userId: user.id,
             bookId: bookId,
         });
         if (isExistsSales)
-            throw new Error('The book has already been purchased');
+            throw new common_1.HttpException('The book has already been purchased', 400);
         const book = await this._booksService.findOne({ id: bookId });
         if (!book)
             throw new common_1.NotFoundException('Book is not found');
         const cartItem = new UserCartItem_1.UserCartItem(user, book);
         return this._userCartItemsService.save(cartItem);
+    }
+    async addBookListToCart(user, bookIds) {
+        const cart = await this._userCartItemsService.findAll({
+            userId: user.id
+        });
+        const sales = await this._salesService.findAll({
+            userId: user.id
+        });
+        bookIds = bookIds.filter(b => !(cart.find(c => c.book.id === b) || sales.find(s => s.book.id === b)));
+        const books = await this._booksService.findAll({ ids: bookIds });
+        const items = books.map(b => new UserCartItem_1.UserCartItem(user, b));
+        return this._userCartItemsService.saveAll(items);
     }
     async removeBookFromCart(user, bookId) {
         const isExists = await this._userCartItemsService.findOne({

@@ -30,6 +30,9 @@ let UserPanelController = exports.UserPanelController = class UserPanelControlle
     async addBookToCart(req, bookId) {
         await this._userPanelService.addBookToCart(req.user, bookId);
     }
+    async addBookListToCart(req, bookIds) {
+        await this._userPanelService.addBookListToCart(req.user, bookIds);
+    }
     async removeBookFromCart(req, bookId) {
         await this._userPanelService.removeBookFromCart(req.user, bookId);
     }
@@ -92,6 +95,15 @@ __decorate([
     __metadata("design:paramtypes", [Object, Number]),
     __metadata("design:returntype", Promise)
 ], UserPanelController.prototype, "addBookToCart", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.user),
+    (0, common_1.Post)('cart/add-book-list'),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Body)('bookIds', common_1.ParseArrayPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Array]),
+    __metadata("design:returntype", Promise)
+], UserPanelController.prototype, "addBookListToCart", null);
 __decorate([
     (0, roles_decorator_1.Roles)(RolesEnum_1.RolesEnum.user),
     (0, common_1.Post)('cart/remove-book'),

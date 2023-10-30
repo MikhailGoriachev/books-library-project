@@ -111,11 +111,11 @@ export class BookDetailsComponent implements OnInit, OnDestroy {
     }
 
     addToCart() {
-        this._dataManagerService.addToCart(this.book).then();
+        this._dataManagerService.addBookToCart(this.book).then();
     }
 
     async removeFromCart() {
-        this._dataManagerService.removeFromCart(this.book).then();
+        this._dataManagerService.removeBookFromCart(this.book).then();
     }
 
     async toAuthorCardDetails(event: Event, id: number) {

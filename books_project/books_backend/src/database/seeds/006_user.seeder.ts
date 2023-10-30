@@ -15,7 +15,7 @@ export default class UserSeeder implements Seeder {
         const hashPassword = await bcrypt.hash(password, saltRounds);
         await factoryManager.get(UserPassword).save(new UserPassword(admin, hashPassword, false));
 
-        const amount = 20;
+        const amount = 100;
         return factoryManager.get(User).saveMany(amount);
     }
 }

@@ -92,7 +92,7 @@ export class UserPanelService {
         });
 
         if (isExistsCart)
-            throw new Error('The book exists in the cart');
+            throw new HttpException('The book exists in the cart', 400);
 
         const isExistsSales = await this._salesService.findOne({
             userId: user.id,
@@ -100,7 +100,7 @@ export class UserPanelService {
         });
 
         if (isExistsSales)
-            throw new Error('The book has already been purchased');
+            throw new HttpException('The book has already been purchased', 400);
 
         const book = await this._booksService.findOne({ id: bookId });
 
@@ -110,6 +110,27 @@ export class UserPanelService {
         const cartItem = new UserCartItem(user, book);
 
         return this._userCartItemsService.save(cartItem);
+    }
+
+    // добавить коллекцию книг в корзину
+    async addBookListToCart(user: User, bookIds: number[]): Promise<UserCartItem[]> {
+        const cart = await this._userCartItemsService.findAll({
+            userId: user.id
+        });
+        
+        const sales = await this._salesService.findAll({
+            userId: user.id
+        });
+        
+        bookIds = bookIds.filter(b => 
+            !(cart.find(c => c.book.id === b) || sales.find(s => s.book.id === b))
+        );
+        
+        const books = await this._booksService.findAll({ ids: bookIds });
+        
+        const items = books.map(b => new UserCartItem(user, b))    
+        
+        return this._userCartItemsService.saveAll(items);
     }
 
     // удалить книгу из корзины

@@ -49,6 +49,9 @@ let UserCartItemsService = exports.UserCartItemsService = class UserCartItemsSer
     async save(item) {
         return this.cartItemRepository.save(item);
     }
+    async saveAll(items) {
+        return this.cartItemRepository.save(items);
+    }
     async delete(id) {
         await this.cartItemRepository.remove(await this.cartItemRepository.findOneBy({ id }));
     }

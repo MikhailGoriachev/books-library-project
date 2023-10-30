@@ -5,14 +5,15 @@ const crypto_1 = require("crypto");
 const Book_1 = require("../entities/Book");
 const BookRating_1 = require("../entities/BookRating");
 const BookRatingStatistic_1 = require("../entities/BookRatingStatistic");
+const date_fns_1 = require("date-fns");
 class BookRatingSeeder {
     async run(dataSource, factoryManager) {
         const userRepository = dataSource.getRepository(User_1.User);
         const bookRepository = dataSource.getRepository(Book_1.Book);
         const bookRatingStatisticsRepository = dataSource.getRepository(BookRatingStatistic_1.BookRatingStatistic);
-        const users = await userRepository.find();
+        const users = (await userRepository.find()).slice(2);
         const books = await bookRepository.find();
-        const n = 150;
+        const n = 1500;
         const minValue = 1;
         const maxValue = 6;
         let bookRatings = Array(n)
@@ -21,6 +22,14 @@ class BookRatingSeeder {
             const user = users[(0, crypto_1.randomInt)(0, users.length)];
             const book = books[(0, crypto_1.randomInt)(0, books.length)];
             return new BookRating_1.BookRating(user, book, (0, crypto_1.randomInt)(minValue, maxValue));
+        });
+        const minDays = -30, maxDays = 0;
+        bookRatings.forEach(r => {
+            const date = (0, date_fns_1.addDays)(new Date(), (0, crypto_1.randomInt)(minDays, maxDays));
+            date.setHours((0, crypto_1.randomInt)(1, 24));
+            date.setMinutes((0, crypto_1.randomInt)(1, 60));
+            date.setSeconds((0, crypto_1.randomInt)(1, 60));
+            r.createdAt = date;
         });
         bookRatings = bookRatings.filter((item, index) => !bookRatings.slice(0, index).some((uniqueItem) => item.user === uniqueItem.user && item.book === uniqueItem.book));
         const statisticList = await bookRatingStatisticsRepository.find({ relations: ['book'] });

@@ -47,6 +47,7 @@ export declare class UserPanelService {
     private readonly _entityManager;
     constructor(_usersService: UsersService, _userCartItemsService: UserCartItemsService, _booksService: BooksService, _bookRatingsService: BookRatingsService, _bookRatingStatisticsService: BookRatingStatisticsService, _bookViewsService: BookViewsService, _bookViewStatisticsService: BookViewStatisticsService, _bookFilesService: BookFilesService, _authorsService: AuthorsService, _authorViewsService: AuthorViewsService, _authorViewStatisticsService: AuthorViewStatisticsService, _categoriesService: CategoriesService, _categoryViewsService: CategoryViewsService, _categoryViewStatisticsService: CategoryViewStatisticsService, _salesService: SalesService, _apiConfigService: ApiConfigService, _userPasswordsService: UserPasswordsService, _entityManager: EntityManager);
     addBookToCart(user: User, bookId: number): Promise<UserCartItem>;
+    addBookListToCart(user: User, bookIds: number[]): Promise<UserCartItem[]>;
     removeBookFromCart(user: User, bookId: number): Promise<void>;
     clearCart(user: User): Promise<void>;
     getBooksFromCart(user: User): Promise<Book[]>;

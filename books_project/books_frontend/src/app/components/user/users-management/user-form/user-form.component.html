@@ -97,7 +97,7 @@
 
                     <tr mat-header-row *matHeaderRowDef="headersBook; sticky: true "></tr>
                     <tr mat-row *matRowDef="let row; columns: headersBook;" class="cursor-pointer"
-                        (click)="toBookDetails(row.id)"></tr>
+                        (click)="toBookDetails(row.book.id)"></tr>
                     <!--                    <tr mat-footer-row *matFooterRowDef="headersBook; sticky: true"></tr>-->
                 </table>
             </div>

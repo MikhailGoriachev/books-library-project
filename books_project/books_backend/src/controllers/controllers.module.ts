@@ -26,6 +26,7 @@ import { GuestPanelController } from './panels/guest-panel/guest-panel.controlle
 import { BooksReportsController } from './reports/books-reports/books-reports.controller';
 import { AuthorsReportsController } from './reports/authors-reports/authors-reports.controller';
 import { UsersReportsController } from './reports/users-reports/users-reports.controller';
+import { CategoriesReportsController } from './reports/categories-reports/categories-reports.controller';
 
 @Module({
     controllers: [
@@ -54,6 +55,7 @@ import { UsersReportsController } from './reports/users-reports/users-reports.co
         BooksReportsController,
         AuthorsReportsController,
         UsersReportsController,
+        CategoriesReportsController,
     ],
     imports: [DatabaseModule, ServicesModule],
     exports: [DatabaseModule]

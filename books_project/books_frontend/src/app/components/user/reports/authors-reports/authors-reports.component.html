@@ -1,1 +1,182 @@
-<p>authors-reports works!</p>
+<div>
+    <mat-drawer-container class="w-full min-h-screen">
+        <mat-drawer #drawerFilter mode="side" class="max-w-xs z-20">
+            <form [formGroup]="filterForm">
+                <mat-accordion class="mb-5" multi>
+
+                    <mat-expansion-panel expanded>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Фильтр</mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <!-- Период отчёта -->
+                        <mat-form-field class="block w-full">
+                            <mat-label>Период отчёта</mat-label>
+                            <mat-date-range-input [rangePicker]="rangePicker">
+                                <input matInput matStartDate formControlName="begin"
+                                       placeholder="Начальная дата">
+                                <input matInput matEndDate formControlName="end"
+                                       placeholder="Конечная дата">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #rangePicker>
+                                <mat-date-range-picker-actions>
+                                    <button mat-button matDateRangePickerCancel>Отмена</button>
+                                    <button mat-raised-button color="primary" matDateRangePickerApply>Выбрать</button>
+                                </mat-date-range-picker-actions>
+                            </mat-date-range-picker>
+                        </mat-form-field>
+
+                        <!-- ID -->
+                        <mat-form-field class="block w-full">
+                            <mat-label>ID</mat-label>
+                            <input matInput type="number" formControlName="id">
+                        </mat-form-field>
+
+                        <!-- Имя -->
+                        <mat-form-field class="block w-full">
+                            <mat-label>Имя</mat-label>
+                            <input matInput formControlName="name">
+                        </mat-form-field>
+                    </mat-expansion-panel>
+
+                    <div class="m-5">
+                        <button mat-button (click)="onFilterSubmit()" class="w-full mb-2" [disabled]="!isValid || isLoading || !filterForm.dirty"
+                                color="success" cdkFocusInitial>
+                            Применить
+                        </button>
+                        <button mat-button (click)="onFilterClear()" [disabled]="isLoading" class="w-full">Сбросить</button>
+                    </div>
+                </mat-accordion>
+            </form>
+        </mat-drawer>
+
+        <mat-drawer-content class="content">
+            <button mat-fab (click)="drawerFilter.toggle()" matTooltip="Фильтр" class="filter-button m-2 z-40">
+                <mat-icon>filter_alt</mat-icon>
+            </button>
+
+            <div class="flex justify-between items-baseline">
+                <div class="mat-headline-5 p-5 margin-0">
+                    <mat-icon>auto_stories</mat-icon>&nbsp;Статистика по авторам
+                    ({{reportGroup?.begin | date:'dd.MM.y'}}
+                    — {{reportGroup?.end | date:'dd.MM.y'}})
+                </div>
+            </div>
+
+            <h1 *ngIf="!reportGroup || isLoading">
+                <mat-spinner class="h-12 inline-block"></mat-spinner>
+                Загрузка...
+            </h1>
+            <h1 *ngIf="reportGroup && reportGroup.reports.length <= 0">Книг нет</h1>
+
+            <div class="flex mx-16 mb-5">
+                <div>
+                    <canvas baseChart
+                            [datasets]="chartData"
+                            [labels]="chartLabels"
+                            [options]="chartOptions"
+                            [legend]="chartLegend"
+                            [type]="chartType">
+                    </canvas>
+                </div>
+
+                <div class="w-full ms-12">
+                    <div class="my-5 block mat-headline-4">
+                        <b>Прибыль:</b> {{(reportGroup?.profit ?? 0) | number: '0.2-2'}}&nbsp;&#8381;
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="my-5 block mat-headline-6"><b>Количество
+                        продаж:</b> {{reportGroup?.salesAmount ?? '——'}}</div>
+                    <mat-divider></mat-divider>
+                    <div class="my-5 block mat-headline-6"><b>Просмотры:</b> {{reportGroup?.viewsAmount ?? '——'}}</div>
+                    <mat-divider></mat-divider>
+                    <div class="my-5 block mat-headline-6">
+                        <b>Просмотры книг:</b> {{reportGroup?.booksViewsAmount ?? '——'}}</div>
+                    <mat-divider></mat-divider>
+                    <div class="my-5 block mat-headline-6">
+                        <b>Средний рейтинг:</b>&nbsp;<span
+                        class="{{+reportGroup?.avgRating.toFixed(2) < 3 ? 'text-red-500' : 'text-green-500'}}">{{(reportGroup?.avgRating ?? 0) | number: '0.2-2'}}</span>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="my-5 block mat-headline-6">
+                        <b>Количество оценок:</b> {{reportGroup?.ratingsAmount ?? '——'}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mx-10">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 mb-5" matSort>
+                    <ng-container matColumnDef="image">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let elem">
+                            <img class="m-auto block" mat-card-avatar
+                                 src="{{baseUrl}}public/images/authors/{{elem.author.image}}?v={{imagesVersion}}"
+                                 alt="">
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef="let elem" mat-sort-header><b>ID</b></th>
+                        <td mat-cell *matCellDef="let elem">{{elem.author.id}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef="let elem" mat-sort-header><b>Название</b></th>
+                        <td mat-cell *matCellDef="let elem">{{elem.author.name}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="views">
+                        <th mat-header-cell *matHeaderCellDef="let elem" mat-sort-header><b>Просмотры</b></th>
+                        <td mat-cell *matCellDef="let elem">{{elem.views.length | number}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="avgSalePrice">
+                        <th mat-header-cell *matHeaderCellDef="let elem" mat-sort-header><b>Ср. цена продажи</b></th>
+                        <td mat-cell *matCellDef="let elem">{{elem.avgSalePrice | number: '0.2-2'}}&nbsp;&#8381;</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="profit">
+                        <th mat-header-cell *matHeaderCellDef="let elem" mat-sort-header><b>Прибыль</b></th>
+                        <td mat-cell *matCellDef="let elem">{{elem.profit | number: '0.2-2'}}&nbsp;&#8381;</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="sales">
+                        <th mat-header-cell *matHeaderCellDef="let elem" mat-sort-header><b>Продажи</b></th>
+                        <td mat-cell *matCellDef="let elem">{{elem.sales.length | number}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="booksViews">
+                        <th mat-header-cell *matHeaderCellDef="let elem" mat-sort-header><b>Просмотры книг</b></th>
+                        <td mat-cell *matCellDef="let elem">{{elem.booksViews.length | number}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="avgRating">
+                        <th mat-header-cell *matHeaderCellDef="let elem" mat-sort-header><b>Рейтинг</b></th>
+                        <td mat-cell *matCellDef="let elem"
+                            class="{{+elem.avgRating.toFixed(2) < 3 ? 'text-red-500' : 'text-green-500'}}">
+                            {{elem.avgRating | number: '0.2-2'}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ratings">
+                        <th mat-header-cell *matHeaderCellDef="let elem" mat-sort-header><b>Количество оценок</b></th>
+                        <td mat-cell *matCellDef="let elem">{{elem.ratings.length | number}}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="headers; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: headers" class="cursor-pointer"
+                        (click)="toCardDetails(row)"></tr>
+                </table>
+            </div>
+
+            <mat-paginator
+                class="mat-paginator"
+                [pageSize]="pageSize"
+                [hidePageSize]="true"
+                [showFirstLastButtons]="true">
+            </mat-paginator>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>
+<router-outlet></router-outlet>

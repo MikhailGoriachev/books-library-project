@@ -12,6 +12,7 @@ export declare class BooksController {
     findOne(filter: BookFilterDto): Promise<Book>;
     priceRange(): Promise<any>;
     publicationYearRange(): Promise<any>;
+    publicationYearRangeWithDeleted(): Promise<any>;
     topBooksByRating(): Promise<Book[]>;
     topBooksByViewed(): Promise<Book[]>;
     topBooksByAddition(): Promise<Book[]>;

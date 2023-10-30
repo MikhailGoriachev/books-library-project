@@ -82,12 +82,12 @@ export class AuthorDetailsComponent implements OnInit {
 
     addToCart(event: MouseEvent, book: Book) {
         event.stopPropagation();
-        this._dataManagerService.addToCart(book).then();
+        this._dataManagerService.addBookToCart(book).then();
     }
 
     removeFromCart(event: MouseEvent, book: Book) {
         event.stopPropagation();
-        this._dataManagerService.removeFromCart(book).then();
+        this._dataManagerService.removeBookFromCart(book).then();
     }
 
     isExistsCart(bookId: number) {

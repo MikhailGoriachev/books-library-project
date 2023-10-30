@@ -9,6 +9,7 @@ import { DataManagerService } from "../../../services/data-manager/data-manager.
 import { EventsService } from "../../../services/events/events.service";
 import { UserFormComponent } from "../users-management/user-form/user-form.component";
 import { ResetPasswordComponent } from "./reset-password/reset-password.component";
+import { UserPanelApiService } from "../../../services/api/panels/user-panel-api/user-panel-api.service";
 
 @Component({
     selector: 'app-auth',
@@ -40,7 +41,8 @@ export class AuthComponent implements OnInit {
         private readonly _authService: AuthService,
         private readonly _dataManagerService: DataManagerService,
         private readonly _eventsService: EventsService,
-        private readonly _matDialog: MatDialog
+        private readonly _matDialog: MatDialog,
+        private readonly _userPanelApiService: UserPanelApiService
     ) {}
 
     ngOnInit() {
@@ -72,7 +74,8 @@ export class AuthComponent implements OnInit {
                 await this._authService.login(new AuthDto(data.email, data.password));
 
             if (data.isCart) {
-                dataCart.forEach(c => this._dataManagerService.addToCart(c));
+                await this._dataManagerService.addBookListToCart(dataCart);
+                // this._userPanelApiService.addBookListToCart(dataCart.map(d => d.id)).subscribe();
             }
 
             this.dialogRef.close(true);

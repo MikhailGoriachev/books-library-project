@@ -20,7 +20,7 @@ export default class UserCartItemSeeder implements Seeder {
         const books = await bookRepository.find();
         const sales = await saleRepository.find();
 
-        const n = 200;
+        const n = 1000;
 
         let userCartItems = Array(n)
             .fill(0)

@@ -49,6 +49,10 @@ export class UserCartItemsService {
     async save(item: UserCartItem): Promise<UserCartItem> {
         return this.cartItemRepository.save(item);
     }
+    
+    async saveAll(items: UserCartItem[]): Promise<UserCartItem[]> {
+        return this.cartItemRepository.save(items);
+    }
 
     async delete(id: number): Promise<any> {
         await this.cartItemRepository.remove(await this.cartItemRepository.findOneBy({ id }));

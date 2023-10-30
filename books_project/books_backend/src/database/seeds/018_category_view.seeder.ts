@@ -6,6 +6,7 @@ import { Category } from '../entities/Category';
 import { CategoryView } from '../entities/CategoryView';
 import { AuthorViewStatistic } from '../entities/AuthorViewStatistic';
 import { CategoryViewStatistic } from '../entities/CategoryViewStatistic';
+import { addDays } from 'date-fns';
 
 export default class CategoryViewSeeder implements Seeder {
     async run(
@@ -19,18 +20,20 @@ export default class CategoryViewSeeder implements Seeder {
         const users = await userRepository.find();
         const categories = await categoryRepository.find();
 
-        const n = 300;
-        
+        const n = 10_000;
+
         const guest = users.find(u => u.name === 'guest');
 
+        const minDays = -30, maxDays = 0;
+        
         const categoryViews = Array(n)
             .fill(0)
             .map((_) => {
                 const user = randomInt(0, 10) < 3 ? guest : users[randomInt(0, users.length)];
                 const category = categories[randomInt(0, categories.length)];
 
-                const date = new Date();
-                date.setDate(-randomInt(10, 30));
+                const date = addDays(new Date(), randomInt(minDays, maxDays));
+
                 date.setHours(randomInt(1, 24));
                 date.setMinutes(randomInt(1, 60));
                 date.setSeconds(randomInt(1, 60));

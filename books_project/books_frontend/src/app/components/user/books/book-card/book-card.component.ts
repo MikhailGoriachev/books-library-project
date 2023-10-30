@@ -50,11 +50,11 @@ export class BookCardComponent implements OnInit {
 
     addToCart(event: MouseEvent) {
         event.stopPropagation();
-        this._dataManagerService.addToCart(this.book).then();
+        this._dataManagerService.addBookToCart(this.book).then();
     }
 
     async removeFromCart(event: MouseEvent) {
         event.stopPropagation();
-        this._dataManagerService.removeFromCart(this.book).then();
+        this._dataManagerService.removeBookFromCart(this.book).then();
     }
 }

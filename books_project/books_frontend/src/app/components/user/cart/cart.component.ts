@@ -85,7 +85,7 @@ export class CartComponent implements OnInit, OnDestroy {
     public async remove(event: MouseEvent, book: Book) {
         event.stopPropagation();
 
-        await this._dataManagerService.removeFromCart(book);
+        await this._dataManagerService.removeBookFromCart(book);
         this.dataSource._updateChangeSubscription();
     }
 

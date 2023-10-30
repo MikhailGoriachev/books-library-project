@@ -3,7 +3,7 @@ import {
     Controller,
     Get, Header,
     HttpCode,
-    HttpException,
+    HttpException, ParseArrayPipe,
     ParseIntPipe,
     Post,
     Request, Res,
@@ -34,6 +34,13 @@ export class UserPanelController {
     async addBookToCart(@Request() req,
                         @Body('bookId', ParseIntPipe) bookId: number) {
         await this._userPanelService.addBookToCart(req.user, bookId);
+    }
+
+    // добавить коллекцию книг в корзину
+    @Roles(RolesEnum.user)
+    @Post('cart/add-book-list')
+    async addBookListToCart(@Request() req, @Body('bookIds', ParseArrayPipe) bookIds: number[]) {
+        await this._userPanelService.addBookListToCart(req.user, bookIds);
     }
 
     // удалить книгу из корзины

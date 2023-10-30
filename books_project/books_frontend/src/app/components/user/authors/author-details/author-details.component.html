@@ -18,7 +18,11 @@
         </div>
         <div class="text-black w-full">
             <h1 class="text-center">Книги</h1>
-            <h1 *ngIf="books?.length <= 0">Книг нет</h1>
+            <h1 *ngIf="!books">
+                <mat-spinner class="h-12 inline-block"></mat-spinner>
+                Загрузка...
+            </h1>
+            <h1 *ngIf="books && books.length <= 0">Книг нет</h1>
             <div class="grid-cards">
                 <div *ngFor="let b of books" class="mt-3">
                     <app-book-card [book]="b" (onClickCard)="toBookCardDetails($event.id)"></app-book-card>
@@ -30,7 +34,8 @@
 
 <div mat-dialog-actions class="justify-content-center">
     <button mat-raised-button class="mx-5 w-36" color="accent" mat-dialog-close>
-        <mat-icon>arrow_back_ios</mat-icon>Назад
+        <mat-icon>arrow_back_ios</mat-icon>
+        Назад
     </button>
 </div>
 
